@@ -11,9 +11,9 @@
 :root{
   --gold:#C8A96E;--gold-lt:#E8CFAA;--gold-dk:#9B7A3E;
   --navy:#0B2545;--navy-mid:#1B3A6B;--navy-lt:#2A5298;
-  --cream:#F5F0E8;--parch:#EAE0C8;
+  --cream:#F5F0E8;--parch:#fdf9f2;--parch-text:#1c1c1c;
   --red:#8B0000;--red-lt:#C0392B;--red-glow:rgba(139,0,0,.6);
-  --ash:#181818;--ash2:#222;--ash3:#2E2E2E;--ash4:#3A3A3A;
+  --ash:#181818;--ash2:#1e1e1e;--ash3:#2E2E2E;--ash4:#3A3A3A;
   --fog:#AAA;--fog2:#777;--fog3:#555;
   --fd:'Playfair Display',Georgia,serif;
   --fu:'Source Sans 3',sans-serif;
@@ -199,7 +199,7 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 .flip-body{font-size:.79rem;line-height:1.58;opacity:.87;flex:1}
 .flip-hint{font-family:var(--fu);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;opacity:.45;text-align:right;margin-top:.9rem}
 
-#zone-mid{background:linear-gradient(168deg,var(--cream) 0%,#728888 34%,var(--ash) 68%);min-height:58vh}
+#zone-mid{background:linear-gradient(168deg,var(--navy) 0%,#2a3a5a 34%,var(--ash) 68%);min-height:58vh}
 .crack-l{width:2px;height:60px;margin:1.4rem auto;background:linear-gradient(to bottom,transparent,var(--red),transparent)}
 .crack-t{font-family:var(--fd);font-size:clamp(1.2rem,3.2vw,2.2rem);color:var(--cream);max-width:700px;text-align:center;line-height:1.34}
 
@@ -254,7 +254,7 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 .slider-label{position:absolute;bottom:8px;font-family:var(--fu);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:3px;color:var(--cream);z-index:1;pointer-events:none}
 .slider-label.before{left:8px;background:rgba(11,37,69,.8)}
 .slider-label.after{right:8px;background:rgba(139,0,0,.8)}
-.slider-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--fd);font-size:clamp(.85rem,2vw,1.2rem);color:var(--cream);text-align:center;pointer-events:none;z-index:3;text-shadow:0 2px 12px rgba(0,0,0,.8);transition:opacity .3s;max-width:260px;line-height:1.4}
+.slider-text{display:none;}
 .slider-placeholder{display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1rem;color:#999;text-align:center;padding:1.5rem}
 
 /* BILDER – allgemeine Stile */
@@ -279,12 +279,12 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 
 /* BRIEF */
 .letter-wrap{max-width:500px;margin:2rem auto}
-.letter-paper{background:var(--parch);color:#2a2a2a;padding:2.2rem 2rem;border-radius:2px;font-family:var(--fu);font-size:.88rem;line-height:1.7;position:relative;box-shadow:0 12px 32px rgba(0,0,0,.35);border:1px solid #bba87e}
+.letter-paper{background:var(--parch);color:var(--parch-text);padding:2.2rem 2rem;border-radius:2px;font-family:var(--fu);font-size:.88rem;line-height:1.7;position:relative;box-shadow:0 12px 32px rgba(0,0,0,.35);border:1px solid #bba87e}
 .letter-paper::before{content:'';position:absolute;top:0;left:40px;right:40px;height:100%;background:repeating-linear-gradient(to bottom,transparent 0,transparent 28px,rgba(0,0,0,.04) 28px,rgba(0,0,0,.04) 29px);pointer-events:none}
-.letter-head{font-family:var(--fd);text-align:center;font-weight:900;font-size:1.05rem;letter-spacing:.06em;border-bottom:2px solid #bba87e;padding-bottom:.7rem;margin-bottom:1.4rem;text-transform:uppercase}
-.letter-head small{display:block;font-size:.65rem;font-weight:400;letter-spacing:.12em;margin-top:3px;color:#665}
-.letter-date{text-align:right;font-size:.75rem;color:#665;margin-bottom:1.2rem;letter-spacing:.06em}
-.letter-stamp{position:absolute;top:20px;right:24px;width:70px;height:70px;border:3px solid #8B0000;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--fu);font-size:.55rem;font-weight:900;letter-spacing:.08em;color:#8B0000;transform:rotate(-14deg);text-transform:uppercase;opacity:.7;pointer-events:none}
+.letter-head{font-family:var(--fd);text-align:center;font-weight:900;font-size:1.05rem;letter-spacing:.06em;border-bottom:2px solid #bba87e;padding-bottom:.7rem;margin-bottom:1.4rem;text-transform:uppercase;color:var(--navy)}
+.letter-head small{display:block;font-size:.65rem;font-weight:400;letter-spacing:.12em;margin-top:3px;color:#555}
+.letter-date{text-align:right;font-size:.75rem;color:#555;margin-bottom:1.2rem;letter-spacing:.06em}
+.letter-stamp{position:absolute;top:20px;right:24px;width:70px;height:70px;border:3px solid #8B0000;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--fu);font-size:.55rem;font-weight:900;letter-spacing:.08em;color:#8B0000;transform:rotate(-14deg);text-transform:uppercase;opacity:.8;pointer-events:none}
 .letter-stamp span{display:block;line-height:1.2}
 
 /* IOC PROTOKOLL */
@@ -331,7 +331,7 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 #wall-names{background:#050505;min-height:40vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:6vh 5vw;position:relative;overflow:hidden}
 #wall-names h3{font-family:var(--fd);font-size:1.5rem;color:var(--cream);margin-bottom:.8rem;text-align:center}
 .names-scroll-wrapper{width:100%;overflow:hidden;}
-.names-scroll{display:flex;flex-wrap:nowrap;gap:2rem;white-space:nowrap;font-family:var(--fu);font-size:.92rem;color:var(--fog3);opacity:0;transform:translateY(30px);transition:opacity 1.2s var(--ease),transform 1.2s var(--ease);animation:scrollNames 80s linear infinite;}
+.names-scroll{display:flex;flex-wrap:nowrap;gap:2rem;white-space:nowrap;font-family:var(--fu);font-size:.92rem;color:var(--fog3);opacity:0;transform:translateY(30px);transition:opacity 1.2s var(--ease),transform 1.2s var(--ease);animation:scrollNames 56s linear infinite;}
 .names-scroll.in{opacity:1;transform:translateY(0);}
 @keyframes scrollNames{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 .names-scroll span{transition:color .6s;display:inline-block;}
@@ -380,7 +380,7 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 .chron-ev{font-family:var(--fu);font-size:.78rem;color:#bbb;line-height:1.5}
 .chron-ev strong{display:block;color:var(--cream);margin-bottom:.2rem;font-size:.83rem}
 
-#zone-map{background:var(--ash2);min-height:auto;padding:7vh 7vw}
+#zone-map{background:var(--ash);min-height:auto;padding:7vh 7vw}
 .map-container{position:relative;width:100%;max-width:780px;margin:2rem auto 0;border:1px solid var(--ash4);border-radius:6px;overflow:hidden;background:#1a1f1a}
 .map-svg{width:100%;display:block;cursor:default}
 .map-pin{cursor:pointer;transition:transform .2s}
@@ -391,7 +391,7 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 .map-popup strong{display:block;font-size:.9rem;margin-bottom:.3rem;color:var(--gold);font-family:var(--fd)}
 .map-popup .pop-badge{display:inline-block;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:2px;margin-bottom:.4rem}
 
-#zone-quotes{background:#0E0E0E;min-height:auto;padding:7vh 7vw}
+#zone-quotes{background:var(--ash);min-height:auto;padding:7vh 7vw}
 .quotes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;margin-top:2rem}
 .q-card{background:var(--ash2);border:1px solid var(--ash3);border-radius:6px;padding:1.5rem 1.7rem;display:flex;flex-direction:column;transition:border-color .3s,transform .3s,box-shadow .3s;position:relative;overflow:hidden}
 .q-card::before{content:'„';position:absolute;top:-10px;left:10px;font-family:var(--fd);font-size:6rem;color:rgba(200,169,110,.07);pointer-events:none;line-height:1}
@@ -432,11 +432,12 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 #zone-ref{background:#fff;color:var(--navy)}
 #zone-ref h2{font-family:var(--fd);font-size:clamp(1.8rem,5vw,3rem);color:var(--navy);margin-bottom:2.4rem;text-align:center}
 .ref-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.6rem;margin-bottom:2.4rem}
-.ref-card{padding:1.6rem;border-top:4px solid var(--navy);background:var(--cream);transition:transform .28s,box-shadow .28s}
+.ref-card{padding:1.8rem 1.6rem;border-top:4px solid var(--navy);background:var(--cream);transition:transform .28s,box-shadow .28s;text-align:center;}
 .ref-card:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,.1)}
+.ref-card .ref-icon{font-size:2.2rem;margin-bottom:.8rem;display:block;opacity:.8}
 .ref-card h3{font-family:var(--fd);font-size:1.12rem;color:var(--navy);margin-bottom:.6rem}
-.ref-card p{font-size:.87rem;color:#445}
-.ref-q{font-family:var(--fd);font-style:italic;font-size:clamp(.98rem,2.2vw,1.45rem);color:var(--navy);text-align:center;max-width:720px;margin:2.4rem auto 0;padding-top:1.8rem;border-top:1px solid #ddd}
+.ref-card p{font-size:.87rem;color:#445;line-height:1.5}
+.ref-q{font-family:var(--fd);font-style:italic;font-size:clamp(1.1rem,2.4vw,1.6rem);color:var(--navy);text-align:center;max-width:720px;margin:2.4rem auto 0;padding-top:1.8rem;border-top:1px solid #ddd}
 
 footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78rem}
 .foot-nav{display:flex;gap:1.6rem;padding:1.5rem 7vw;border-bottom:1px solid #161616;flex-wrap:wrap}
@@ -656,7 +657,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
           <p>Es wird darum gebeten, gegenüber ausländischen Pressevertretern ausschließlich sportliche Gründe für diese Entscheidung anzuführen.</p>
           <p style="margin-top:1.4rem;">Mit deutschem Sportgruß</p>
           <p style="font-family:var(--fd);font-style:italic;font-size:1.1rem;margin-top:.3rem;">Hans von Tschammer und Osten</p>
-          <p style="font-size:.7rem;color:#665;">Reichssportführer<span class="src" data-src="Rekonstruktion nach Bundesarchiv, NS 5/VI">ⓘ</span></p>
+          <p style="font-size:.7rem;color:#555;">Reichssportführer<span class="src" data-src="Rekonstruktion nach Bundesarchiv, NS 5/VI">ⓘ</span></p>
         </div>
       </div>
     </div>
@@ -1113,11 +1114,11 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
     <div class="ch sr" style="color:var(--navy-mid)">VII — Was bleibt</div>
     <h2 class="sr">Was lernen wir daraus?</h2>
     <div class="ref-grid">
-      <div class="ref-card sr"><h3>Sportswashing erkennen</h3><p>1936 ist kein Kuriosum. WM 2022 Katar, Olympia 2022 Peking — dieselbe Logik.</p></div>
-      <div class="ref-card sr d1"><h3>Wessen Geschichten fehlen?</h3><p>Gretel Bergmann, Rukeli Trollmann, die Familien aus Marzahn.</p></div>
-      <div class="ref-card sr d2"><h3>Sport ist nicht unpolitisch</h3><p>Die Neutralitätsbehauptung diente 1936 dem Regime. Auch heute noch.</p></div>
-      <div class="ref-card sr d3"><h3>Die Kraft der Erinnerung</h3><p>Das Gretel-Bergmann-Stadion ist eine Antwort auf das Vergessen.</p></div>
-      <div class="ref-card sr d4" style="border-top-color: var(--gold);"><h3>Widerstand ist möglich</h3><p>Owens' Siege, heimliches Brot am Zaun, die Boykottbewegung – sie zeigen, dass Menschlichkeit nie ganz erstickt werden kann.</p></div>
+      <div class="ref-card sr"><span class="ref-icon">🔍</span><h3>Sportswashing erkennen</h3><p>1936 ist kein Einzelfall. WM 2022 Katar, Olympia 2022 Peking — dieselbe Logik der Imagepolitur durch Sport.</p></div>
+      <div class="ref-card sr d1"><span class="ref-icon">🤫</span><h3>Wessen Geschichten fehlen?</h3><p>Gretel Bergmann, Rukeli Trollmann, die Familien aus Marzahn. Ihre Stimmen wurden systematisch zum Verstummen gebracht.</p></div>
+      <div class="ref-card sr d2"><span class="ref-icon">⚖️</span><h3>Sport ist nicht unpolitisch</h3><p>Die Neutralitätsbehauptung diente 1936 dem Regime als Schutzschild. Auch heute wird sie missbraucht.</p></div>
+      <div class="ref-card sr d3"><span class="ref-icon">🕯️</span><h3>Die Kraft der Erinnerung</h3><p>Das Gretel-Bergmann-Stadion ist eine späte, aber kraftvolle Antwort auf das Vergessen. Erinnerung braucht Orte.</p></div>
+      <div class="ref-card sr d4" style="border-top-color: var(--gold);"><span class="ref-icon">🌟</span><h3>Widerstand ist möglich</h3><p>Owens' Siege, heimliches Brot am Zaun, die Boykottbewegung – Menschlichkeit kann in dunkelsten Zeiten bestehen.</p></div>
     </div>
     <p class="ref-q sr">„Wenn Sport nie unpolitisch ist — wie politisch ist unser eigenes Schweigen?"</p>
   </div>
@@ -1317,14 +1318,14 @@ function switchProtocol(version, btn){
 
 /* QUIZ */
 const QS=[
-  {q:'Der olympische Fackellauf ist eine Tradition aus der griechischen Antike.',o:['Wahr','Falsch — er wurde 1936 erfunden.','Wahr — aber 1936 modernisiert.','Falsch — erfunden 1928.'],a:1,fb:'Der Fackellauf wurde 1936 von Carl Diem erfunden und vom NS-Regime als historisch verankert inszeniert.',detail:'Viele glauben, der Fackellauf sei antik, weil die Inszenierung so überzeugend war. Ein typischer Fall von erfundener Tradition.'},
-  {q:'Hitler weigerte sich öffentlich, Jesse Owens die Hand zu schütteln.',o:['Wahr','Falsch — Hitler gratulierte jedem.','Falsch — Hitler hatte auf IOC-Empfehlung das Gratulieren eingestellt.','Wahr — er rief Owens zum Rapport.'],a:2,fb:'Das IOC bat Hitler, nicht mehr selektiv zu gratulieren. Owens: „Hitler hat mir zugewinkt."',detail:'Der Mythos vom verweigerten Handschlag hält sich hartnäckig, weil er moralisch eindeutig scheint. Die Wahrheit ist komplexer: Die Brüskierung fand woanders statt.'},
+  {q:'Der olympische Fackellauf ist eine Tradition aus der griechischen Antike.',o:['Falsch — er wurde 1936 erfunden.','Wahr','Wahr — aber 1936 modernisiert.','Falsch — erfunden 1928.'],a:0,fb:'Der Fackellauf wurde 1936 von Carl Diem erfunden und vom NS-Regime als historisch verankert inszeniert.',detail:'Viele glauben, der Fackellauf sei antik, weil die Inszenierung so überzeugend war. Ein typischer Fall von erfundener Tradition.'},
+  {q:'Hitler weigerte sich öffentlich, Jesse Owens die Hand zu schütteln.',o:['Falsch — Hitler gratulierte jedem.','Falsch — Hitler hatte auf IOC-Empfehlung das Gratulieren eingestellt.','Wahr','Wahr — er rief Owens zum Rapport.'],a:1,fb:'Das IOC bat Hitler, nicht mehr selektiv zu gratulieren. Owens: „Hitler hat mir zugewinkt."',detail:'Der Mythos vom verweigerten Handschlag hält sich hartnäckig, weil er moralisch eindeutig scheint. Die Wahrheit ist komplexer: Die Brüskierung fand woanders statt.'},
   {q:'Gretel Bergmann wurde aus sportlichen Gründen nicht für Olympia nominiert.',o:['Wahr','Falsch — sie wurde aus rassischen Gründen ausgeschlossen.','Wahr — ihre Leistungen reichten nicht.','Falsch — sie verletzte sich.'],a:1,fb:'Bergmann sprang 1,60 m — deutschen Rekord. Der Ausschlussgrund war ihre jüdische Herkunft.',detail:'Das NS-Regime tarnte den rassistischen Ausschluss als sportliche Entscheidung – eine bewusste Lüge für das Ausland.'},
   {q:'Das Zwangslager Marzahn befand sich weit außerhalb Berlins.',o:['Wahr — über 30 km.','Falsch — nur ca. 8 km vom Olympiastadion.','Wahr — in Brandenburg.','Falsch — am Bahnhof Zoo.'],a:1,fb:'Marzahn lag nur 8 km vom Olympiastadion. Errichtet für ein „sauberes" Berlin.',detail:'Die räumliche Nähe macht die Gleichzeitigkeit von Jubel und Leid besonders unerträglich.'},
-  {q:'Die USA stimmten klar für die Teilnahme an den Berliner Spielen.',o:['Wahr — mit großer Mehrheit.','Falsch — für Boykott.','Falsch — denkbar knapp (58,25:55,75).','Wahr — einstimmig.'],a:2,fb:'Die AAU-Abstimmung war extrem knapp. Der Boykott scheiterte hauchdünn.',detail:'Die Knappheit zeigt, wie umstritten die Teilnahme war – doch das knappe Ergebnis wird selten erinnert.'},
+  {q:'Die USA stimmten klar für die Teilnahme an den Berliner Spielen.',o:['Wahr — mit großer Mehrheit.','Falsch — für Boykott.','Wahr — einstimmig.','Falsch — denkbar knapp (58,25:55,75).'],a:3,fb:'Die AAU-Abstimmung war extrem knapp. Der Boykott scheiterte hauchdünn.',detail:'Die Knappheit zeigt, wie umstritten die Teilnahme war – doch das knappe Ergebnis wird selten erinnert.'},
   {q:'Jesse Owens wurde nach seiner Rückkehr von Roosevelt empfangen.',o:['Wahr — im Weißen Haus.','Falsch — Roosevelt ignorierte ihn.','Wahr — privat.','Falsch — er durfte nicht nach Washington.'],a:1,fb:'Roosevelt schickte weder Brief noch Telegramm. Owens musste den Hintereingang benutzen.',detail:'Diese Tatsache relativiert die gängige Erzählung von der moralischen Überlegenheit der Demokratien gegenüber dem NS-Regime.'},
   {q:'Antisemitische Schilder wurden während der Spiele entfernt.',o:['Falsch — bewusst sichtbar gelassen.','Wahr — das Regime wollte als normal gelten.','Falsch — es gab keine.','Wahr — nur rund ums Stadion.'],a:1,fb:'Für die Dauer der Spiele wurden Schilder entfernt. Eine perfekte Fassade.',detail:'Die Entfernung war temporär. Nach den Spielen kehrten die Schilder zurück – mitsamt der Verfolgung.'},
-  {q:'Leni Riefenstahls „Olympia" wurde international abgelehnt.',o:['Wahr — kaum gezeigt.','Falsch — gewann Goldmedaille der Biennale 1938.','Wahr — verboten.','Falsch — erst 1945 veröffentlicht.'],a:1,fb:'„Olympia" gewann 1938 die Goldmedaille der Biennale Venedig.',detail:'Die internationale Anerkennung des Propagandafilms zeigt, wie erfolgreich die Ästhetisierung der NS-Ideologie war.'},
+  {q:'Leni Riefenstahls „Olympia" wurde international abgelehnt.',o:['Wahr — kaum gezeigt.','Wahr — verboten.','Falsch — gewann Goldmedaille der Biennale 1938.','Falsch — erst 1945 veröffentlicht.'],a:2,fb:'„Olympia" gewann 1938 die Goldmedaille der Biennale Venedig.',detail:'Die internationale Anerkennung des Propagandafilms zeigt, wie erfolgreich die Ästhetisierung der NS-Ideologie war.'},
   {q:'Jesse Owens‘ Siege waren eine direkte Widerlegung der NS-Rassenideologie.',o:['Falsch — sie wurden ignoriert.','Wahr — sie widerlegten die These von der Überlegenheit der „arischen Rasse".','Falsch — er durfte nicht starten.','Wahr — aber nur eine Randnotiz.'],a:1,fb:'Owens gewann vier Goldmedaillen und demonstrierte vor der Welt, dass sportliche Leistung nichts mit Rasse zu tun hat.',detail:'Die NS-Propaganda musste seine Siege verschweigen – ein stiller Triumph gegen die Ideologie.'},
 ];
 let correct=0;
