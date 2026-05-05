@@ -397,6 +397,51 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 .map-overlay-svg{position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; overflow:visible;}
 .map-caption{font-family:var(--fu); font-size:.7rem; color:var(--fog3); text-align:center; margin-top:.5rem;}
 
+/* FORTSCHRITTSLEISTE */
+#chapter-progress {
+  position: fixed; right: 8px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 10px; z-index: 8000;
+}
+.progress-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--ash4); transition: background .3s, transform .3s;
+}
+.progress-dot.active {
+  background: var(--gold); transform: scale(1.4);
+}
+
+/* GLOSSAR PANEL */
+#glossary-btn {
+  position: fixed; top: 14px; right: 120px; z-index: 9700;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(11,37,69,.9); border: 1px solid var(--gold);
+  color: var(--gold); font-size: 1.2rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(8px); transition: background .3s;
+}
+#glossary-btn:hover { background: var(--navy-mid); }
+#glossary-panel {
+  position: fixed; top: 60px; right: 120px; z-index: 9800;
+  background: rgba(11,11,11,.94); border: 1px solid var(--ash4);
+  border-radius: 8px; padding: 1.2rem; width: 260px; max-height: 70vh;
+  overflow-y: auto; backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.6);
+  font-family: var(--fu); font-size: .72rem; color: var(--fog);
+  display: none; scrollbar-width: thin; scrollbar-color: var(--ash4) transparent;
+}
+#glossary-panel.show { display: block; }
+#glossary-panel h3 {
+  font-family: var(--fd); font-size: 1rem; color: var(--gold);
+  margin-bottom: .8rem; border-bottom: 1px solid var(--ash4); padding-bottom: .4rem;
+}
+#glossary-panel dl { margin: 0; }
+#glossary-panel dt {
+  font-weight: 700; color: var(--gold-lt); margin-top: .6rem;
+}
+#glossary-panel dd {
+  margin-left: 0; margin-bottom: .4rem; line-height: 1.4;
+}
+
 #zone-quotes{background:var(--ash);min-height:auto;padding:7vh 7vw}
 .quotes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;margin-top:2rem}
 .q-card{background:var(--ash2);border:1px solid var(--ash3);border-radius:6px;padding:1.5rem 1.7rem;display:flex;flex-direction:column;transition:border-color .3s,transform .3s,box-shadow .3s;position:relative;overflow:hidden}
@@ -492,6 +537,9 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   .quotes-grid{grid-template-columns:1fr}
   .kartei-wrap{flex-direction:column;align-items:center}
   .kartei{max-width:100%}
+  #glossary-btn { right: 80px; }
+  #glossary-panel { right: 10px; left: 10px; width: auto; }
+  #chapter-progress { display: none; }
 }
 </style>
 </head>
@@ -529,6 +577,34 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 
 <!-- Zurück nach oben -->
 <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Zurück nach oben">↑</button>
+
+<!-- Fortschrittsleiste -->
+<div id="chapter-progress">
+  <span class="progress-dot" data-chapter="1"></span>
+  <span class="progress-dot" data-chapter="2"></span>
+  <span class="progress-dot" data-chapter="3"></span>
+  <span class="progress-dot" data-chapter="4"></span>
+  <span class="progress-dot" data-chapter="5"></span>
+  <span class="progress-dot" data-chapter="6"></span>
+  <span class="progress-dot" data-chapter="7"></span>
+  <span class="progress-dot" data-chapter="8"></span>
+</div>
+
+<!-- Glossar Button und Panel -->
+<button id="glossary-btn" onclick="document.getElementById('glossary-panel').classList.toggle('show')" aria-label="Glossar">🕮</button>
+<div id="glossary-panel">
+  <h3>Glossar</h3>
+  <dl>
+    <dt>Arische Rasse</dt><dd>NS-Ideologie, nach der Menschen nordischer Abstammung als überlegen galten.</dd>
+    <dt>Boykottbewegung</dt><dd>Internationale Kampagnen, die einen Boykott der Olympischen Spiele 1936 in Berlin forderten, um gegen das NS-Regime zu protestieren.</dd>
+    <dt>Exilpresse</dt><dd>Zeitungen, die von Emigranten im Ausland herausgegeben wurden, um unabhängig vom NS-Regime berichten zu können.</dd>
+    <dt>Kristallnacht</dt><dd>Pogrom vom 9. November 1938, bei dem Synagogen brannten und jüdische Geschäfte zerstört wurden.</dd>
+    <dt>Nürnberger Gesetze</dt><dd>Rassegesetze vom September 1935, die Juden die Bürgerrechte entzogen und Ehen mit Nichtjuden verboten.</dd>
+    <dt>Sinti und Roma</dt><dd>Ethnische Minderheiten, die im NS-Regime systematisch verfolgt und in Konzentrationslager deportiert wurden.</dd>
+    <dt>Sportswashing</dt><dd>Nutzung von Sportereignissen durch Staaten oder Organisationen, um ihr Image zu verbessern, ohne grundlegende Missstände zu ändern.</dd>
+    <dt>Zwangslager</dt><dd>Lager, in dem Menschen ohne rechtsstaatliches Verfahren und unter unmenschlichen Bedingungen festgehalten wurden, z.B. das Zwangslager Marzahn.</dd>
+  </dl>
+</div>
 
 <!-- ══════ HERO ══════ -->
 <section id="hero">
@@ -766,7 +842,6 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- Restliche Sektionen (unverändert) -->
 <!-- ══════ KAPITEL III — DIE AUSGESTOSSENEN ══════ -->
 <section class="z-dark" id="s-bergmann">
   <div class="pax pax-dk" data-speed=".1"></div>
@@ -1178,6 +1253,46 @@ function tick(){
     const rotShift=(rc.top-innerHeight)*0.002;
     el.style.transform=`translateY(${yShift}px) rotate(${rotShift}deg)`;
   });
+
+  /* Kapitel-Fortschritt */
+  const sections = [
+    { id: 's-fassade', chapter: 1 },
+    { id: 's-riefen', chapter: 1 },
+    { id: 's-brief', chapter: 1 },
+    { id: 's-slider', chapter: 2 },
+    { id: 'zone-chron', chapter: 2 },
+    { id: 'zone-map', chapter: 2 },
+    { id: 's-bergmann', chapter: 3 },
+    { id: 's-kartei', chapter: 3 },
+    { id: 'zone-owens', chapter: 3 },
+    { id: 's-marzahn', chapter: 3 },
+    { id: 's-boykott', chapter: 4 },
+    { id: 's-int-stimmen', chapter: 4 },
+    { id: 's-plakate', chapter: 4 },
+    { id: 's-taeter', chapter: 4 },
+    { id: 'zone-quotes', chapter: 5 },
+    { id: 'zone-memorial', chapter: 5 },
+    { id: 'quiz-sec', chapter: 6 },
+    { id: 'zone-ref', chapter: 7 },
+    { id: 'wall-names', chapter: 8 }
+  ];
+  let currentChapter = 8; // default
+  for (const sec of sections) {
+    const el = document.getElementById(sec.id);
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight / 2) {
+        currentChapter = sec.chapter;
+      } else {
+        break;
+      }
+    }
+  }
+  document.querySelectorAll('#chapter-progress .progress-dot').forEach(dot => {
+    const c = parseInt(dot.getAttribute('data-chapter'));
+    dot.classList.toggle('active', c === currentChapter);
+  });
+
   requestAnimationFrame(tick);
 }
 requestAnimationFrame(tick);
