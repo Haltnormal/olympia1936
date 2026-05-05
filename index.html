@@ -380,16 +380,22 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 .chron-ev{font-family:var(--fu);font-size:.78rem;color:#bbb;line-height:1.5}
 .chron-ev strong{display:block;color:var(--cream);margin-bottom:.2rem;font-size:.83rem}
 
-#zone-map{background:var(--ash);min-height:auto;padding:7vh 7vw}
-.map-container{position:relative;width:100%;max-width:780px;margin:2rem auto 0;border:1px solid var(--ash4);border-radius:6px;overflow:hidden;background:#1a1f1a}
-.map-svg{width:100%;display:block;cursor:default}
-.map-pin{cursor:pointer;transition:transform .2s}
-.map-pin:hover .pin-dot{filter:drop-shadow(0 0 6px currentColor)}
-.pin-dot{transition:r .2s}
-.map-popup{position:absolute;background:var(--ash2);border:1px solid var(--ash4);border-radius:6px;padding:1rem 1.2rem;font-family:var(--fu);font-size:.82rem;color:var(--cream);max-width:240px;pointer-events:none;z-index:10;box-shadow:0 8px 24px rgba(0,0,0,.6);opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s}
-.map-popup.show{opacity:1;transform:translateY(0)}
-.map-popup strong{display:block;font-size:.9rem;margin-bottom:.3rem;color:var(--gold);font-family:var(--fd)}
-.map-popup .pop-badge{display:inline-block;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:2px;margin-bottom:.4rem}
+/* --- INTERAKTIVE KARTE --- */
+#zone-map{background:var(--ash); min-height:auto; padding:7vh 5vw;}
+.map-wrapper{position:relative; width:100%; max-width:1200px; margin:2rem auto 0; border:1px solid var(--ash4); border-radius:6px; overflow:hidden; background:#1a1f1a;}
+.map-wrapper img{width:100%; height:auto; display:block;}
+.map-pin{position:absolute; transform:translate(-50%,-50%); cursor:pointer; z-index:5;}
+.pin-dot{width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; transition:transform 0.2s;}
+.pin-dot:hover{transform:scale(1.2);}
+.pin-dot.gold{background:var(--gold); box-shadow:0 0 12px var(--gold);}
+.pin-dot.red{background:var(--red-lt); box-shadow:0 0 12px var(--red-lt);}
+.pin-dot.navy{background:var(--navy-lt); box-shadow:0 0 12px var(--navy-lt);}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(200,169,110,0.5);} 70%{box-shadow:0 0 0 12px rgba(200,169,110,0);} 100%{box-shadow:0 0 0 0 rgba(200,169,110,0);}}
+.pin-dot.pulse-gold{animation:pulse 2s infinite;}
+.pin-dot.pulse-red{animation-name:pulse; animation-duration:2.5s; animation-iteration-count:infinite; box-shadow-color:rgba(139,0,0,0.5);}
+.map-label{position:absolute; top:26px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.7); color:var(--gold); font-family:var(--fu); font-size:.6rem; padding:2px 6px; border-radius:3px; white-space:nowrap; pointer-events:none;}
+.map-overlay-svg{position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; overflow:visible;}
+.map-caption{font-family:var(--fu); font-size:.7rem; color:var(--fog3); text-align:center; margin-top:.5rem;}
 
 #zone-quotes{background:var(--ash);min-height:auto;padding:7vh 7vw}
 .quotes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;margin-top:2rem}
@@ -721,7 +727,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 
 <!-- ══════ II.3 — BERLIN-KARTE ══════ -->
 <section id="zone-map" style="min-height:auto">
-  <div class="wrap">
+  <div class="wrap" style="max-width:1300px">
     <div class="ch sr" style="color:var(--fog)">II.3 — Stadt der zwei Welten</div>
     <h2 class="z-dark sr d1">Berlin 1936 — Ein Stadtplan der Widersprüche</h2>
     <p class="sr d2" style="color:#aaa;max-width:660px;margin-bottom:0.5rem">Klicke auf die Markierungen, um zu erfahren, was an jedem Ort im Sommer 1936 geschah.</p>
@@ -731,99 +737,36 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
       <span style="display:flex;align-items:center;gap:.3rem;"><span style="width:8px;height:8px;border-radius:50%;background:var(--navy-lt);"></span> Politisches Organ</span>
       <span style="display:flex;align-items:center;gap:.3rem;"><span style="width:8px;height:8px;border-radius:50%;background:var(--red);"></span> Verfolgung / Lager</span>
     </div>
-    <div class="map-container sr d3">
-      <svg class="map-svg" viewBox="0 0 780 440" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <rect width="20" height="20" fill="none"/>
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#2a2f2a" stroke-width="0.5" opacity="0.4"/>
-          </pattern>
-          <radialGradient id="pulse-gold" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="var(--gold)" stop-opacity="0.4">
-              <animate attributeName="stop-opacity" values="0.4;0.1;0.4" dur="2s" repeatCount="indefinite"/>
-            </stop>
-            <stop offset="100%" stop-color="var(--gold)" stop-opacity="0"/>
-          </radialGradient>
-          <radialGradient id="pulse-red" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="var(--red)" stop-opacity="0.4">
-              <animate attributeName="stop-opacity" values="0.4;0.1;0.4" dur="2.5s" repeatCount="indefinite"/>
-            </stop>
-            <stop offset="100%" stop-color="var(--red)" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-        <rect width="780" height="440" fill="#1a1f1a"/>
-        <rect width="780" height="440" fill="url(#grid)" opacity="0.6"/>
-        <path d="M 60 190 Q 200 160 340 200 Q 460 230 560 210 Q 640 190 720 220" stroke="#2a4a3a" stroke-width="22" fill="none" stroke-linecap="round" opacity="0.7"/>
-        <path d="M 60 190 Q 200 160 340 200 Q 460 230 560 210 Q 640 190 720 220" stroke="#3a6a4a" stroke-width="16" fill="none" stroke-linecap="round" opacity="0.15"/>
-        <g stroke="#3a3f3a" stroke-width="1.5" fill="none" opacity="0.5">
-          <line x1="0" y1="240" x2="780" y2="240"/>
-          <line x1="350" y1="0" x2="350" y2="440"/>
-          <line x1="0" y1="120" x2="780" y2="360" opacity="0.3"/>
-          <line x1="780" y1="120" x2="0" y2="360" opacity="0.3"/>
-          <ellipse cx="390" cy="220" rx="280" ry="180" stroke-width="0.8" opacity="0.25" stroke-dasharray="6,3"/>
-          <ellipse cx="390" cy="220" rx="180" ry="110" stroke-width="0.8" opacity="0.25" stroke-dasharray="6,3"/>
-        </g>
-        <g fill="#2a2f2a" stroke="#3a3f3a" stroke-width="0.3" opacity="0.5">
-          <rect x="110" y="200" width="55" height="35" rx="2"/>
-          <rect x="118" y="196" width="40" height="6" rx="1"/>
-          <rect x="360" y="215" width="45" height="30" rx="2"/>
-          <rect x="240" y="140" width="25" height="20" rx="2"/>
-          <circle cx="340" cy="175" r="15"/>
-          <rect x="330" y="170" width="20" height="15" rx="1"/>
-          <rect x="590" y="230" width="15" height="10" rx="1"/>
-          <rect x="612" y="230" width="15" height="10" rx="1"/>
-          <rect x="600" y="245" width="15" height="10" rx="1"/>
-        </g>
-        <text x="390" y="28" fill="#3a4a3a" font-family="'Source Sans 3',sans-serif" font-size="11" text-anchor="middle" letter-spacing="6" opacity="0.5">BERLIN 1936</text>
-        <text x="390" y="428" fill="#3a4a3a" font-family="'Source Sans 3',sans-serif" font-size="8" text-anchor="middle" opacity="0.3">Schematische Darstellung</text>
-        <g transform="translate(720, 35)" opacity="0.35">
-          <polygon points="0,-18 4,-4 0,-8 -4,-4" fill="#3a4a3a"/>
-          <polygon points="0,-18 -4,-4 0,-8 4,-4" fill="#2a3a2a"/>
-          <text x="0" y="-22" fill="#3a4a3a" font-family="'Source Sans 3',sans-serif" font-size="8" text-anchor="middle">N</text>
-        </g>
-        <g class="map-pin" onclick="showPin(event,'pin1')" data-pin="pin1">
-          <circle cx="140" cy="218" r="22" fill="url(#pulse-gold)"/>
-          <rect x="128" y="210" width="24" height="16" rx="2" fill="var(--gold)" opacity="0.9"/>
-          <text x="140" y="221" fill="#1a1f1a" font-family="'Source Sans 3',sans-serif" font-size="8" text-anchor="middle" font-weight="900">🏟</text>
-          <text x="140" y="252" fill="var(--gold)" font-family="'Source Sans 3',sans-serif" font-size="8" text-anchor="middle" font-weight="700">OLYMPIA-</text>
-          <text x="140" y="262" fill="var(--gold)" font-family="'Source Sans 3',sans-serif" font-size="8" text-anchor="middle" font-weight="700">STADION</text>
-        </g>
-        <g class="map-pin" onclick="showPin(event,'pin2')" data-pin="pin2">
-          <circle cx="382" cy="228" r="22" fill="url(#pulse-red)"/>
-          <rect x="370" y="220" width="24" height="16" rx="2" fill="var(--red-lt)" opacity="0.9"/>
-          <text x="382" y="231" fill="#1a1f1a" font-family="'Source Sans 3',sans-serif" font-size="8" text-anchor="middle" font-weight="900">🏛</text>
-          <text x="382" y="260" fill="var(--red-lt)" font-family="'Source Sans 3',sans-serif" font-size="8" text-anchor="middle" font-weight="700">PROPAGANDA-</text>
-          <text x="382" y="270" fill="var(--red-lt)" font-family="'Source Sans 3',sans-serif" font-size="8" text-anchor="middle" font-weight="700">MINISTERIUM</text>
-        </g>
-        <g class="map-pin" onclick="showPin(event,'pin3')" data-pin="pin3">
-          <circle cx="252" cy="150" r="20" fill="url(#pulse-gold)" opacity="0.6"/>
-          <circle cx="252" cy="150" r="9" fill="var(--gold)" opacity="0.8" stroke="#888" stroke-width="1.5"/>
-          <text x="252" y="153" fill="#1a1f1a" font-family="'Source Sans 3',sans-serif" font-size="7" text-anchor="middle" font-weight="900">🎬</text>
-          <text x="252" y="137" fill="var(--gold)" font-family="'Source Sans 3',sans-serif" font-size="7" text-anchor="middle" font-weight="700">RIEFENSTAHL-</text>
-          <text x="252" y="146" fill="var(--gold)" font-family="'Source Sans 3',sans-serif" font-size="7" text-anchor="middle" font-weight="700">ATELIER</text>
-        </g>
-        <g class="map-pin" onclick="showPin(event,'pin4')" data-pin="pin4">
-          <circle cx="610" cy="248" r="22" fill="url(#pulse-red)"/>
-          <polygon points="598,240 622,240 616,256 604,256" fill="var(--red)" opacity="0.9"/>
-          <text x="610" y="252" fill="#1a1f1a" font-family="'Source Sans 3',sans-serif" font-size="7" text-anchor="middle" font-weight="900">⚠</text>
-          <text x="610" y="280" fill="var(--red-lt)" font-family="'Source Sans 3',sans-serif" font-size="8" text-anchor="middle" font-weight="700">ZWANGS-</text>
-          <text x="610" y="290" fill="var(--red-lt)" font-family="'Source Sans 3',sans-serif" font-size="8" text-anchor="middle" font-weight="700">LAGER</text>
-        </g>
-        <g class="map-pin" onclick="showPin(event,'pin5')" data-pin="pin5">
-          <circle cx="342" cy="175" r="20" fill="url(#pulse-gold)" opacity="0.5"/>
-          <circle cx="342" cy="175" r="9" fill="var(--navy-lt)" opacity="0.9" stroke="var(--navy-lt)" stroke-width="1.5"/>
-          <text x="342" y="178" fill="var(--cream)" font-family="'Source Sans 3',sans-serif" font-size="8" text-anchor="middle" font-weight="900">🏛</text>
-          <text x="342" y="164" fill="var(--navy-lt)" font-family="'Source Sans 3',sans-serif" font-size="8" text-anchor="middle" font-weight="700">REICHSTAG</text>
-        </g>
-        <line x1="154" y1="218" x2="596" y2="248" stroke="var(--red)" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.5"/>
-        <text x="375" y="236" fill="var(--red)" font-family="'Source Sans 3',sans-serif" font-size="9" text-anchor="middle" font-weight="600" opacity="0.7">≈ 8 km</text>
-        <text x="375" y="224" fill="rgba(139,0,0,0.5)" font-family="'Source Sans 3',sans-serif" font-size="8" text-anchor="middle" font-style="italic" opacity="0.5">Niemand fragte, wer fehlte.</text>
+    <div class="map-wrapper sr d3" id="map-container">
+      <img src="images/berlin_karte.jpg" alt="Berlin 1936 – historischer Stadtplan">
+      <!-- Pins -->
+      <div class="map-pin" data-pin="pin1" style="left:8.10%; top:34.18%;" onclick="showPin(event,'pin1')">
+        <div class="pin-dot gold pulse-gold">🏟</div><div class="map-label">Olympiastadion</div>
+      </div>
+      <div class="map-pin" data-pin="pin2" style="left:56.45%; top:36.16%;" onclick="showPin(event,'pin2')">
+        <div class="pin-dot red pulse-red">🏛</div><div class="map-label">Propagandaministerium</div>
+      </div>
+      <div class="map-pin" data-pin="pin3" style="left:40.70%; top:40.68%;" onclick="showPin(event,'pin3')">
+        <div class="pin-dot gold pulse-gold">🎬</div><div class="map-label">Riefenstahl-Atelier</div>
+      </div>
+      <div class="map-pin" data-pin="pin4" style="left:98.27%; top:2.68%;" onclick="showPin(event,'pin4')">
+        <div class="pin-dot red pulse-red">⚠</div><div class="map-label" style="color:var(--red-lt);">Zwangslager Marzahn</div>
+      </div>
+      <div class="map-pin" data-pin="pin5" style="left:52.49%; top:29.71%;" onclick="showPin(event,'pin5')">
+        <div class="pin-dot navy pulse-gold">🏛</div><div class="map-label" style="color:var(--navy-lt);">Reichstag</div>
+      </div>
+      <!-- Linie + Text -->
+      <svg class="map-overlay-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <line x1="8.10" y1="34.18" x2="98.27" y2="2.68" stroke="var(--red)" stroke-width="0.4" stroke-dasharray="2,1" opacity="0.7"/>
+        <text x="53" y="16" fill="var(--red)" font-family="'Source Sans 3',sans-serif" font-size="3" text-anchor="middle" font-weight="600" opacity="0.9">≈ 8 km</text>
+        <text x="53" y="20" fill="rgba(139,0,0,0.7)" font-family="'Source Sans 3',sans-serif" font-size="2.5" text-anchor="middle" font-style="italic" opacity="0.7">Niemand fragte, wer fehlte.</text>
       </svg>
-      <div class="map-popup" id="map-popup"></div>
     </div>
+    <p class="map-caption sr d4">Historischer Stadtplan Berlin 1936 (Quelle: Stadtmuseum Berlin, bearbeitet)</p>
   </div>
 </section>
 
+<!-- Restliche Sektionen (unverändert) -->
 <!-- ══════ KAPITEL III — DIE AUSGESTOSSENEN ══════ -->
 <section class="z-dark" id="s-bergmann">
   <div class="pax pax-dk" data-speed=".1"></div>
@@ -1187,6 +1130,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
       • Jesse Owens: Bundesarchiv, Bild 183-R96374 / CC-BY-SA 3.0<br>
       • Gretel Bergmann: Wikimedia Commons / Gemeinfrei<br>
       • Olympiastadion 1936: Bundesarchiv / CC-BY-SA 3.0<br>
+      • Berlin-Karte 1936: Stadtmuseum Berlin, bearbeitet<br>
       • Olympia-Plakat: Franz Würbel, via USHMM / gemeinfrei<br>
       • Parole-der-Woche-Plakat: NSDAP-Reichspropagandaleitung, via USHMM / gemeinfrei<br>
       • Olympia-Filmplakat: Tobis-Filmverleih, via USHMM (Zitatrecht)
