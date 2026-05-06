@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="description" content="Eine interaktive Dokumentation über die Propaganda-Fassade und die verborgenen Verbrechen der Olympischen Spiele 1936 in Berlin – mit historischen Bildern, Perspektivwechseln und kritischen Analysen."/>
 <title>Die zwei Gesichter von 1936 | Olympia & Diktatur</title>
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%230B2545'/><circle cx='16' cy='16' r='10' fill='none' stroke='%23C8A96E' stroke-width='2'/><circle cx='16' cy='16' r='6' fill='none' stroke='%23C8A96E' stroke-width='1.5'/><circle cx='16' cy='16' r='2' fill='%23C8A96E'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet"/>
@@ -23,6 +26,23 @@
 html{scroll-behavior:smooth}
 body{font-family:var(--fu);background:var(--ash);color:var(--cream);line-height:1.75;overflow-x:hidden}
 
+/* Fokus für Tastaturnutzer */
+:focus-visible {
+  outline: 2px solid var(--gold-lt);
+  outline-offset: 3px;
+}
+
+/* Reduzierte Bewegung */
+@media (prefers-reduced-motion: reduce) {
+  .hero-rings, .pin-dot.pulse-gold, .pin-dot.pulse-red, .names-scroll {
+    animation: none !important;
+  }
+  .cta-line {
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
 #grain{position:fixed;inset:0;pointer-events:none;z-index:9900;opacity:.028;mix-blend-mode:overlay}
 #prog-shell{position:fixed;top:0;left:0;right:0;height:3px;background:rgba(255,255,255,.05);z-index:9500}
 #prog-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--red));box-shadow:0 0 10px var(--red-glow);transition:width .08s linear}
@@ -34,21 +54,16 @@ body{font-family:var(--fu);background:var(--ash);color:var(--cream);line-height:
   border:1px solid var(--gold);background:rgba(11,37,69,.95);color:var(--gold);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   transition:background 1.2s var(--ease),color 1.2s var(--ease),border-color 1.2s var(--ease);
-  white-space:nowrap;pointer-events:none
+  white-space:nowrap;cursor:pointer;pointer-events:auto;
+}
+#pill::after{
+  content:' ▾';
+  font-size:.7rem;
 }
 
 /* Kapitelmenü */
-#chapter-menu-btn{
-  position:fixed;left:16px;bottom:20px;z-index:9600;
-  width:40px;height:40px;border-radius:50%;
-  background:rgba(11,37,69,.9);border:1px solid var(--gold);
-  color:var(--gold);font-size:1.2rem;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  backdrop-filter:blur(8px);transition:background .3s;
-}
-#chapter-menu-btn:hover{background:var(--navy-mid);}
 #chapter-menu{
-  position:fixed;left:16px;bottom:70px;z-index:9600;
+  position:fixed;right:16px;top:60px;z-index:9600;
   background:rgba(11,11,11,.94);border:1px solid var(--ash4);
   border-radius:8px;padding:1rem;min-width:220px;
   max-height:70vh;overflow-y:auto;
@@ -254,7 +269,6 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 .slider-label{position:absolute;bottom:8px;font-family:var(--fu);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:3px;color:var(--cream);z-index:1;pointer-events:none}
 .slider-label.before{left:8px;background:rgba(11,37,69,.8)}
 .slider-label.after{right:8px;background:rgba(139,0,0,.8)}
-.slider-text{display:none;}
 .slider-placeholder{display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1rem;color:#999;text-align:center;padding:1.5rem}
 
 /* BILDER – allgemeine Stile */
@@ -301,7 +315,7 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 .gloss:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--ash2);color:var(--cream);padding:.4rem .7rem;font-size:.72rem;border-radius:4px;white-space:nowrap;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,.5);pointer-events:none;}
 
 /* Weiterlesen */
-.read-more{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--fu);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fog);text-decoration:none;border:1px solid var(--ash3);padding:5px 12px;border-radius:20px;transition:border-color .2s,color .2s;margin-top:.8rem;}
+.read-more{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--fu);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fog);text-decoration:none;border:1px solid var(--ash3);padding:5px 12px;border-radius:20px;transition:border-color .2s,color .2s;margin-top:.8rem;margin-left:auto;margin-right:auto;}
 .read-more:hover{border-color:var(--gold);color:var(--gold);}
 .read-more::after{content:'→';font-size:1rem;}
 
@@ -384,7 +398,7 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 #zone-map{background:var(--ash); min-height:auto; padding:7vh 5vw;}
 .map-wrapper{position:relative; width:100%; max-width:1200px; margin:2rem auto 0; border:1px solid var(--ash4); border-radius:6px; overflow:hidden; background:#1a1f1a;}
 .map-wrapper img{width:100%; height:auto; display:block;}
-.map-pin{position:absolute; transform:translate(-50%,-50%); cursor:pointer; z-index:5;}
+.map-pin{position:absolute; transform:translate(-50%,-50%); cursor:pointer; z-index:5; touch-action: manipulation;}
 .pin-dot{width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; transition:transform 0.2s;}
 .pin-dot:hover{transform:scale(1.2);}
 .pin-dot.gold{background:var(--gold); box-shadow:0 0 12px var(--gold);}
@@ -472,8 +486,8 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 .qbtn.show-a{background:rgba(0,80,0,.12);border-color:#3a8a3a;color:#aaffaa}
 .qfb{margin-top:.8rem;padding:.8rem 1rem;border-radius:4px;font-family:var(--fu);font-size:.84rem;line-height:1.52;display:none}
 .qfb.show{display:block}
-.qfb.ok{background:rgba(0,80,0,.16);border-left:4px solid #3a8a3a;color:#aaffaa}
-.qfb.bad{background:rgba(139,0,0,.16);border-left:4px solid var(--red);color:#ffaaaa}
+.qfb.ok{background:rgba(0,80,0,.16);border-left:4px solid #3a8a3a;color:#aaffaa; letter-spacing:0.02em;}
+.qfb.bad{background:rgba(139,0,0,.16);border-left:4px solid var(--red);color:#ffaaaa; letter-spacing:0.02em;}
 .qfb.detail{display:none;margin-top:.4rem;padding:.6rem .8rem;background:rgba(255,255,255,.02);border-left:3px solid var(--ash4);font-size:.78rem;color:var(--fog);line-height:1.5;}
 .qfb.detail.show{display:block;}
 .s-track{height:5px;background:rgba(255,255,255,.07);border-radius:3px;margin:2.2rem 0 .4rem;overflow:hidden}
@@ -532,6 +546,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 }
 
 @media(max-width:600px){
+  body{font-size: 1rem;}
   section{padding:8vh 5vw}
   .flip-w{max-width:100%}
   .person{max-width:100%;border-left:none;border-top:5px solid var(--red);padding-left:0;padding-top:1rem}
@@ -553,8 +568,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 <div id="prog-shell"><div id="prog-bar"></div></div>
 <div id="pill">Die Fassade</div>
 
-<!-- Kapitelmenü Button & Menü -->
-<button id="chapter-menu-btn" onclick="document.getElementById('chapter-menu').classList.toggle('show')" aria-label="Kapitelmenü">☰</button>
+<!-- Kapitelmenü -->
 <nav id="chapter-menu">
   <a href="#hero">Hero</a>
   <a href="#didactic-intro">Einleitung</a>
@@ -653,8 +667,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
         <div class="persp-text" data-persp="ns">
           <p>Berlin 1936: Endlich die große Bühne! Der Führer hat persönlich 42 Millionen Reichsmark bewilligt. Das Reichssportfeld wird die Welt in Ehrfurcht erstarren lassen. Keiner soll uns mehr als Kriegstreiber sehen. Nach den Spielen werden sie alle glauben: Deutschland ist eine friedliche, starke Nation.</p>
         </div>
-        <p class="sr d3">49 Nationen, über 3.900 Athleten, Milliarden von Menschen, die erstmals über Live-Fernsehen zuschauten.<span class="src" data-src="Deutsches Rundfunkarchiv, 1936">ⓘ</span> Die Welt sollte ein friedliches, weltoffenes Deutschland sehen — und sah es.</p>
-        <!-- "Und du?" hier entfernt -->
+        <p class="sr d3">49 Nationen, über 3.963 Athleten, Milliarden von Menschen, die erstmals über Live-Fernsehen zuschauten.<span class="src" data-src="Deutsches Rundfunkarchiv, 1936">ⓘ</span> Die Welt sollte ein friedliches, weltoffenes Deutschland sehen — und sah es.</p>
         <a href="#s-riefen" class="read-more sr">Weiter zu Riefenstahl</a>
       </div>
       <div class="sk">
@@ -679,7 +692,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
     <div class="stat-row">
       <div class="stat-box sr" data-d="0"><div class="stat-n"><span data-cnt="49" data-sfx="">0</span></div><div class="stat-l">Nationen</div><p class="stat-d">Mehr als je zuvor — Beweis für Deutschlands diplomatische „Normalität".</p></div>
       <div class="stat-box sr" data-d="110"><div class="stat-n"><span data-cnt="3963" data-sfx="">0</span></div><div class="stat-l">Athletinnen & Athleten</div><p class="stat-d">Darunter erstmals 331 Frauen — für das NS-Regime ein propagandistischer Nebenaspekt.</p></div>
-      <div class="stat-box sr" data-d="220"><div class="stat-n"><span data-cnt="150" data-sfx=".000">0</span></div><div class="stat-l">Zuschauer im Stadion</div><p class="stat-d">Das größte Stadion der Welt<span class="src" data-src="Bundesarchiv, Bild 183-R82532">ⓘ</span> — Monument der Macht, nicht des Sports.</p></div>
+      <div class="stat-box sr" data-d="220"><div class="stat-n"><span data-cnt="150" data-sfx=".000">0</span></div><div class="stat-l">Zuschauer im Stadion</div><p class="stat-d">Das größte Stadion der Welt (nach zeitgenössischen Angaben)<span class="src" data-src="Bundesarchiv, Bild 183-R82532">ⓘ</span> — Monument der Macht, nicht des Sports.</p></div>
       <div class="stat-box sr" data-d="330"><div class="stat-n"><span data-cnt="25" data-sfx="">0</span></div><div class="stat-l">Live-TV-Stuben</div><p class="stat-d">Die ersten Live-TV-Übertragungen der Geschichte<span class="src" data-src="Deutsches Rundfunkarchiv, 1936">ⓘ</span> — Technik im Dienst der Propaganda.</p></div>
     </div>
   </div>
@@ -761,19 +774,17 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
     <p class="sr d2" style="color:#aaa;text-align:center;max-width:600px;margin:0 auto 1.6rem;">Bewege den Regler, um zwischen den zwei Realitäten des Sommers 1936 zu wechseln.</p>
     <div class="slider-compare sr d3" id="slider1">
       <div class="slider-before" id="slider-before">
-        <img src="images/stadion_1936.jpg" alt="Das Olympiastadion Berlin während der Sommerspiele 1936 – ein Meer aus Flaggen und Menschen." class="slider-placeholder">
+        <img src="images/stadion_1936.jpg" alt="Das Olympiastadion Berlin während der Sommerspiele 1936 – ein Meer aus Flaggen und Menschen." class="slider-placeholder" loading="lazy">
         <div class="slider-label before">Die Bühne</div>
       </div>
-      <img src="images/marzahn.jpg" alt="Das Zwangslager Marzahn, nur 8 km vom Olympiastadion entfernt." class="slider-placeholder">
+      <img src="images/marzahn.jpg" alt="Das Zwangslager Marzahn, nur 8 km vom Olympiastadion entfernt." class="slider-placeholder" loading="lazy">
       <div class="slider-handle" id="slider-handle"></div>
       <div class="slider-label after">Die Realität</div>
-      <div class="slider-text" id="slider-text">Die Welt applaudiert.</div>
     </div>
     <div class="two-col" style="margin-top:2rem;">
-      <div class="callout sr"><strong>Die Bühne (links)</strong><p>Das Olympiastadion — 150.000 Zuschauer, Fahnenmeer, perfekte Choreographie. Ein Bild, das um die Welt ging.</p></div>
+      <div class="callout sr"><strong>Die Bühne (links)</strong><p>Das Olympiastadion — 150.000 Zuschauer (nach zeitgenössischen Angaben), Fahnenmeer, perfekte Choreographie. Ein Bild, das um die Welt ging.</p></div>
       <div class="callout sr d1"><strong>Die Realität (rechts)</strong><p>Das Zwangslager Marzahn — 8 km entfernt. Ohne Sanitäranlagen, ohne Anklage. Für viele der erste Schritt nach Auschwitz.</p></div>
     </div>
-    <!-- "Und du?" hier entfernt -->
     <a href="#zone-chron" class="read-more sr" style="display:block;text-align:center;">Weiter zur Chronologie</a>
   </div>
 </section>
@@ -796,6 +807,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 
 <!-- ══════ ÜBERGANG ══════ -->
 <section id="zone-mid" style="min-height:55vh">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;">Wendepunkt – Die Realität bricht durch</h2>
   <div class="wrap" style="display:flex;flex-direction:column;align-items:center;text-align:center">
     <div class="crack-l sr"></div>
     <p class="crack-t sr d1">Während die Stadien jubelten, arbeiteten die Staatsorgane systematisch an der Ausgrenzung und Vernichtung all jener, die nicht in das rassistische Weltbild passten.</p>
@@ -818,23 +830,13 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
       <span style="display:flex;align-items:center;gap:.3rem;"><span style="width:8px;height:8px;border-radius:50%;background:var(--red);"></span> Verfolgung / Lager</span>
     </div>
     <div class="map-wrapper sr d3" id="map-container">
-      <img src="images/berlin_karte.jpg" alt="Berlin 1936 – historischer Stadtplan">
-      <!-- Pins -->
-      <div class="map-pin" data-pin="pin1" style="left:8.10%; top:34.18%;" onclick="showPin(event,'pin1')">
-        <div class="pin-dot gold pulse-gold">🏟</div><div class="map-label">Olympiastadion</div>
-      </div>
-      <div class="map-pin" data-pin="pin2" style="left:56.45%; top:36.16%;" onclick="showPin(event,'pin2')">
-        <div class="pin-dot red pulse-red">🏛</div><div class="map-label">Propagandaministerium</div>
-      </div>
-      <div class="map-pin" data-pin="pin3" style="left:40.70%; top:40.68%;" onclick="showPin(event,'pin3')">
-        <div class="pin-dot gold pulse-gold">🎬</div><div class="map-label">Riefenstahl-Atelier</div>
-      </div>
-      <div class="map-pin" data-pin="pin4" style="left:98.27%; top:2.68%;" onclick="showPin(event,'pin4')">
-        <div class="pin-dot red pulse-red">⚠</div><div class="map-label" style="color:var(--red-lt);">Zwangslager Marzahn</div>
-      </div>
-      <div class="map-pin" data-pin="pin5" style="left:52.49%; top:29.71%;" onclick="showPin(event,'pin5')">
-        <div class="pin-dot navy pulse-gold">🏛</div><div class="map-label" style="color:var(--navy-lt);">Reichstag</div>
-      </div>
+      <img src="images/berlin_karte.jpg" alt="Berlin 1936 – historischer Stadtplan" loading="lazy">
+      <!-- Pins mit ARIA-Labels -->
+      <div class="map-pin" data-pin="pin1" style="left:8.10%; top:34.18%;" onclick="showPin(event,'pin1')" role="button" aria-label="Olympiastadion – Details anzeigen"><div class="pin-dot gold pulse-gold">🏟</div><div class="map-label">Olympiastadion</div></div>
+      <div class="map-pin" data-pin="pin2" style="left:56.45%; top:36.16%;" onclick="showPin(event,'pin2')" role="button" aria-label="Propagandaministerium – Details anzeigen"><div class="pin-dot red pulse-red">🏛</div><div class="map-label">Propagandaministerium</div></div>
+      <div class="map-pin" data-pin="pin3" style="left:40.70%; top:40.68%;" onclick="showPin(event,'pin3')" role="button" aria-label="Riefenstahl-Atelier – Details anzeigen"><div class="pin-dot gold pulse-gold">🎬</div><div class="map-label">Riefenstahl-Atelier</div></div>
+      <div class="map-pin" data-pin="pin4" style="left:98.27%; top:2.68%;" onclick="showPin(event,'pin4')" role="button" aria-label="Zwangslager Marzahn – Details anzeigen"><div class="pin-dot red pulse-red">⚠</div><div class="map-label" style="color:var(--red-lt);">Zwangslager Marzahn</div></div>
+      <div class="map-pin" data-pin="pin5" style="left:52.49%; top:29.71%;" onclick="showPin(event,'pin5')" role="button" aria-label="Reichstag – Details anzeigen"><div class="pin-dot navy pulse-gold">🏛</div><div class="map-label" style="color:var(--navy-lt);">Reichstag</div></div>
       <!-- Linie + Text -->
       <svg class="map-overlay-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
         <line x1="8.10" y1="34.18" x2="98.27" y2="2.68" stroke="var(--red)" stroke-width="0.4" stroke-dasharray="2,1" opacity="0.7"/>
@@ -855,11 +857,9 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
     <div class="two-col">
       <div class="sl">
         <div class="person">
-          <div class="person-img">
-            <img src="images/bergmann.jpeg" alt="Gretel Bergmann, Deutschlands beste Hochspringerin 1936, die aus rassistischen Gründen nicht starten durfte." style="width:100%; height:100%; object-fit:cover;">
-          </div>
+          <div class="person-img"><img src="images/bergmann.jpeg" alt="Gretel Bergmann, Deutschlands beste Hochspringerin 1936" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
           <div class="person-name">Gretel Bergmann</div>
-          <div class="person-dates">* 1914 Laupheim &nbsp;·&nbsp; † 2017 New York</div>
+          <div class="person-dates">* 1914 Laupheim · † 2017 New York</div>
           <p style="font-size:.82rem;color:#aaa">Deutschlands beste Hochspringerin 1936. Jüdisch. Ausgeschlossen.</p>
         </div>
       </div>
@@ -873,7 +873,6 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
           <div class="tl-item"><div class="tl-date">16. Juli 1936</div><div class="tl-text">Per Brief aus „sportlichen Gründen" gestrichen. Ihr Platz geht an eine „Arierin".</div></div>
           <div class="tl-item golden"><div class="tl-date">2009</div><div class="tl-text">Deutschland benennt ein Berliner Stadion nach ihr: Gretel-Bergmann-Stadion.</div></div>
         </div>
-        <!-- "Und du?" hier entfernt -->
         <a href="#s-kartei" class="read-more sr">Weiter zu weiteren Schicksalen</a>
       </div>
     </div>
@@ -912,19 +911,10 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
       <div>
         <span class="badge b-gold sr">Widerspruch zur Ideologie</span>
         <h2 class="sr">Vier Goldmedaillen. Kein Handschlag.</h2>
-        <div class="persp-text active" data-persp="gast">
-          <p class="sr d2" style="max-width:640px;">Ich sah diesen unglaublichen Läufer – vier Goldmedaillen! Manche tuschelten, Hitler habe ihm nicht gratuliert. Aber ehrlich, die Stimmung im Stadion war so euphorisch, dass ich dachte: Das ist doch nur eine Randnotiz. Sport verbindet. Oder?</p>
-        </div>
-        <div class="persp-text" data-persp="afro">
-          <p class="sr d2" style="max-width:640px;">Ich gewann viermal Gold, und die Menge jubelte. Aber zurück in den USA werde ich durch den Hintereingang müssen. Der Nazi-Führer hat mir zugewinkt – mein eigener Präsident hat mir nicht einmal gratuliert. Wer ist hier eigentlich das Problem?</p>
-        </div>
-        <div class="persp-text" data-persp="ns">
-          <p class="sr d2" style="max-width:640px;">Dieser Owens ist eine Peinlichkeit. Vier Siege eines Schwarzen vor den Augen der Welt – das untergräbt unsere gesamte Rassenlehre. Aber wir haben Glück: Die Amerikaner behandeln ihn zu Hause schlechter, als wir es je könnten. Die Heuchelei der Demokratien ist unser bestes Argument.</p>
-        </div>
-        <div class="light-in-dark sr d3">
-          <strong>✨ Ein Triumph, der die Ideologie zerschlug</strong>
-          Jesse Owens' vier Goldmedaillen waren mehr als sportliche Höchstleistung. Vor den Augen der Welt widerlegte ein schwarzer Athlet die rassistische Kernbehauptung des NS-Regimes – und zwang die Propaganda, seine Siege notdürftig zu verschweigen.
-        </div>
+        <div class="persp-text active" data-persp="gast"><p class="sr d2" style="max-width:640px;">Ich sah diesen unglaublichen Läufer – vier Goldmedaillen! Manche tuschelten, Hitler habe ihm nicht gratuliert. Aber ehrlich, die Stimmung im Stadion war so euphorisch, dass ich dachte: Das ist doch nur eine Randnotiz. Sport verbindet. Oder?</p></div>
+        <div class="persp-text" data-persp="afro"><p class="sr d2" style="max-width:640px;">Ich gewann viermal Gold, und die Menge jubelte. Aber zurück in den USA werde ich durch den Hintereingang müssen. Der Nazi-Führer hat mir zugewinkt – mein eigener Präsident hat mir nicht einmal gratuliert. Wer ist hier eigentlich das Problem?</p></div>
+        <div class="persp-text" data-persp="ns"><p class="sr d2" style="max-width:640px;">Dieser Owens ist eine Peinlichkeit. Vier Siege eines Schwarzen vor den Augen der Welt – das untergräbt unsere gesamte Rassenlehre. Aber wir haben Glück: Die Amerikaner behandeln ihn zu Hause schlechter, als wir es je könnten. Die Heuchelei der Demokratien ist unser bestes Argument.</p></div>
+        <div class="light-in-dark sr d3"><strong>✨ Ein Triumph, der die Ideologie zerschlug</strong>Jesse Owens' vier Goldmedaillen waren mehr als sportliche Höchstleistung. Vor den Augen der Welt widerlegte ein schwarzer Athlet die rassistische Kernbehauptung des NS-Regimes – und zwang die Propaganda, seine Siege notdürftig zu verschweigen.</div>
         <div class="callout sr d3"><strong>Der Mythos vom Handschlag</strong><p>Hitler hatte auf IOC-Empfehlung das öffentliche Gratulieren eingestellt. Owens selbst sagte: „Hitler hat mir zugewinkt." US-Präsident Roosevelt hingegen schickte weder Brief noch Telegramm.</p></div>
         <button class="xbtn sr d4" onclick="toggleX('owens-x',this)">+ Mehr zur Rückkehr nach Amerika</button>
         <div class="xbody" id="owens-x"><div class="xin"><p>In den USA galt für Owens als Schwarzen weiterhin die Rassentrennung. Beim Festempfang im Waldorf-Astoria musste er durch den Hintereingang.</p><p>Owens sagte später: „Hitler hat mich nicht beleidigt — aber mein eigener Präsident hat mich nicht beglückwünscht."</p></div></div>
@@ -933,14 +923,10 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
       </div>
       <div class="sk">
         <div class="person gold-b">
-          <div class="person-img">
-            <img src="images/owens.jpg" alt="Jesse Owens bei den Olympischen Spielen 1936, wo er vier Goldmedaillen gewann." style="width:100%; height:100%; object-fit:cover;">
-          </div>
+          <div class="person-img"><img src="images/owens.jpg" alt="Jesse Owens bei den Olympischen Spielen 1936" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
           <div class="person-name gold">Jesse Owens</div>
-          <div class="person-dates">* 1913 Oakville, Alabama &nbsp;·&nbsp; † 1980 Tucson, Arizona</div>
-          <div class="medals">
-            <span class="medal">🥇 100 m — 10,3 s</span><span class="medal">🥇 200 m — 20,7 s</span><span class="medal">🥇 Weitsprung — 8,06 m</span><span class="medal">🥇 4×100 m Staffel</span>
-          </div>
+          <div class="person-dates">* 1913 Oakville, Alabama · † 1980 Tucson, Arizona</div>
+          <div class="medals"><span class="medal">🥇 100 m — 10,3 s</span><span class="medal">🥇 200 m — 20,7 s</span><span class="medal">🥇 Weitsprung — 8,06 m</span><span class="medal">🥇 4×100 m Staffel</span></div>
         </div>
       </div>
     </div>
@@ -962,24 +948,15 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
       <div class="sl" style="display:flex;flex-direction:column;gap:1.2rem;align-items:flex-start">
         <div class="geo"><div class="geo-n">8 km</div><div class="geo-l">vom Olympiastadion entfernt</div><p class="geo-s">So nah war das Zwangslager Marzahn — während die Welt applaudierte.</p></div>
         <div class="callout" style="margin:0"><strong>Wer waren die Inhaftierten?</strong><p>600–800 Sinti und Roma — Familien, Kinder, ältere Menschen — verhaftet ohne Anklage. Keine Sanitäranlagen, kaum Nahrung.</p></div>
-        <div class="light-in-dark sr d2" style="margin-top:1rem;">
-          <strong>🤝 Menschlichkeit im Schatten</strong>
-          Es gab Berliner, die heimlich Brot über den Zaun reichten. Einige Handwerker weigerten sich, den Stacheldraht zu verlegen. Diese Gesten retteten Leben und bezeugen, dass selbst inmitten des Terrors Mut möglich war.
-        </div>
+        <div class="light-in-dark sr d2" style="margin-top:1rem;"><strong>🤝 Menschlichkeit im Schatten</strong>Es gab Berliner, die heimlich Brot über den Zaun reichten. Einige Handwerker weigerten sich, den Stacheldraht zu verlegen. Diese Gesten retteten Leben und bezeugen, dass selbst inmitten des Terrors Mut möglich war.</div>
       </div>
       <div>
         <span class="badge b-red sr">Vergessene Geschichte</span>
         <h2 class="sr">Das Lager hinter den Kulissen</h2>
         <h3 class="sr d1">Zwangslager Marzahn, Juli 1936</h3>
-        <div class="persp-text active" data-persp="gast">
-          <p class="sr d2" style="max-width:640px;">Ich wusste nichts von einem Lager. In den Zeitungen stand nichts, und die Berliner, mit denen ich sprach, zuckten nur mit den Schultern. Die Spiele waren so überwältigend – wer hätte da nachfragen sollen?</p>
-        </div>
-        <div class="persp-text" data-persp="sinto">
-          <p class="sr d2" style="max-width:640px;">Sie kamen in der Nacht. Wir durften fast nichts mitnehmen. Die Stadt wollte „sauber" sein, sagten sie. Für die Gäste. Dabei waren wir doch auch Berliner.</p>
-        </div>
-        <div class="persp-text" data-persp="ns">
-          <p class="sr d2" style="max-width:640px;">Eine notwendige Ordnungsmaßnahme. Die internationalen Gäste sollen ein gepflegtes Stadtbild sehen. Diese Leute sind ohnehin eine Belastung – hygienisch und rassisch. Nach den Spielen kann man weitersehen.</p>
-        </div>
+        <div class="persp-text active" data-persp="gast"><p class="sr d2" style="max-width:640px;">Ich wusste nichts von einem Lager. In den Zeitungen stand nichts, und die Berliner, mit denen ich sprach, zuckten nur mit den Schultern. Die Spiele waren so überwältigend – wer hätte da nachfragen sollen?</p></div>
+        <div class="persp-text" data-persp="sinto"><p class="sr d2" style="max-width:640px;">Sie kamen in der Nacht. Wir durften fast nichts mitnehmen. Die Stadt wollte „sauber" sein, sagten sie. Für die Gäste. Dabei waren wir doch auch Berliner.</p></div>
+        <div class="persp-text" data-persp="ns"><p class="sr d2" style="max-width:640px;">Eine notwendige Ordnungsmaßnahme. Die internationalen Gäste sollen ein gepflegtes Stadtbild sehen. Diese Leute sind ohnehin eine Belastung – hygienisch und rassisch. Nach den Spielen kann man weitersehen.</p></div>
         <div class="tl sr d3">
           <div class="tl-item"><div class="tl-date">Juli 1936</div><div class="tl-text">Eröffnung des „Zigeunerlagers". Verhaftung der ersten Familien.</div></div>
           <div class="tl-item"><div class="tl-date">August 1936</div><div class="tl-text">Das Lager existiert — und wird nirgends erwähnt.</div></div>
@@ -1011,7 +988,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
         <button class="protocol-btn" onclick="switchProtocol('secret', this)">Vertrauliche Notizen</button>
       </div>
       <div class="protocol-text public active" id="protocol-public"><strong>Bericht an das IOC, September 1935 (Auszug)</strong><br/>„...ich habe alle Einrichtungen besichtigt und mit zahlreichen jüdischen Sportlern gesprochen. Die deutschen Behörden versichern, dass kein Athlet aufgrund seiner Rasse oder Religion von der Teilnahme ausgeschlossen wird. Die Spiele 1936 in Berlin können daher wie geplant stattfinden."</div>
-      <div class="protocol-text secret" id="protocol-secret"><strong>Vertrauliche Notiz Brundages (nie veröffentlicht)</strong><br/>„Die jüdische Frage ist eine interne Angelegenheit Deutschlands. Der olympische Geist verlangt, dass wir uns nicht in die Innenpolitik eines Gastgeberlandes einmischen. Die Spiele sind zu wichtig, um von einer Minderheit gestört zu werden."</div>
+      <div class="protocol-text secret" id="protocol-secret"><strong>Vertrauliche Notiz Brundages (nie veröffentlicht, sinngemäß)</strong><br/>„Die jüdische Frage ist eine interne Angelegenheit Deutschlands. Der olympische Geist verlangt, dass wir uns nicht in die Innenpolitik eines Gastgeberlandes einmischen. Die Spiele sind zu wichtig, um von einer Minderheit gestört zu werden."</div>
     </div>
 
     <div class="ioc-wrap sr"><p class="ioc-q">Sie sind IOC-Mitglied, Juli 1936. Sie kennen die Berichte über Verfolgung. Sie müssen abstimmen.</p><div class="ioc-btns"><button class="ioc-btn yes" onclick="iocVote('yes',this.parentElement)">Für die Teilnahme</button><button class="ioc-btn no" onclick="iocVote('no',this.parentElement)">Für den Boykott</button></div><div class="ioc-result" id="ioc-result"></div></div>
@@ -1049,23 +1026,17 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
     <p class="sr d1" style="color:#aaa;max-width:620px;margin-bottom:0;">Klicke auf die Plakate, um die manipulativen Elemente aufzudecken.</p>
     <div class="poster-grid">
       <div class="poster-card sr" onclick="this.classList.toggle('open')">
-        <div class="poster-img">
-          <img src="images/plakat_brandenburger_tor.jpg" alt="Offizielles Olympia-Plakat 1936 mit Brandenburger Tor und Athlet" style="width:100%; height:100%; object-fit:contain;">
-        </div>
+        <div class="poster-img"><img src="images/plakat_brandenburger_tor.jpg" alt="Offizielles Olympia-Plakat 1936 mit Brandenburger Tor und Athlet" style="width:100%; height:100%; object-fit:contain;" loading="lazy"></div>
         <div class="poster-title">„Berlin grüßt die Jugend der Welt"</div><div class="poster-year">1936 · Reichspropagandaministerium</div>
         <div class="poster-legend"><strong>Manipulative Elemente:</strong><br/>• Die fünf olympischen Ringe über dem Brandenburger Tor — Gleichsetzung Olympia = Deutschland.<br/>• Der athletische Körper als „arischer" Idealtypus.<br/>• Keine Hakenkreuze — bewusste Tarnung für das Ausland.</div>
       </div>
       <div class="poster-card sr d1" onclick="this.classList.toggle('open')">
-        <div class="poster-img">
-          <img src="images/plakat_parole_der_woche.jpg" alt="NS-Propagandaplakat 'Parole der Woche' zu den Olympischen Spielen 1936" style="width:100%; height:100%; object-fit:contain;">
-        </div>
+        <div class="poster-img"><img src="images/plakat_parole_der_woche.jpg" alt="NS-Propagandaplakat 'Parole der Woche' zu den Olympischen Spielen 1936" style="width:100%; height:100%; object-fit:contain;" loading="lazy"></div>
         <div class="poster-title">„Parole der Woche" — NS-Wandzeitung</div><div class="poster-year">1936 · NSDAP-Reichspropagandaleitung</div>
         <div class="poster-legend"><strong>Manipulative Elemente:</strong><br/>• Dreigeteiltes Layout: Sport, Politik, Rassenideologie als Einheit.<br/>• Direkte Ansprache der Bevölkerung, Olympia als nationaler Erfolg.</div>
       </div>
       <div class="poster-card sr d2" onclick="this.classList.toggle('open')">
-        <div class="poster-img">
-          <img src="images/plakat_olympia_film.jpg" alt="Filmplakat zu Leni Riefenstahls Propagandafilm Olympia von 1938" style="width:100%; height:100%; object-fit:contain;">
-        </div>
+        <div class="poster-img"><img src="images/plakat_olympia_film.jpg" alt="Filmplakat zu Leni Riefenstahls Propagandafilm Olympia von 1938" style="width:100%; height:100%; object-fit:contain;" loading="lazy"></div>
         <div class="poster-title">„Olympia" — Filmplakat 1938</div><div class="poster-year">1938 · Tobis-Filmverleih</div>
         <div class="poster-legend"><strong>Manipulative Elemente:</strong><br/>• Überhöhung des nackten Körpers — modernisierte NS-Rassenideologie.<br/>• Verzicht auf politische Symbole — Propaganda tarnt sich als Kunst.<br/>• Lichtsetzung erinnert an griechische Götterstatuen.</div>
       </div>
@@ -1281,7 +1252,7 @@ function tick(){
     { id: 'zone-ref', chapter: 7 },
     { id: 'wall-names', chapter: 8 }
   ];
-  let currentChapter = 8; // default
+  let currentChapter = 8;
   for (const sec of sections) {
     const el = document.getElementById(sec.id);
     if (el) {
@@ -1293,10 +1264,13 @@ function tick(){
       }
     }
   }
-  document.querySelectorAll('#chapter-progress .progress-dot').forEach(dot => {
-    const c = parseInt(dot.getAttribute('data-chapter'));
-    dot.classList.toggle('active', c === currentChapter);
-  });
+  if (currentChapter !== window._lastChapter) {
+    document.querySelectorAll('#chapter-progress .progress-dot').forEach(dot => {
+      const c = parseInt(dot.getAttribute('data-chapter'));
+      dot.classList.toggle('active', c === currentChapter);
+    });
+    window._lastChapter = currentChapter;
+  }
 
   requestAnimationFrame(tick);
 }
@@ -1336,14 +1310,12 @@ document.addEventListener('click',()=>{popup.classList.remove('show');activePin=
 
 /* SLIDER */
 (function initSlider(){
-  const slider=document.getElementById('slider1'),before=document.getElementById('slider-before'),handle=document.getElementById('slider-handle'),sliderText=document.getElementById('slider-text');
+  const slider=document.getElementById('slider1'),before=document.getElementById('slider-before'),handle=document.getElementById('slider-handle');
   if(!slider||!before||!handle)return;
   let dragging=false;
-  const texts=['Die Welt applaudiert.','Niemand fragt, wer fehlt.','8 km entfernt: Stacheldraht.'];
   function setPos(clientX){
     const rect=slider.getBoundingClientRect();let pct=(clientX-rect.left)/rect.width;pct=Math.max(0,Math.min(1,pct));
     before.style.width=(pct*100)+'%';handle.style.left=(pct*100)+'%';
-    if(sliderText){const idx=pct<.33?0:pct<.66?1:2;sliderText.textContent=texts[idx];sliderText.style.opacity='1';}
   }
   handle.addEventListener('mousedown',(e)=>{e.preventDefault();dragging=true;});
   handle.addEventListener('touchstart',(e)=>{e.preventDefault();dragging=true;});
@@ -1427,9 +1399,26 @@ buildQuiz();
 const namesObs=new IntersectionObserver(entries=>{entries.forEach(en=>{if(en.isIntersecting)en.target.classList.add('in');})},{threshold:.3});
 document.querySelectorAll('.names-scroll').forEach(e=>namesObs.observe(e));
 
-/* Kapitelmenü schließen */
-document.querySelectorAll('#chapter-menu a').forEach(link=>{link.addEventListener('click',()=>{document.getElementById('chapter-menu').classList.remove('show');});});
-document.addEventListener('click',function(e){const menu=document.getElementById('chapter-menu');const btn=document.getElementById('chapter-menu-btn');if(!menu.classList.contains('show'))return;if(!menu.contains(e.target)&&e.target!==btn)menu.classList.remove('show');});
+/* Kapitelmenü: Pill klicken togglet Menü */
+const chapterMenu = document.getElementById('chapter-menu');
+pill.addEventListener('click', function(e) {
+  e.stopPropagation();
+  chapterMenu.classList.toggle('show');
+});
+
+/* Menü schließen beim Klick auf Links */
+document.querySelectorAll('#chapter-menu a').forEach(link => {
+  link.addEventListener('click', () => {
+    chapterMenu.classList.remove('show');
+  });
+});
+
+/* Außenklick schließt Menü */
+document.addEventListener('click', function(e) {
+  if (!chapterMenu.contains(e.target) && e.target !== pill) {
+    chapterMenu.classList.remove('show');
+  }
+});
 
 /* Zurück-nach-oben */
 const backToTopBtn=document.getElementById('back-to-top');
