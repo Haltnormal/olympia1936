@@ -636,6 +636,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 <!-- ══════ HERO ══════ -->
 <section id="hero">
   <!-- Hintergrundvideo: Originale Eröffnungsfeier 1936 -->
+  <!-- Wichtig: Sollte das Video nicht automatisch starten, konvertiere es bitte mit Handbrake in das H.264-Format (Standard-MP4). -->
   <video class="hero-bg-video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="images/stadion_1936.jpg">
     <source src="videos/hero_bg.mp4" type="video/mp4">
     <source src="videos/hero_bg.webm" type="video/webm">
@@ -1230,6 +1231,10 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   resize();addEventListener('resize',()=>{resize();clearTimeout(tid);draw()});draw();
 })();
 
+/* Verhindert alte Scrollposition und setzt Seite nach oben */
+history.scrollRestoration = 'manual';
+window.addEventListener('load', () => { window.scrollTo(0, 0); });
+
 /* RAF LOOP */
 const bar=document.getElementById('prog-bar'),pill=document.getElementById('pill');
 const STATES=[
@@ -1468,14 +1473,16 @@ if (heroVideo) {
     const playPromise = heroVideo.play();
     if (playPromise !== undefined) {
       playPromise.catch(() => {
-        /* Wenn Autoplay blockiert wird, starten wir das Video beim ersten Klick irgendwo auf der Seite */
+        /* Wenn Autoplay blockiert wird, starten wir das Video beim ersten Klick oder Scroll */
         const resume = () => {
           heroVideo.play();
           document.removeEventListener('click', resume);
           document.removeEventListener('touchstart', resume);
+          window.removeEventListener('scroll', resume);
         };
         document.addEventListener('click', resume);
         document.addEventListener('touchstart', resume);
+        window.addEventListener('scroll', resume);
       });
     }
   }
