@@ -635,7 +635,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 
 <!-- ══════ HERO ══════ -->
 <section id="hero">
-  <!-- Hintergrundvideo -->
+  <!-- Hintergrundvideo: Originale Eröffnungsfeier 1936 -->
   <video class="hero-bg-video" id="heroVideo" autoplay muted loop playsinline poster="images/stadion_1936.jpg">
     <source src="videos/hero_bg.mp4" type="video/mp4">
   </video>
@@ -741,14 +741,14 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
         <h2 class="sr d1">Die Kamera als Propagandainstrument</h2>
         <p class="sr d2">Leni Riefenstahls zweiteiliger Film „Olympia" (1938) setzte neue kinematographische Maßstäbe: Unterwasser-Zeitlupenkameras, Aufnahmen aus Kameraballons, Fokus auf helle, muskulöse Körper.</p>
         <p class="sr d3">Das Ergebnis war kein Sportfilm — es war eine visuell gewaltige Propagandamaschine, die noch Jahrzehnte die Bildsprache des Sports prägte und die Bildästhetik faschistischer Regime definierte.</p>
-        <!-- YouTube-Video Einbettung -->
+        <!-- Ersatzvideo: Internet Archive Einbettung -->
         <div class="light-in-dark sr d4">
           <strong>🎥 Sehen, wie die Propaganda wirkte</strong>
-          <p style="font-size:.84rem;margin-bottom:.8rem;">Originalaufnahmen aus Leni Riefenstahls „Olympia" (1938).</p>
+          <p style="font-size:.84rem;margin-bottom:.8rem;">Eröffnungszeremonie der Spiele von 1936 – Einblicke in die monumentale Inszenierung.</p>
           <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin-top: .5rem; border-radius: 4px;">
-            <iframe src="https://www.youtube.com/embed/frVw5XQMCb0?controls=1&modestbranding=1&rel=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen loading="lazy" title="Olympia 1936 – Ausschnitt"></iframe>
+            <iframe src="https://archive.org/embed/871241936GermanOlympicsOpeningCeremonyMos" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen loading="lazy" title="Olympia 1936 – Eröffnungsfeier"></iframe>
           </div>
-          <p style="font-size: .72rem; margin-top: .5rem; color: #445;">Quelle: Riefenstahl, Leni: Olympia (1938), via YouTube (World at War)</p>
+          <p style="font-size: .72rem; margin-top: .5rem; color: #445;">Quelle: 1936 Berlin Olympics Opening Ceremonies, Internet Archive / Public Domain</p>
         </div>
         <p class="sr d3" style="font-size:.82rem;color:var(--navy-mid);margin-top:.8rem;">Zur kritischen Einordnung des Films empfiehlt sich die Analyse der <a href="https://www.bpb.de" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;">Bundeszentrale für politische Bildung</a> (externe Bildungsressource).</p>
         <blockquote class="sr d4" style="border-left-color:var(--navy);color:#445">„Ich wollte die Schönheit des Kampfes zeigen."<cite>— Leni Riefenstahl, Regisseurin „Olympia" (1936)</cite></blockquote>
@@ -1209,8 +1209,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
       • Parole-der-Woche-Plakat: NSDAP-Reichspropagandaleitung, via USHMM / gemeinfrei<br>
       • Olympia-Filmplakat: Tobis-Filmverleih, via USHMM (Zitatrecht)<br><br>
       <strong>Videoquellen</strong><br>
-      • Hero-Hintergrund: Riefenstahl, Leni: Olympia (1938), via YouTube (World at War)<br>
-      • Riefenstahl-Ausschnitt: Riefenstahl, Leni: Olympia (1938), via YouTube (World at War)
+      • Hero-Hintergrund: Originalmaterial Olympia 1936 via YouTube (World at War)<br>
+      • Riefenstahl-Ausschnitt: 1936 Berlin Olympics Opening Ceremonies, Internet Archive / Public Domain
     </div>
   </details>
 </footer>
@@ -1446,9 +1446,10 @@ document.addEventListener('click', function(e) {
   }
 });
 
-/* Hero-Hintergrundvideo pausieren, wenn nicht sichtbar */
+/* Hero-Hintergrundvideo pausieren, wenn nicht sichtbar (und Autoplay-Fix) */
 const heroVideo = document.getElementById('heroVideo');
 if (heroVideo) {
+  /* Stoppt das Video, sobald der Hero-Bereich nicht mehr sichtbar ist */
   const heroObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -1459,6 +1460,14 @@ if (heroVideo) {
     });
   }, { threshold: 0.1 });
   heroObserver.observe(document.getElementById('hero'));
+
+  /* Browser-übergreifende Autoplay-Sicherung: Erzwingt einen erneuten Start, sobald das Video bereit ist */
+  heroVideo.addEventListener('canplay', () => {
+    heroVideo.muted = true;
+    heroVideo.play().catch(() => {
+      /* Falls der Browser einen Klick verlangt, brechen wir ab */
+    });
+  });
 }
 
 /* Zurück-nach-oben */
