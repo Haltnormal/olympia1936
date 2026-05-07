@@ -5,12 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <meta name="description" content="Eine interaktive Dokumentation über die Propaganda-Fassade und die verborgenen Verbrechen der Olympischen Spiele 1936 in Berlin – mit historischen Bildern, Perspektivwechseln und kritischen Analysen."/>
 <title>Die zwei Gesichter von 1936 | Olympia & Diktatur</title>
-<!-- Open Graph -->
-<meta property="og:title" content="Die zwei Gesichter von 1936"/>
-<meta property="og:description" content="Interaktive Dokumentation über die Propaganda-Fassade der Olympischen Spiele 1936 in Berlin und die verborgenen Verbrechen des NS-Regimes."/>
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="https://beispiel.de/zwei-gesichter-1936"/>
-<meta property="og:image" content="https://beispiel.de/images/stadion_1936.jpg"/>
 <!-- Favicon -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%230B2545'/><circle cx='16' cy='16' r='10' fill='none' stroke='%23C8A96E' stroke-width='2'/><circle cx='16' cy='16' r='6' fill='none' stroke='%23C8A96E' stroke-width='1.5'/><circle cx='16' cy='16' r='2' fill='%23C8A96E'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -31,9 +25,6 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--fu);background:var(--ash);color:var(--cream);line-height:1.75;overflow-x:hidden}
-
-/* Screen-Reader-Only */
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}
 
 /* Fokus für Tastaturnutzer */
 :focus-visible {
@@ -166,6 +157,7 @@ section{min-height:100vh;display:flex;flex-direction:column;justify-content:cent
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0.45); z-index: 1;
 }
+/* ✨ Überblendung Video → nächster Abschnitt */
 #hero::after {
   content: '';
   position: absolute; bottom: 0; left: 0; right: 0; height: 140px;
@@ -420,8 +412,8 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 
 /* --- INTERAKTIVE KARTE --- */
 #zone-map{background:var(--ash); min-height:auto; padding:7vh 5vw;}
-.map-wrapper{position:relative; width:100%; max-width:1200px; margin:2rem auto 0; border:1px solid var(--ash4); border-radius:6px; overflow:hidden; background:#1a1f1a; aspect-ratio: 4 / 3;}
-.map-wrapper img{width:100%; height:100%; object-fit: cover; display:block;}
+.map-wrapper{position:relative; width:100%; max-width:1200px; margin:2rem auto 0; border:1px solid var(--ash4); border-radius:6px; overflow:hidden; background:#1a1f1a;}
+.map-wrapper img{width:100%; height:auto; display:block;}
 .map-pin{position:absolute; transform:translate(-50%,-50%); cursor:pointer; z-index:5; touch-action: manipulation;}
 .pin-dot{width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; transition:transform 0.2s;}
 .pin-dot:hover{transform:scale(1.2);}
@@ -584,14 +576,6 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   #glossary-panel { left: 10px; right: 10px; width: auto; }
   #chapter-progress { display: none; }
 }
-@media(max-width:360px){
-  body{font-size: 0.95rem;}
-  h2{font-size: 1.3rem;}
-  .hero-sub{font-size: 0.8rem;}
-  .stat-n{font-size: 2rem;}
-  .stat-l{font-size: 0.65rem;}
-  .qbtn{font-size: 0.75rem; padding: .5rem;}
-}
 </style>
 </head>
 <body>
@@ -601,7 +585,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 <div id="pill">Die Fassade</div>
 
 <!-- Kapitelmenü -->
-<nav id="chapter-menu" aria-label="Kapitelmenü">
+<nav id="chapter-menu">
   <a href="#hero">Hero</a>
   <a href="#didactic-intro">Einleitung</a>
   <a href="#s-fassade">I.1 Fassade</a>
@@ -629,7 +613,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Zurück nach oben">↑</button>
 
 <!-- Fortschrittsleiste -->
-<div id="chapter-progress" aria-hidden="true">
+<div id="chapter-progress">
   <span class="progress-dot" data-chapter="1"></span>
   <span class="progress-dot" data-chapter="2"></span>
   <span class="progress-dot" data-chapter="3"></span>
@@ -641,8 +625,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 </div>
 
 <!-- Glossar Button und Panel -->
-<button id="glossary-btn" onclick="toggleGlossary()" aria-label="Glossar">🕮</button>
-<div id="glossary-panel" aria-label="Glossar">
+<button id="glossary-btn" onclick="document.getElementById('glossary-panel').classList.toggle('show')" aria-label="Glossar">🕮</button>
+<div id="glossary-panel">
   <h3>Glossar</h3>
   <dl>
     <dt>Arische Rasse</dt><dd>NS-Ideologie, nach der Menschen nordischer Abstammung als überlegen galten.</dd>
@@ -657,12 +641,12 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 </div>
 
 <!-- ══════ HERO ══════ -->
-<section id="hero" aria-label="Titelbereich mit Hintergrundvideo">
-  <video class="hero-bg-video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="images/stadion_1936.jpg" aria-hidden="true">
+<section id="hero">
+  <video class="hero-bg-video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="images/stadion_1936.jpg">
     <source src="video/hero_bg.mp4" type="video/mp4">
     <source src="video/hero_bg.webm" type="video/webm">
   </video>
-  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-overlay"></div>
   <div class="hero-yr" aria-hidden="true">1936</div>
   <div class="hero-rings" aria-hidden="true"></div>
   <h1 class="sr">Die zwei Gesichter<br/><em>von 1936</em></h1>
@@ -681,7 +665,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 </section>
 
 <!-- ══════ KAPITEL I — DIE FASSADE ══════ -->
-<section class="z-light" id="s-fassade" aria-label="Kapitel: Die Fassade">
+<section class="z-light" id="s-fassade">
   <div class="pax pax-lt" data-speed=".12"></div>
   <div class="wrap">
     <div class="ch sr" style="color:var(--navy-mid)">I.1 — Die Fassade</div>
@@ -708,7 +692,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
         <a href="#s-riefen" class="read-more sr">Weiter zu Riefenstahl</a>
       </div>
       <div class="sk">
-        <div class="flip-w" tabindex="0" role="button" aria-label="Zeitungsartikel Völkischer Beobachter – tippen für verborgene Wahrheit">
+        <div class="flip-w" onclick="this.classList.toggle('open')">
           <div class="flip-i">
             <div class="flip-f flip-front">
               <div class="flip-mast">Völkischer Beobachter · 1. Aug. 1936</div>
@@ -735,14 +719,14 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- I.2 — RIEFENSTAHL -->
-<section class="z-light" id="s-riefen" aria-label="Kapitel: Riefenstahl">
+<!-- ══════ I.2 — RIEFENSTAHL ══════ -->
+<section class="z-light" id="s-riefen">
   <div class="pax pax-lt" data-speed=".08"></div>
   <div class="wrap">
     <div class="ch sr" style="color:var(--navy-mid)">I.2 — Die Ästhetisierung</div>
     <div class="two-col">
       <div class="sl">
-        <div class="flip-w" tabindex="0" role="button" aria-label="Film-Kurier Artikel – tippen für verborgene Wahrheit">
+        <div class="flip-w" onclick="this.classList.toggle('open')">
           <div class="flip-i">
             <div class="flip-f flip-front">
               <div class="flip-mast">Film-Kurier · Oktober 1938</div>
@@ -764,6 +748,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
         <h2 class="sr d1">Die Kamera als Propagandainstrument</h2>
         <p class="sr d2">Leni Riefenstahls zweiteiliger Film „Olympia" (1938) setzte neue kinematographische Maßstäbe: Unterwasser-Zeitlupenkameras, Aufnahmen aus Kameraballons, Fokus auf helle, muskulöse Körper.</p>
         <p class="sr d3">Das Ergebnis war kein Sportfilm — es war eine visuell gewaltige Propagandamaschine, die noch Jahrzehnte die Bildsprache des Sports prägte und die Bildästhetik faschistischer Regime definierte.</p>
+        <!-- Ersatzvideo: Internet Archive Einbettung -->
         <div class="light-in-dark sr d4">
           <strong>🎥 Sehen, wie die Propaganda wirkte</strong>
           <p style="font-size:.84rem;margin-bottom:.8rem;">Eröffnungszeremonie der Spiele von 1936 – Einblicke in die monumentale Inszenierung.</p>
@@ -781,8 +766,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- I.3 — DER BRIEF -->
-<section class="z-dark" id="s-brief" aria-label="Kapitel: Der Brief">
+<!-- ══════ I.3 — DER BRIEF ══════ -->
+<section class="z-dark" id="s-brief">
   <div class="wrap">
     <div class="ch sr" style="color:var(--fog)">I.3 — Das Dokument</div>
     <h2 class="sr" style="text-align:center">Ein Brief des Deutschen Reichsbundes für Leibesübungen</h2>
@@ -811,8 +796,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- KAPITEL II — DIE REALITÄT -->
-<section class="z-dark" id="s-slider" aria-label="Kapitel: Direkter Vergleich">
+<!-- ══════ KAPITEL II — DIE REALITÄT ══════ -->
+<section class="z-dark" id="s-slider">
   <div class="wrap">
     <div class="ch sr" style="color:var(--fog)">II.1 — Direkter Vergleich</div>
     <h2 class="sr d1" style="text-align:center;">Was die Welt sah — und was gleichzeitig geschah</h2>
@@ -835,7 +820,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 </section>
 
 <!-- ══════ II.2 — CHRONOLOGIE ══════ -->
-<section id="zone-chron" style="min-height:auto" aria-label="Kapitel: Chronologie">
+<section id="zone-chron" style="min-height:auto">
   <div class="wrap">
     <div class="ch sr" style="color:var(--gold-lt)">II.2 — Der Weg zur Katastrophe</div>
     <h2 class="z-navy sr d1" style="text-align:left;max-width:680px">1933–1938: Was hinter der Olympia-Fassade geschah</h2>
@@ -850,9 +835,9 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- ÜBERGANG -->
-<section id="zone-mid" style="min-height:55vh" aria-label="Wendepunkt">
-  <h2 class="sr-only">Wendepunkt – Die Realität bricht durch</h2>
+<!-- ══════ ÜBERGANG ══════ -->
+<section id="zone-mid" style="min-height:55vh">
+  <h2 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;">Wendepunkt – Die Realität bricht durch</h2>
   <div class="wrap" style="display:flex;flex-direction:column;align-items:center;text-align:center">
     <div class="crack-l sr"></div>
     <p class="crack-t sr d1">Während die Stadien jubelten, arbeiteten die Staatsorgane systematisch an der Ausgrenzung und Vernichtung all jener, die nicht in das rassistische Weltbild passten.</p>
@@ -862,8 +847,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- II.3 — BERLIN-KARTE -->
-<section id="zone-map" style="min-height:auto" aria-label="Kapitel: Berlin-Karte">
+<!-- ══════ II.3 — BERLIN-KARTE ══════ -->
+<section id="zone-map" style="min-height:auto">
   <div class="wrap" style="max-width:1300px">
     <div class="ch sr" style="color:var(--fog)">II.3 — Stadt der zwei Welten</div>
     <h2 class="z-dark sr d1">Berlin 1936 — Ein Stadtplan der Widersprüche</h2>
@@ -876,11 +861,13 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
     </div>
     <div class="map-wrapper sr d3" id="map-container">
       <img src="images/berlin_karte.jpg" alt="Berlin 1936 – historischer Stadtplan" loading="lazy">
-      <div class="map-pin" data-pin="pin1" style="left:8.10%; top:34.18%;" tabindex="0" role="button" aria-label="Olympiastadion – Details anzeigen" aria-expanded="false"><div class="pin-dot gold pulse-gold">🏟</div><div class="map-label">Olympiastadion</div></div>
-      <div class="map-pin" data-pin="pin2" style="left:56.45%; top:36.16%;" tabindex="0" role="button" aria-label="Propagandaministerium – Details anzeigen" aria-expanded="false"><div class="pin-dot red pulse-red">🏛</div><div class="map-label">Propagandaministerium</div></div>
-      <div class="map-pin" data-pin="pin3" style="left:40.70%; top:40.68%;" tabindex="0" role="button" aria-label="Riefenstahl-Atelier – Details anzeigen" aria-expanded="false"><div class="pin-dot gold pulse-gold">🎬</div><div class="map-label">Riefenstahl-Atelier</div></div>
-      <div class="map-pin" data-pin="pin4" style="left:98.27%; top:2.68%;" tabindex="0" role="button" aria-label="Zwangslager Marzahn – Details anzeigen" aria-expanded="false"><div class="pin-dot red pulse-red">⚠</div><div class="map-label" style="color:var(--red-lt);">Zwangslager Marzahn</div></div>
-      <div class="map-pin" data-pin="pin5" style="left:52.49%; top:29.71%;" tabindex="0" role="button" aria-label="Reichstag – Details anzeigen" aria-expanded="false"><div class="pin-dot navy pulse-gold">🏛</div><div class="map-label" style="color:var(--navy-lt);">Reichstag</div></div>
+      <!-- Pins mit ARIA-Labels -->
+      <div class="map-pin" data-pin="pin1" style="left:8.10%; top:34.18%;" onclick="showPin(event,'pin1')" role="button" aria-label="Olympiastadion – Details anzeigen"><div class="pin-dot gold pulse-gold">🏟</div><div class="map-label">Olympiastadion</div></div>
+      <div class="map-pin" data-pin="pin2" style="left:56.45%; top:36.16%;" onclick="showPin(event,'pin2')" role="button" aria-label="Propagandaministerium – Details anzeigen"><div class="pin-dot red pulse-red">🏛</div><div class="map-label">Propagandaministerium</div></div>
+      <div class="map-pin" data-pin="pin3" style="left:40.70%; top:40.68%;" onclick="showPin(event,'pin3')" role="button" aria-label="Riefenstahl-Atelier – Details anzeigen"><div class="pin-dot gold pulse-gold">🎬</div><div class="map-label">Riefenstahl-Atelier</div></div>
+      <div class="map-pin" data-pin="pin4" style="left:98.27%; top:2.68%;" onclick="showPin(event,'pin4')" role="button" aria-label="Zwangslager Marzahn – Details anzeigen"><div class="pin-dot red pulse-red">⚠</div><div class="map-label" style="color:var(--red-lt);">Zwangslager Marzahn</div></div>
+      <div class="map-pin" data-pin="pin5" style="left:52.49%; top:29.71%;" onclick="showPin(event,'pin5')" role="button" aria-label="Reichstag – Details anzeigen"><div class="pin-dot navy pulse-gold">🏛</div><div class="map-label" style="color:var(--navy-lt);">Reichstag</div></div>
+      <!-- Linie + Text -->
       <svg class="map-overlay-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
         <line x1="8.10" y1="34.18" x2="98.27" y2="2.68" stroke="var(--red)" stroke-width="0.4" stroke-dasharray="2,1" opacity="0.7"/>
         <text x="53" y="16" fill="var(--red)" font-family="'Source Sans 3',sans-serif" font-size="3" text-anchor="middle" font-weight="600" opacity="0.9">≈ 8 km</text>
@@ -892,8 +879,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- KAPITEL III — DIE AUSGESTOSSENEN -->
-<section class="z-dark" id="s-bergmann" aria-label="Kapitel: Gretel Bergmann">
+<!-- ══════ KAPITEL III — DIE AUSGESTOSSENEN ══════ -->
+<section class="z-dark" id="s-bergmann">
   <div class="pax pax-dk" data-speed=".1"></div>
   <div class="wrap">
     <div class="ch sr" style="color:var(--red-lt)">III.1 — Die Ausgestoßenen</div>
@@ -922,8 +909,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- III.2 — WEITERE SCHICKSALE -->
-<section class="z-dark" id="s-kartei" aria-label="Kapitel: Weitere Schicksale">
+<!-- ══════ III.2 — WEITERE SCHICKSALE ══════ -->
+<section class="z-dark" id="s-kartei">
   <div class="wrap">
     <div class="ch sr" style="color:var(--red-lt)">III.2 — Weitere Schicksale</div>
     <h2 class="sr">Sie wurden ausradiert</h2>
@@ -939,8 +926,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- III.3 — JESSE OWENS -->
-<section class="z-dark" id="zone-owens" aria-label="Kapitel: Jesse Owens">
+<!-- ══════ III.3 — JESSE OWENS ══════ -->
+<section class="z-dark" id="zone-owens">
   <div class="pax pax-dk" data-speed=".09"></div>
   <div class="wrap">
     <div class="ch sr" style="color:var(--gold)">III.3 — Der unbequeme Held</div>
@@ -976,8 +963,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- III.4 — MARZAHN -->
-<section class="z-dark" id="s-marzahn" aria-label="Kapitel: Marzahn">
+<!-- ══════ III.4 — MARZAHN ══════ -->
+<section class="z-dark" id="s-marzahn">
   <div class="pax pax-dk" data-speed=".11"></div>
   <div class="wrap">
     <div class="ch sr" style="color:var(--red-lt)">III.4 — Die vergessenen Orte</div>
@@ -1012,8 +999,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- KAPITEL IV — INTERNATIONALE MITVERANTWORTUNG -->
-<section class="z-dark" id="s-boykott" aria-label="Kapitel: Boykott & IOC">
+<!-- ══════ KAPITEL IV — INTERNATIONALE MITVERANTWORTUNG ══════ -->
+<section class="z-dark" id="s-boykott">
   <div class="pax pax-dk" data-speed=".07"></div>
   <div class="wrap">
     <div class="ch sr" style="color:var(--fog)">IV.1 — Boykott & IOC</div>
@@ -1043,8 +1030,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- IV.2 — INTERNATIONALE STIMMEN -->
-<section class="z-dark" id="s-int-stimmen" aria-label="Kapitel: Internationale Stimmen">
+<!-- ══════ IV.2 — INTERNATIONALE STIMMEN ══════ -->
+<section class="z-dark" id="s-int-stimmen">
   <div class="wrap">
     <div class="ch sr" style="color:var(--fog)">IV.2 — Internationale Stimmen</div>
     <h2 class="sr">Die Welt schaute zu – Exilpresse und Proteste</h2>
@@ -1061,24 +1048,24 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- IV.3 — PLAKATE -->
-<section class="z-dark" id="s-plakate" aria-label="Kapitel: Propaganda-Plakate">
+<!-- ══════ IV.3 — PLAKATE ══════ -->
+<section class="z-dark" id="s-plakate">
   <div class="wrap">
     <div class="ch sr" style="color:var(--fog)">IV.3 — Propaganda-Plakate</div>
     <h2 class="sr">Die Bildsprache der Macht</h2>
     <p class="sr d1" style="color:#aaa;max-width:620px;margin-bottom:0;">Klicke auf die Plakate, um die manipulativen Elemente aufzudecken.</p>
     <div class="poster-grid">
-      <div class="poster-card sr" tabindex="0" role="button" aria-label="Plakat: Berlin grüßt die Jugend der Welt – tippen für Details">
+      <div class="poster-card sr" onclick="this.classList.toggle('open')">
         <div class="poster-img"><img src="images/plakat_brandenburger_tor.jpg" alt="Offizielles Olympia-Plakat 1936 mit Brandenburger Tor und Athlet" style="width:100%; height:100%; object-fit:contain;" loading="lazy"></div>
         <div class="poster-title">„Berlin grüßt die Jugend der Welt"</div><div class="poster-year">1936 · Reichspropagandaministerium</div>
         <div class="poster-legend"><strong>Manipulative Elemente:</strong><br/>• Die fünf olympischen Ringe über dem Brandenburger Tor — Gleichsetzung Olympia = Deutschland.<br/>• Der athletische Körper als „arischer" Idealtypus.<br/>• Keine Hakenkreuze — bewusste Tarnung für das Ausland.</div>
       </div>
-      <div class="poster-card sr d1" tabindex="0" role="button" aria-label="Plakat: Parole der Woche – tippen für Details">
+      <div class="poster-card sr d1" onclick="this.classList.toggle('open')">
         <div class="poster-img"><img src="images/plakat_parole_der_woche.jpg" alt="NS-Propagandaplakat 'Parole der Woche' zu den Olympischen Spielen 1936" style="width:100%; height:100%; object-fit:contain;" loading="lazy"></div>
         <div class="poster-title">„Parole der Woche" — NS-Wandzeitung</div><div class="poster-year">1936 · NSDAP-Reichspropagandaleitung</div>
         <div class="poster-legend"><strong>Manipulative Elemente:</strong><br/>• Dreigeteiltes Layout: Sport, Politik, Rassenideologie als Einheit.<br/>• Direkte Ansprache der Bevölkerung, Olympia als nationaler Erfolg.</div>
       </div>
-      <div class="poster-card sr d2" tabindex="0" role="button" aria-label="Plakat: Olympia Filmplakat – tippen für Details">
+      <div class="poster-card sr d2" onclick="this.classList.toggle('open')">
         <div class="poster-img"><img src="images/plakat_olympia_film.jpg" alt="Filmplakat zu Leni Riefenstahls Propagandafilm Olympia von 1938" style="width:100%; height:100%; object-fit:contain;" loading="lazy"></div>
         <div class="poster-title">„Olympia" — Filmplakat 1938</div><div class="poster-year">1938 · Tobis-Filmverleih</div>
         <div class="poster-legend"><strong>Manipulative Elemente:</strong><br/>• Überhöhung des nackten Körpers — modernisierte NS-Rassenideologie.<br/>• Verzicht auf politische Symbole — Propaganda tarnt sich als Kunst.<br/>• Lichtsetzung erinnert an griechische Götterstatuen.</div>
@@ -1087,8 +1074,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- IV.4 — DIE TÄTER -->
-<section class="z-dark" id="s-taeter" aria-label="Kapitel: Die Täter nach 1945">
+<!-- ══════ IV.4 — DIE TÄTER ══════ -->
+<section class="z-dark" id="s-taeter">
   <div class="wrap">
     <div class="ch sr" style="color:var(--red-lt)">IV.4 — Die Täter nach 1945</div>
     <h2 class="sr">Die Drahtzieher – Karrieren ohne Reue</h2>
@@ -1104,8 +1091,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- KAPITEL V — STIMMEN & GEDENKEN -->
-<section id="zone-quotes" style="min-height:auto" aria-label="Kapitel: Zitate">
+<!-- ══════ KAPITEL V — STIMMEN & GEDENKEN ══════ -->
+<section id="zone-quotes" style="min-height:auto">
   <div class="wrap">
     <div class="ch sr" style="color:var(--fog2)">V.1 — Stimmen der Zeit</div>
     <h2 class="z-dark sr d1" style="margin-bottom:.4rem">Was sie sagten — und was sie schwiegen</h2>
@@ -1120,19 +1107,19 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- V.2 — GEDENKEN -->
-<section id="zone-memorial" style="min-height:auto" aria-label="Kapitel: Gedenken">
+<!-- ══════ V.2 — GEDENKEN ══════ -->
+<section id="zone-memorial" style="min-height:auto">
   <div class="wrap">
     <div class="ch sr" style="color:var(--fog3);justify-content:center">V.2 — Gedenken</div>
     <h2 class="sr d1">Wir nennen ihre Namen</h2>
     <p class="memorial-sub sr d2">Für alle, die 1936 aus dem Bild verschwinden sollten — und aus der Geschichte gestrichen wurden.</p>
-    <div class="memorial-names sr d3"><span>Gretel Bergmann</span><span>Johann „Rukeli" Trollmann</span><span>Werner Seelenbinder</span><span>Sinti und Roma aus Marzahn</span><span>Jüdische Athletinnen &amp; Athleten</span></div>
+    <div class="memorial-names sr d3"><span>Gretel Bergmann</span><span>Johann „Rukeli" Trollmann</span><span>Werner Seelenbinder</span><span>Sinti und Roma aus Marzahn</span><span>Jüdische Athleten &amp; Athletinnen</span></div>
     <p class="memorial-note sr d4">Johann „Rukeli" Trollmann war ein Sinto und Berufsboxer — 1933 wurde ihm der Deutsche Meistertitel aberkannt. Er wurde 1944 im KZ Neuengamme ermordet. Werner Seelenbinder, Ringer und antifaschistischer Widerstandskämpfer, wurde 1944 hingerichtet.</p>
   </div>
 </section>
 
-<!-- KAPITEL VI — TESTE DEIN WISSEN -->
-<section id="quiz-sec" aria-label="Kapitel: Quiz">
+<!-- ══════ KAPITEL VI — TESTE DEIN WISSEN ══════ -->
+<section id="quiz-sec">
   <div class="wrap">
     <div class="ch sr" style="color:var(--gold)">VI — Teste dein Wissen</div>
     <h2 class="z-navy sr d1" style="text-align:center;margin-bottom:.5rem">Propaganda oder Wahrheit?</h2>
@@ -1145,8 +1132,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- KAPITEL VII — WAS BLEIBT -->
-<section id="zone-ref" aria-label="Kapitel: Reflexion">
+<!-- ══════ KAPITEL VII — WAS BLEIBT ══════ -->
+<section id="zone-ref">
   <div class="wrap">
     <div class="ch sr" style="color:var(--navy-mid)">VII — Was bleibt</div>
     <h2 class="sr">Was lernen wir daraus?</h2>
@@ -1161,8 +1148,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
-<!-- EPILOG — NAMEN-WAND -->
-<section id="wall-names" aria-label="Epilog: Namenwand">
+<!-- ══════ EPILOG — NAMEN-WAND ══════ -->
+<section id="wall-names">
   <div class="wrap" style="text-align:center;">
     <h3 class="sr">Sie waren mehr als Vergessene</h3>
     <div class="names-scroll-wrapper">
@@ -1187,6 +1174,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
   <nav class="foot-nav">
     <a href="#didactic-intro">Einleitung</a>
@@ -1235,29 +1223,24 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 </footer>
 
 <script>
-/* GRAIN – optimiert mit requestAnimationFrame und Pausierung bei Inaktivität */
+/* ZUVERLÄSSIG GANZ OBEN STARTEN */
+(function(){ window.scrollTo(0,0); history.scrollRestoration = 'manual'; })();
+window.addEventListener('load', function(){ window.scrollTo(0,0); });
+
+/* GRAIN */
 (()=>{
   const c=document.getElementById('grain'),ctx=c.getContext('2d');
-  let w,h,lastTime=0;
+  let w,h,tid;
   const resize=()=>{w=c.width=innerWidth;h=c.height=innerHeight};
-  const draw=(now)=>{
-    if(now-lastTime<90){requestAnimationFrame(draw);return;}
-    lastTime=now;
+  const draw=()=>{
     const img=ctx.createImageData(w,h),d=img.data;
     for(let i=0;i<d.length;i+=4){const v=Math.random()*255|0;d[i]=d[i+1]=d[i+2]=v;d[i+3]=255}
-    ctx.putImageData(img,0,0);
-    requestAnimationFrame(draw);
+    ctx.putImageData(img,0,0);tid=setTimeout(draw,90)
   };
-  resize();addEventListener('resize',()=>{resize()});requestAnimationFrame(draw);
-  document.addEventListener('visibilitychange',()=>{
-    if(document.hidden){lastTime=0;}else{requestAnimationFrame(draw);}
-  });
+  resize();addEventListener('resize',()=>{resize();clearTimeout(tid);draw()});draw();
 })();
 
-history.scrollRestoration = 'manual';
-window.addEventListener('load', () => { window.scrollTo(0, 0); });
-
-/* Scroll-Progress und Pill – nur bei Scroll aktualisiert */
+/* RAF LOOP */
 const bar=document.getElementById('prog-bar'),pill=document.getElementById('pill');
 const STATES=[
   {t:0,tx:'Die Fassade',bg:'rgba(11,37,69,.95)',co:'#C8A96E',bo:'#C8A96E'},
@@ -1268,8 +1251,8 @@ const STATES=[
   {t:.76,tx:'Teste dein Wissen',bg:'rgba(11,37,69,.95)',co:'#C8A96E',bo:'#C8A96E'},
   {t:.9,tx:'Was bleibt?',bg:'rgba(235,232,226,.96)',co:'#0B2545',bo:'#0B2545'},
 ];
-let lastState=null,rafPending=false;
-function updateProgress(){
+let lastState=null;
+function tick(){
   const maxS=document.documentElement.scrollHeight-innerHeight;
   const r=maxS>0?Math.min(scrollY/maxS,1):0;
   bar.style.width=(r*100)+'%';
@@ -1286,17 +1269,37 @@ function updateProgress(){
 
   /* Kapitel-Fortschritt */
   const sections = [
-    { id: 's-fassade', chapter: 1 },{ id: 's-riefen', chapter: 1 },{ id: 's-brief', chapter: 1 },
-    { id: 's-slider', chapter: 2 },{ id: 'zone-chron', chapter: 2 },{ id: 'zone-map', chapter: 2 },
-    { id: 's-bergmann', chapter: 3 },{ id: 's-kartei', chapter: 3 },{ id: 'zone-owens', chapter: 3 },{ id: 's-marzahn', chapter: 3 },
-    { id: 's-boykott', chapter: 4 },{ id: 's-int-stimmen', chapter: 4 },{ id: 's-plakate', chapter: 4 },{ id: 's-taeter', chapter: 4 },
-    { id: 'zone-quotes', chapter: 5 },{ id: 'zone-memorial', chapter: 5 },
-    { id: 'quiz-sec', chapter: 6 },{ id: 'zone-ref', chapter: 7 },{ id: 'wall-names', chapter: 8 }
+    { id: 's-fassade', chapter: 1 },
+    { id: 's-riefen', chapter: 1 },
+    { id: 's-brief', chapter: 1 },
+    { id: 's-slider', chapter: 2 },
+    { id: 'zone-chron', chapter: 2 },
+    { id: 'zone-map', chapter: 2 },
+    { id: 's-bergmann', chapter: 3 },
+    { id: 's-kartei', chapter: 3 },
+    { id: 'zone-owens', chapter: 3 },
+    { id: 's-marzahn', chapter: 3 },
+    { id: 's-boykott', chapter: 4 },
+    { id: 's-int-stimmen', chapter: 4 },
+    { id: 's-plakate', chapter: 4 },
+    { id: 's-taeter', chapter: 4 },
+    { id: 'zone-quotes', chapter: 5 },
+    { id: 'zone-memorial', chapter: 5 },
+    { id: 'quiz-sec', chapter: 6 },
+    { id: 'zone-ref', chapter: 7 },
+    { id: 'wall-names', chapter: 8 }
   ];
   let currentChapter = 8;
   for (const sec of sections) {
     const el = document.getElementById(sec.id);
-    if (el) { const rect = el.getBoundingClientRect(); if (rect.top < window.innerHeight / 2) { currentChapter = sec.chapter; } else { break; } }
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight / 2) {
+        currentChapter = sec.chapter;
+      } else {
+        break;
+      }
+    }
   }
   if (currentChapter !== window._lastChapter) {
     document.querySelectorAll('#chapter-progress .progress-dot').forEach(dot => {
@@ -1305,10 +1308,10 @@ function updateProgress(){
     });
     window._lastChapter = currentChapter;
   }
+
+  requestAnimationFrame(tick);
 }
-function onScroll(){ if(!rafPending){ rafPending=true; requestAnimationFrame(()=>{ updateProgress(); rafPending=false; }); } }
-window.addEventListener('scroll',onScroll,{passive:true});
-window.addEventListener('resize',onScroll,{passive:true});
+requestAnimationFrame(tick);
 
 /* INTERSECTION OBSERVER */
 function countUp(el){
@@ -1332,42 +1335,15 @@ const PIN_DATA={
 const popup=document.getElementById('map-popup');let activePin=null;
 function showPin(e,id){
   e.stopPropagation();
-  const pinEl = document.querySelector(`.map-pin[data-pin="${id}"]`);
-  if(activePin===id){
-    popup.classList.remove('show');
-    if(pinEl) pinEl.setAttribute('aria-expanded', 'false');
-    activePin=null;return;
-  }
-  if(pinEl) pinEl.setAttribute('aria-expanded', 'true');
+  if(activePin===id){popup.classList.remove('show');activePin=null;return}
   activePin=id;const d=PIN_DATA[id];
   popup.innerHTML=`<div class="pop-badge" style="color:${d.badgeColor};background:${d.badgeBg};border:1px solid ${d.badgeColor}">${d.badge}</div><strong>${d.label}</strong>${d.text}`;
   const mapRect=popup.parentElement.getBoundingClientRect();
-  let clientX, clientY;
-  if(e.touches){ clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
-  else { clientX = e.clientX; clientY = e.clientY; }
-  let x=clientX-mapRect.left+12,y=clientY-mapRect.top-10;
+  let x=e.clientX-mapRect.left+12,y=e.clientY-mapRect.top-10;
   popup.style.left=Math.min(x,mapRect.width-260)+'px';popup.style.top=Math.max(y-40,10)+'px';
   popup.classList.add('show');
 }
-document.querySelectorAll('.map-pin').forEach(pin => {
-  pin.addEventListener('click', function(e){ showPin(e, this.dataset.pin); });
-  pin.addEventListener('keydown', function(e){
-    if(e.key === 'Enter' || e.key === ' '){
-      e.preventDefault();
-      const rect = this.getBoundingClientRect();
-      const fakeEvent = { clientX: rect.left + rect.width/2, clientY: rect.top + rect.height/2, stopPropagation: ()=>{} };
-      showPin(fakeEvent, this.dataset.pin);
-    }
-  });
-});
-document.addEventListener('click',()=>{
-  if(activePin){
-    popup.classList.remove('show');
-    const pinEl = document.querySelector(`.map-pin[data-pin="${activePin}"]`);
-    if(pinEl) pinEl.setAttribute('aria-expanded', 'false');
-    activePin=null;
-  }
-});
+document.addEventListener('click',()=>{popup.classList.remove('show');activePin=null});
 
 /* SLIDER */
 (function initSlider(){
@@ -1460,63 +1436,71 @@ buildQuiz();
 const namesObs=new IntersectionObserver(entries=>{entries.forEach(en=>{if(en.isIntersecting)en.target.classList.add('in');})},{threshold:.3});
 document.querySelectorAll('.names-scroll').forEach(e=>namesObs.observe(e));
 
-/* Kapitelmenü */
+/* Kapitelmenü: Pill klicken togglet Menü */
 const chapterMenu = document.getElementById('chapter-menu');
-pill.addEventListener('click', function(e) { e.stopPropagation(); chapterMenu.classList.toggle('show'); });
-document.querySelectorAll('#chapter-menu a').forEach(link => { link.addEventListener('click', () => { chapterMenu.classList.remove('show'); }); });
-document.addEventListener('click', function(e) { if (!chapterMenu.contains(e.target) && e.target !== pill) { chapterMenu.classList.remove('show'); } });
+pill.addEventListener('click', function(e) {
+  e.stopPropagation();
+  chapterMenu.classList.toggle('show');
+});
 
-/* Glossar */
-function toggleGlossary(){ document.getElementById('glossary-panel').classList.toggle('show'); }
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { const panel = document.getElementById('glossary-panel'); if (panel.classList.contains('show')) { panel.classList.remove('show'); } } });
+/* Menü schließen beim Klick auf Links */
+document.querySelectorAll('#chapter-menu a').forEach(link => {
+  link.addEventListener('click', () => {
+    chapterMenu.classList.remove('show');
+  });
+});
 
-/* Hero-Video */
+/* Außenklick schließt Menü */
+document.addEventListener('click', function(e) {
+  if (!chapterMenu.contains(e.target) && e.target !== pill) {
+    chapterMenu.classList.remove('show');
+  }
+});
+
+/* Hero-Hintergrundvideo mit Autoplay-Fix */
 const heroVideo = document.getElementById('heroVideo');
 if (heroVideo) {
-  const heroObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { heroVideo.play(); } else { heroVideo.pause(); } }); }, { threshold: 0.1 });
+  /* Stoppt das Video, sobald der Hero-Bereich nicht mehr sichtbar ist */
+  const heroObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        heroVideo.play();
+      } else {
+        heroVideo.pause();
+      }
+    });
+  }, { threshold: 0.1 });
   heroObserver.observe(document.getElementById('hero'));
+
+  /* Zuverlässiger Autoplay-Mechanismus */
   function attemptAutoplay() {
     heroVideo.muted = true;
     const playPromise = heroVideo.play();
-    if (playPromise !== undefined) { playPromise.catch(() => { const resume = () => { heroVideo.play(); document.removeEventListener('click', resume); document.removeEventListener('touchstart', resume); window.removeEventListener('scroll', resume); }; document.addEventListener('click', resume); document.addEventListener('touchstart', resume); window.addEventListener('scroll', resume); }); }
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        /* Wenn Autoplay blockiert wird, starten wir das Video beim ersten Klick oder Scroll */
+        const resume = () => {
+          heroVideo.play();
+          document.removeEventListener('click', resume);
+          document.removeEventListener('touchstart', resume);
+          window.removeEventListener('scroll', resume);
+        };
+        document.addEventListener('click', resume);
+        document.addEventListener('touchstart', resume);
+        window.addEventListener('scroll', resume);
+      });
+    }
   }
+
+  /* Versuche sofort, dann erneut, wenn das Video bereit ist */
   attemptAutoplay();
   heroVideo.addEventListener('canplay', attemptAutoplay);
   heroVideo.addEventListener('loadeddata', attemptAutoplay);
 }
 
-/* Quellen-Tooltips */
-document.querySelectorAll('.src').forEach(el => { if (!el.hasAttribute('title')) el.setAttribute('title', el.dataset.src); });
-
-/* Bild-Fallback */
-document.querySelectorAll('img').forEach(img => {
-  img.addEventListener('error', function() {
-    if(this.parentElement && this.parentElement.classList.contains('person-img')){
-      this.parentElement.textContent='Bild nicht verfügbar';
-    } else if(this.parentElement && this.parentElement.classList.contains('poster-img')){
-      this.parentElement.textContent='Plakat nicht verfügbar';
-    } else if(this.closest('.slider-placeholder')){
-      this.alt = this.alt + ' (Bild konnte nicht geladen werden)';
-    } else {
-      this.style.display='none';
-    }
-  });
-});
-
 /* Zurück-nach-oben */
 const backToTopBtn=document.getElementById('back-to-top');
 window.addEventListener('scroll',()=>{backToTopBtn.classList.toggle('visible',window.scrollY>600);});
-
-/* Tastaturbedienung für Flip-Karten und Poster-Karten */
-document.querySelectorAll('.flip-w, .poster-card').forEach(el => {
-  el.setAttribute('tabindex','0');
-  el.addEventListener('keydown', function(e){
-    if(e.key === 'Enter' || e.key === ' '){
-      e.preventDefault();
-      this.classList.toggle('open');
-    }
-  });
-});
 </script>
 </body>
 </html>
