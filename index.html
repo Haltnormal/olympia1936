@@ -636,8 +636,9 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 <!-- ══════ HERO ══════ -->
 <section id="hero">
   <!-- Hintergrundvideo: Originale Eröffnungsfeier 1936 -->
-  <video class="hero-bg-video" id="heroVideo" autoplay muted loop playsinline poster="images/stadion_1936.jpg">
+  <video class="hero-bg-video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="images/stadion_1936.jpg">
     <source src="videos/hero_bg.mp4" type="video/mp4">
+    <source src="videos/hero_bg.webm" type="video/webm">
   </video>
   <div class="hero-overlay"></div>
   <div class="hero-yr" aria-hidden="true">1936</div>
@@ -1446,7 +1447,7 @@ document.addEventListener('click', function(e) {
   }
 });
 
-/* Hero-Hintergrundvideo pausieren, wenn nicht sichtbar (und Autoplay-Fix) */
+/* Hero-Hintergrundvideo mit Autoplay-Fix */
 const heroVideo = document.getElementById('heroVideo');
 if (heroVideo) {
   /* Stoppt das Video, sobald der Hero-Bereich nicht mehr sichtbar ist */
@@ -1461,13 +1462,28 @@ if (heroVideo) {
   }, { threshold: 0.1 });
   heroObserver.observe(document.getElementById('hero'));
 
-  /* Browser-übergreifende Autoplay-Sicherung: Erzwingt einen erneuten Start, sobald das Video bereit ist */
-  heroVideo.addEventListener('canplay', () => {
+  /* Zuverlässiger Autoplay-Mechanismus */
+  function attemptAutoplay() {
     heroVideo.muted = true;
-    heroVideo.play().catch(() => {
-      /* Falls der Browser einen Klick verlangt, brechen wir ab */
-    });
-  });
+    const playPromise = heroVideo.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        /* Wenn Autoplay blockiert wird, starten wir das Video beim ersten Klick irgendwo auf der Seite */
+        const resume = () => {
+          heroVideo.play();
+          document.removeEventListener('click', resume);
+          document.removeEventListener('touchstart', resume);
+        };
+        document.addEventListener('click', resume);
+        document.addEventListener('touchstart', resume);
+      });
+    }
+  }
+
+  /* Versuche sofort, dann erneut, wenn das Video bereit ist */
+  attemptAutoplay();
+  heroVideo.addEventListener('canplay', attemptAutoplay);
+  heroVideo.addEventListener('loadeddata', attemptAutoplay);
 }
 
 /* Zurück-nach-oben */
