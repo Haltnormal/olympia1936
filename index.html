@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <meta name="description" content="Eine interaktive Dokumentation über die Propaganda-Fassade und die verborgenen Verbrechen der Olympischen Spiele 1936 in Berlin – mit historischen Bildern, Perspektivwechseln und kritischen Analysen."/>
 <title>Die zwei Gesichter von 1936 | Olympia & Diktatur</title>
+<!-- Open Graph -->
+<meta property="og:title" content="Die zwei Gesichter von 1936"/>
+<meta property="og:description" content="Interaktive Dokumentation über die Propaganda-Fassade der Olympischen Spiele 1936 in Berlin und die verborgenen Verbrechen des NS-Regimes."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://beispiel.de/zwei-gesichter-1936"/>
+<meta property="og:image" content="https://beispiel.de/images/stadion_1936.jpg"/>
 <!-- Favicon -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%230B2545'/><circle cx='16' cy='16' r='10' fill='none' stroke='%23C8A96E' stroke-width='2'/><circle cx='16' cy='16' r='6' fill='none' stroke='%23C8A96E' stroke-width='1.5'/><circle cx='16' cy='16' r='2' fill='%23C8A96E'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -157,7 +163,7 @@ section{min-height:100vh;display:flex;flex-direction:column;justify-content:cent
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0.45); z-index: 1;
 }
-/* ✨ Überblendung Video → nächster Abschnitt */
+/* Überblendung Video → nächster Abschnitt */
 #hero::after {
   content: '';
   position: absolute; bottom: 0; left: 0; right: 0; height: 140px;
@@ -576,6 +582,15 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   #glossary-panel { left: 10px; right: 10px; width: auto; }
   #chapter-progress { display: none; }
 }
+@media(max-width:360px){
+  body{font-size: 0.95rem;}
+  h2{font-size: 1.3rem;}
+  .hero-sub{font-size: 0.8rem;}
+  .stat-n{font-size: 2rem;}
+  .stat-l{font-size: 0.65rem;}
+  .stat-d{font-size: 0.75rem;}
+  .qbtn{font-size: 0.75rem; padding: .5rem;}
+}
 </style>
 </head>
 <body>
@@ -914,13 +929,14 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   <div class="wrap">
     <div class="ch sr" style="color:var(--red-lt)">III.2 — Weitere Schicksale</div>
     <h2 class="sr">Sie wurden ausradiert</h2>
-    <p class="sr d1" style="color:#aaa;max-width:620px;">Fünf Athletinnen und Athleten, deren Namen die offizielle Olympia-Geschichte tilgte. Jeder steht für ein System der Verfolgung.</p>
+    <p class="sr d1" style="color:#aaa;max-width:620px;">Sechs Athletinnen und Athleten, deren Namen die offizielle Olympia-Geschichte tilgte oder vereinnahmte. Jeder steht für ein System der Verfolgung – und manche für dessen Ambivalenz.</p>
     <div class="kartei-wrap">
       <div class="kartei sr"><h4>Johann „Rukeli" Trollmann</h4><div class="kartei-dates">* 1907 Hannover · † 1944 KZ Neuengamme</div><p>Berufsboxer, Sinto. 1933 Deutscher Meister im Halbschwergewicht. Der Titel wurde ihm aus rassischen Gründen aberkannt. 1944 im KZ erschlagen.</p><p class="kartei-voice">„Sie sagten, ich boxe zu undeutsch. Dabei war es mein größter Sieg."</p></div>
       <div class="kartei sr d1"><h4>Werner Seelenbinder</h4><div class="kartei-dates">* 1904 Stettin · † 1944 Brandenburg-Görden</div><p>Ringer, Kommunist, Olympiateilnehmer 1936. Nutzte Sportreisen für konspirative Treffen. 1942 verhaftet, 1944 hingerichtet.</p><p class="kartei-voice">„Sie fürchteten meine Kraft – und sie fürchteten meine Worte."</p></div>
       <div class="kartei sr d2"><h4>Lilli Henoch</h4><div class="kartei-dates">* 1899 Königsberg · † 1942 Riga</div><p>Leichtathletin, Weltrekordlerin im Kugelstoßen und Diskus. Aus dem Sport ausgeschlossen, 1942 ins Ghetto Riga deportiert und ermordet.</p><p class="kartei-voice">„Meine Rekorde durften bleiben. Ich nicht."</p></div>
       <div class="kartei gold-top sr d3"><h4>Otto Herschmann</h4><div class="kartei-dates">* 1877 Wien · † 1942 KZ Izbica</div><p>Olympiasieger im Fechten 1896, Silber im Schwimmen. Präsident des Österreichischen Olympischen Comités. 1942 als Jude deportiert und im KZ ermordet.</p><p class="kartei-voice">„Ich gab dem Sport mein Leben – der Sport gab mich preis."</p></div>
       <div class="kartei sr d4"><h4>Martha Jacob</h4><div class="kartei-dates">* 1904 Berlin · † 1942 Auschwitz</div><p>Sprinterin und Hochspringerin, Berliner Vereinsmehrkämpferin. Wegen jüdischer Abstammung 1933 von Wettkämpfen ausgeschlossen. 1942 nach Auschwitz deportiert und ermordet.</p><p class="kartei-voice">„Vom Berliner Sportplatz in den Viehwaggon."</p></div>
+      <div class="kartei gold-top sr d5"><h4>Helene Mayer</h4><div class="kartei-dates">* 1910 Offenbach · † 1953 München</div><p>Fechterin jüdischer Herkunft, gewann Silber im Florett 1936 für Deutschland. Zeigte den Hitlergruß – eine ambivalente Figur zwischen Anpassung und Überleben.</p><p class="kartei-voice">„Ich wollte nur fechten. Die Politik habe ich nicht bestimmt."</p></div>
     </div>
     <a href="#zone-owens" class="read-more sr">Weiter zu Jesse Owens</a>
   </div>
@@ -1123,10 +1139,10 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   <div class="wrap">
     <div class="ch sr" style="color:var(--gold)">VI — Teste dein Wissen</div>
     <h2 class="z-navy sr d1" style="text-align:center;margin-bottom:.5rem">Propaganda oder Wahrheit?</h2>
-    <p class="quiz-lede sr d2">Neun Aussagen. Manche klingen wahr — manche sind es. Kannst du die Fassade von der Realität unterscheiden?</p>
+    <p class="quiz-lede sr d2">Zehn Aussagen. Manche klingen wahr — manche sind es. Kannst du die Fassade von der Realität unterscheiden?</p>
     <div id="qbox" class="sr d3"></div>
     <div class="s-track"><div class="s-fill" id="sfill"></div></div>
-    <div class="s-lbl" id="slbl">0 von 9 beantwortet</div>
+    <div class="s-lbl" id="slbl">0 von 10 beantwortet</div>
     <div id="qres"><span id="qres-t"></span><p id="qres-s"></p></div>
     <button id="qreset" onclick="buildQuiz()">↺ Quiz wiederholen</button>
   </div>
@@ -1223,22 +1239,28 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 </footer>
 
 <script>
-/* ZUVERLÄSSIG GANZ OBEN STARTEN */
-(function(){ window.scrollTo(0,0); history.scrollRestoration = 'manual'; })();
-window.addEventListener('load', function(){ window.scrollTo(0,0); });
-
-/* GRAIN */
+/* GRAIN – optimiert mit requestAnimationFrame und Pausierung bei Inaktivität */
 (()=>{
   const c=document.getElementById('grain'),ctx=c.getContext('2d');
-  let w,h,tid;
+  let w,h,lastTime=0;
   const resize=()=>{w=c.width=innerWidth;h=c.height=innerHeight};
-  const draw=()=>{
+  const draw=(now)=>{
+    if(now-lastTime<90){requestAnimationFrame(draw);return}
+    lastTime=now;
     const img=ctx.createImageData(w,h),d=img.data;
     for(let i=0;i<d.length;i+=4){const v=Math.random()*255|0;d[i]=d[i+1]=d[i+2]=v;d[i+3]=255}
-    ctx.putImageData(img,0,0);tid=setTimeout(draw,90)
+    ctx.putImageData(img,0,0);
+    requestAnimationFrame(draw);
   };
-  resize();addEventListener('resize',()=>{resize();clearTimeout(tid);draw()});draw();
+  resize();addEventListener('resize',()=>{resize()});requestAnimationFrame(draw);
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){lastTime=0;}else{requestAnimationFrame(draw);}
+  });
 })();
+
+history.scrollRestoration = 'manual';
+window.addEventListener('load', () => { window.scrollTo(0, 0); });
+window.scrollTo(0, 0);
 
 /* RAF LOOP */
 const bar=document.getElementById('prog-bar'),pill=document.getElementById('pill');
@@ -1400,6 +1422,7 @@ const QS=[
   {q:'Antisemitische Schilder wurden während der Spiele entfernt.',o:['Falsch — bewusst sichtbar gelassen.','Wahr — das Regime wollte als normal gelten.','Falsch — es gab keine.','Wahr — nur rund ums Stadion.'],a:1,fb:'Für die Dauer der Spiele wurden Schilder entfernt. Eine perfekte Fassade.',detail:'Die Entfernung war temporär. Nach den Spielen kehrten die Schilder zurück – mitsamt der Verfolgung.'},
   {q:'Leni Riefenstahls „Olympia" wurde international abgelehnt.',o:['Wahr — kaum gezeigt.','Wahr — verboten.','Falsch — gewann Goldmedaille der Biennale 1938.','Falsch — erst 1945 veröffentlicht.'],a:2,fb:'„Olympia" gewann 1938 die Goldmedaille der Biennale Venedig.',detail:'Die internationale Anerkennung des Propagandafilms zeigt, wie erfolgreich die Ästhetisierung der NS-Ideologie war.'},
   {q:'Jesse Owens‘ Siege waren eine direkte Widerlegung der NS-Rassenideologie.',o:['Falsch — sie wurden ignoriert.','Wahr — sie widerlegten die These von der Überlegenheit der „arischen Rasse".','Falsch — er durfte nicht starten.','Wahr — aber nur eine Randnotiz.'],a:1,fb:'Owens gewann vier Goldmedaillen und demonstrierte vor der Welt, dass sportliche Leistung nichts mit Rasse zu tun hat.',detail:'Die NS-Propaganda musste seine Siege verschweigen – ein stiller Triumph gegen die Ideologie.'},
+  {q:'Helene Mayer, eine deutsche Fechterin jüdischer Herkunft, gewann bei den Olympischen Spielen 1936 Silber und zeigte den Hitlergruß.',o:['Falsch – sie verweigerte den Gruß.','Wahr – sie gewann Silber und zeigte den Hitlergruß.','Falsch – sie nahm nicht teil.','Wahr – sie gewann Gold.'],a:1,fb:'Helene Mayer gewann Silber und zeigte den Hitlergruß – ein ambivalentes Kapitel.',detail:'Mayer ist ein Beispiel für die schwierige Entscheidung, unter dem Hakenkreuz anzutreten, und wurde später oft als Mitläuferin kritisiert.'},
 ];
 let correct=0;
 function buildQuiz(){
@@ -1460,7 +1483,6 @@ document.addEventListener('click', function(e) {
 /* Hero-Hintergrundvideo mit Autoplay-Fix */
 const heroVideo = document.getElementById('heroVideo');
 if (heroVideo) {
-  /* Stoppt das Video, sobald der Hero-Bereich nicht mehr sichtbar ist */
   const heroObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -1472,13 +1494,11 @@ if (heroVideo) {
   }, { threshold: 0.1 });
   heroObserver.observe(document.getElementById('hero'));
 
-  /* Zuverlässiger Autoplay-Mechanismus */
   function attemptAutoplay() {
     heroVideo.muted = true;
     const playPromise = heroVideo.play();
     if (playPromise !== undefined) {
       playPromise.catch(() => {
-        /* Wenn Autoplay blockiert wird, starten wir das Video beim ersten Klick oder Scroll */
         const resume = () => {
           heroVideo.play();
           document.removeEventListener('click', resume);
@@ -1492,7 +1512,6 @@ if (heroVideo) {
     }
   }
 
-  /* Versuche sofort, dann erneut, wenn das Video bereit ist */
   attemptAutoplay();
   heroVideo.addEventListener('canplay', attemptAutoplay);
   heroVideo.addEventListener('loadeddata', attemptAutoplay);
