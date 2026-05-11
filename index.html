@@ -13,6 +13,8 @@
 <meta property="og:image" content="https://beispiel.de/images/stadion_1936.jpg"/>
 <!-- Favicon -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%230B2545'/><circle cx='16' cy='16' r='10' fill='none' stroke='%23C8A96E' stroke-width='2'/><circle cx='16' cy='16' r='6' fill='none' stroke='%23C8A96E' stroke-width='1.5'/><circle cx='16' cy='16' r='2' fill='%23C8A96E'/></svg>">
+<!-- Preload critical assets -->
+<link rel="preload" href="images/stadion_1936.jpg" as="image"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet"/>
@@ -33,20 +35,12 @@ html{scroll-behavior:smooth}
 body{font-family:var(--fu);background:var(--ash);color:var(--cream);line-height:1.75;overflow-x:hidden}
 
 /* Fokus für Tastaturnutzer */
-:focus-visible {
-  outline: 2px solid var(--gold-lt);
-  outline-offset: 3px;
-}
+:focus-visible{outline:2px solid var(--gold-lt);outline-offset:3px;}
 
 /* Reduzierte Bewegung */
-@media (prefers-reduced-motion: reduce) {
-  .hero-rings, .pin-dot.pulse-gold, .pin-dot.pulse-red, .names-scroll {
-    animation: none !important;
-  }
-  .cta-line {
-    animation: none;
-    opacity: 0.5;
-  }
+@media(prefers-reduced-motion:reduce){
+  .hero-rings,.pin-dot.pulse-gold,.pin-dot.pulse-red,.names-scroll{animation:none!important;}
+  .cta-line{animation:none;opacity:.5;}
 }
 
 #grain{position:fixed;inset:0;pointer-events:none;z-index:9900;opacity:.028;mix-blend-mode:overlay}
@@ -61,11 +55,9 @@ body{font-family:var(--fu);background:var(--ash);color:var(--cream);line-height:
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   transition:background 1.2s var(--ease),color 1.2s var(--ease),border-color 1.2s var(--ease);
   white-space:nowrap;cursor:pointer;pointer-events:auto;
+  max-width:calc(100vw - 32px);
 }
-#pill::after{
-  content:' ▾';
-  font-size:.7rem;
-}
+#pill::after{content:' ▾';font-size:.7rem;}
 
 /* Kapitelmenü */
 #chapter-menu{
@@ -78,11 +70,7 @@ body{font-family:var(--fu);background:var(--ash);color:var(--cream);line-height:
   backdrop-filter:blur(12px);box-shadow:0 8px 24px rgba(0,0,0,.6);
   scrollbar-width:thin;scrollbar-color:var(--ash4) transparent;
 }
-#chapter-menu a{
-  color:var(--fog);text-decoration:none;padding:.35rem .6rem;
-  border-radius:4px;letter-spacing:.03em;transition:.2s;
-  display:block;
-}
+#chapter-menu a{color:var(--fog);text-decoration:none;padding:.35rem .6rem;border-radius:4px;letter-spacing:.03em;transition:.2s;display:block;}
 #chapter-menu a:hover,#chapter-menu a.active{background:rgba(200,169,110,.12);color:var(--gold);}
 #chapter-menu.show{display:flex;}
 
@@ -116,24 +104,14 @@ body{font-family:var(--fu);background:var(--ash);color:var(--cream);line-height:
 }
 
 /* Didaktischer Rahmen */
-#didactic-intro{
-  background:var(--cream);color:var(--navy);
-  min-height:auto;padding:4vh 7vw;
-  text-align:center;border-bottom:1px solid rgba(11,37,69,.1);
-}
-#didactic-intro .intro-text{
-  max-width:720px;margin:0 auto;
-  font-family:var(--fu);font-size:.95rem;line-height:1.7;
-  color:#3a4a5a;
-}
-#didactic-intro .intro-text em{
-  font-style:normal;color:var(--red-lt);font-weight:600;
-}
+#didactic-intro{background:var(--cream);color:var(--navy);min-height:auto;padding:4vh 7vw;text-align:center;border-bottom:1px solid rgba(11,37,69,.1);}
+#didactic-intro .intro-text{max-width:720px;margin:0 auto;font-family:var(--fu);font-size:.95rem;line-height:1.7;color:#3a4a5a;}
+#didactic-intro .intro-text em{font-style:normal;color:var(--red-lt);font-weight:600;}
 
-.sr {opacity:0;transform:translateY(28px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
-.sl {opacity:0;transform:translateX(-36px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
-.sk {opacity:0;transform:translateX(36px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
-.sf {opacity:0;transition:opacity .9s var(--ease)}
+.sr{opacity:0;transform:translateY(28px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.sl{opacity:0;transform:translateX(-36px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.sk{opacity:0;transform:translateX(36px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.sf{opacity:0;transition:opacity .9s var(--ease)}
 .sr.in,.sl.in,.sk.in,.sf.in{opacity:1;transform:none}
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.42s}.d5{transition-delay:.55s}.d6{transition-delay:.7s}
 
@@ -141,51 +119,25 @@ section{min-height:100vh;display:flex;flex-direction:column;justify-content:cent
 .wrap{width:100%;max-width:1080px;position:relative;z-index:2}
 
 .pax{position:absolute;inset:-30% 0;z-index:0;pointer-events:none;will-change:transform}
-.pax-lt{background-image:
-  repeating-linear-gradient(0deg,transparent 0,transparent 79px,rgba(11,37,69,.04) 79px,rgba(11,37,69,.04) 80px),
-  repeating-linear-gradient(90deg,transparent 0,transparent 119px,rgba(11,37,69,.015) 119px,rgba(11,37,69,.015) 120px)}
-.pax-dk{background-image:
-  repeating-linear-gradient(135deg,transparent 0,transparent 36px,rgba(139,0,0,.035) 36px,rgba(139,0,0,.035) 37px)}
+.pax-lt{background-image:repeating-linear-gradient(0deg,transparent 0,transparent 79px,rgba(11,37,69,.04) 79px,rgba(11,37,69,.04) 80px),repeating-linear-gradient(90deg,transparent 0,transparent 119px,rgba(11,37,69,.015) 119px,rgba(11,37,69,.015) 120px)}
+.pax-dk{background-image:repeating-linear-gradient(135deg,transparent 0,transparent 36px,rgba(139,0,0,.035) 36px,rgba(139,0,0,.035) 37px)}
 
 .z-light{background:var(--cream);color:var(--navy)}
-.z-dark {background:var(--ash);  color:var(--cream)}
-.z-navy {background:var(--navy); color:var(--cream)}
-.z-white{background:#fff;        color:var(--navy)}
-.z-black{background:#0A0A0A;     color:var(--cream)}
+.z-dark{background:var(--ash);color:var(--cream)}
+.z-navy{background:var(--navy);color:var(--cream)}
+.z-white{background:#fff;color:var(--navy)}
+.z-black{background:#0A0A0A;color:var(--cream)}
 
-/* HERO mit Video-Hintergrund */
+/* HERO */
 #hero{background:var(--cream);color:var(--navy);text-align:center;position:relative;overflow:hidden;}
-#hero video.hero-bg-video {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  object-fit: cover; z-index: 0; pointer-events: none;
-}
-#hero .hero-overlay {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.45); z-index: 1;
-}
-/* Überblendung Video → nächster Abschnitt */
-#hero::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 140px;
-  background: linear-gradient(to bottom, transparent, var(--cream));
-  z-index: 2; pointer-events: none;
-}
-#hero::before{content:'';position:absolute;inset:0;pointer-events:none;
-  background:repeating-linear-gradient(0deg,transparent 0,transparent 80px,rgba(11,37,69,.036) 80px,rgba(11,37,69,.036) 81px);z-index:3;}
-.hero-yr{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  font-family:var(--fd);font-size:clamp(5rem,20vw,15rem);font-weight:900;
-  color:rgba(255,255,255,0.2);pointer-events:none;user-select:none;
-  letter-spacing:-.04em;white-space:nowrap;will-change:transform;z-index:4;
-}
-.hero-rings{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:min(560px,86vw);height:min(560px,86vw);
-  border-radius:50%;border:1px solid rgba(255,255,255,0.25);
-  animation:ring 4.5s ease-in-out infinite;pointer-events:none;z-index:4;
-}
+#hero video.hero-bg-video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;}
+#hero .hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45);z-index:1;}
+#hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:140px;background:linear-gradient(to bottom,transparent,var(--cream));z-index:2;pointer-events:none;}
+#hero::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0,transparent 80px,rgba(11,37,69,.036) 80px,rgba(11,37,69,.036) 81px);z-index:3;}
+.hero-yr{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--fd);font-size:clamp(5rem,20vw,15rem);font-weight:900;color:rgba(255,255,255,0.2);pointer-events:none;user-select:none;letter-spacing:-.04em;white-space:nowrap;will-change:transform;z-index:4;}
+.hero-rings{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(560px,86vw);height:min(560px,86vw);border-radius:50%;border:1px solid rgba(255,255,255,0.25);animation:ring 4.5s ease-in-out infinite;pointer-events:none;z-index:4;}
 .hero-rings::before{content:'';position:absolute;inset:10%;border-radius:50%;border:1px solid rgba(255,255,255,0.35)}
-.hero-rings::after {content:'';position:absolute;inset:20%;border-radius:50%;border:1px solid rgba(255,255,255,0.45)}
+.hero-rings::after{content:'';position:absolute;inset:20%;border-radius:50%;border:1px solid rgba(255,255,255,0.45)}
 @keyframes ring{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.5}50%{transform:translate(-50%,-50%) scale(1.04);opacity:1}}
 #hero h1{font-family:var(--fd);font-size:clamp(2.4rem,8vw,5.6rem);font-weight:900;line-height:1.06;color:var(--cream);position:relative;z-index:5;text-shadow:0 2px 12px rgba(0,0,0,0.6);}
 #hero h1 em{color:var(--gold-lt);font-style:normal}
@@ -205,9 +157,9 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 
 .badge{display:inline-block;font-family:var(--fu);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;padding:3px 11px;border-radius:3px;margin-bottom:.85rem;font-weight:700}
 .b-navy{background:var(--navy);color:var(--gold)}
-.b-red {background:var(--red); color:var(--cream)}
+.b-red{background:var(--red);color:var(--cream)}
 .b-gold{background:var(--gold);color:var(--navy)}
-.b-ash {background:var(--ash3);color:var(--fog);border:1px solid var(--ash4)}
+.b-ash{background:var(--ash3);color:var(--fog);border:1px solid var(--ash4)}
 .ch{font-family:var(--fu);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.6rem;display:flex;align-items:center;gap:.85rem;opacity:.6}
 .ch::after{content:'';flex:1;max-width:46px;height:1px;background:currentColor}
 
@@ -240,43 +192,18 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 .crack-l{width:2px;height:60px;margin:1.4rem auto;background:linear-gradient(to bottom,transparent,var(--red),transparent)}
 .crack-t{font-family:var(--fd);font-size:clamp(1.2rem,3.2vw,2.2rem);color:var(--cream);max-width:700px;text-align:center;line-height:1.34}
 
-/* Lichtblick – helle Insel mit warmem Leuchten */
-.light-in-dark {
-  background: var(--parch);
-  color: var(--navy);
-  padding: 1.4rem 1.6rem;
-  margin: 2rem 0;
-  border-radius: 6px;
-  font-size: .92rem;
-  line-height: 1.6;
-  max-width: 640px;
-  box-shadow: 0 0 25px rgba(200,169,110,0.3), 0 4px 12px rgba(0,0,0,0.4);
-  position: relative;
-}
-.light-in-dark strong {
-  color: var(--navy);
-  display: block;
-  margin-bottom: .5rem;
-  font-size: 1rem;
-}
+.light-in-dark{background:var(--parch);color:var(--navy);padding:1.4rem 1.6rem;margin:2rem 0;border-radius:6px;font-size:.92rem;line-height:1.6;max-width:640px;box-shadow:0 0 25px rgba(200,169,110,0.3),0 4px 12px rgba(0,0,0,0.4);position:relative;}
+.light-in-dark strong{color:var(--navy);display:block;margin-bottom:.5rem;font-size:1rem;}
 
 .tl{position:relative;padding-left:1.85rem;border-left:2px solid var(--red);max-width:600px}
 .tl-item{position:relative;margin-bottom:1.9rem}
 .tl-item::before{content:'';position:absolute;left:-2.35rem;top:5px;width:10px;height:10px;border-radius:50%;background:var(--red);border:2px solid var(--ash);box-shadow:0 0 0 2px var(--red);transition:transform .25s,box-shadow .25s}
 .tl-item:hover::before{transform:scale(1.5);box-shadow:0 0 0 3px var(--red),0 0 12px rgba(139,0,0,.5)}
-.tl-item.golden::before {
-  background: var(--gold);
-  border-color: var(--ash);
-  box-shadow: 0 0 0 2px var(--gold);
-}
-.tl-item.golden .tl-text {
-  color: var(--gold-lt);
-  font-weight: 600;
-}
+.tl-item.golden::before{background:var(--gold);border-color:var(--ash);box-shadow:0 0 0 2px var(--gold);}
+.tl-item.golden .tl-text{color:var(--gold-lt);font-weight:600;}
 .tl-date{font-family:var(--fu);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red-lt);margin-bottom:3px;font-weight:700}
 .tl-text{font-size:.88rem;color:#c2c2c2;line-height:1.58}
 
-/* SPURTEXT */
 .spur{font-size:.82rem;color:var(--red-lt);font-family:var(--fu);font-style:italic;opacity:0;transform:translateY(8px);transition:opacity .8s var(--ease),transform .8s var(--ease);margin-top:.3rem;margin-bottom:1rem}
 .spur.in{opacity:1;transform:translateY(0)}
 
@@ -293,7 +220,7 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 .slider-label.after{right:8px;background:rgba(139,0,0,.8)}
 .slider-placeholder{display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1rem;color:#999;text-align:center;padding:1.5rem}
 
-/* BILDER – allgemeine Stile */
+/* BILDER */
 .person-img img,.poster-img img{width:100%;height:100%;display:block}
 
 /* PERSPEKTIV */
@@ -334,7 +261,7 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 
 /* GLOSSAR */
 .gloss{color:var(--gold-lt);border-bottom:1px dashed var(--gold-lt);cursor:help;position:relative;}
-.gloss:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--ash2);color:var(--cream);padding:.4rem .7rem;font-size:.72rem;border-radius:4px;white-space:nowrap;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,.5);pointer-events:none;}
+.gloss:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--ash2);color:var(--cream);padding:.4rem .7rem;font-size:.72rem;border-radius:4px;white-space:nowrap;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,.5);pointer-events:none;max-width:260px;word-break:normal;white-space:normal;text-align:left;}
 
 /* Weiterlesen */
 .read-more{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--fu);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fog);text-decoration:none;border:1px solid var(--ash3);padding:5px 12px;border-radius:20px;transition:border-color .2s,color .2s;margin-top:.8rem;margin-left:auto;margin-right:auto;}
@@ -416,71 +343,42 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 .chron-ev{font-family:var(--fu);font-size:.78rem;color:#bbb;line-height:1.5}
 .chron-ev strong{display:block;color:var(--cream);margin-bottom:.2rem;font-size:.83rem}
 
-/* --- INTERAKTIVE KARTE --- */
-#zone-map{background:var(--ash); min-height:auto; padding:7vh 5vw;}
-.map-wrapper{position:relative; width:100%; max-width:1200px; margin:2rem auto 0; border:1px solid var(--ash4); border-radius:6px; overflow:hidden; background:#1a1f1a;}
-.map-wrapper img{width:100%; height:auto; display:block;}
-.map-pin{position:absolute; transform:translate(-50%,-50%); cursor:pointer; z-index:5; touch-action: manipulation;}
-.pin-dot{width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; transition:transform 0.2s;}
+/* KARTE */
+#zone-map{background:var(--ash);min-height:auto;padding:7vh 5vw;}
+.map-wrapper{position:relative;width:100%;max-width:1200px;margin:2rem auto 0;border:1px solid var(--ash4);border-radius:6px;overflow:hidden;background:#1a1f1a;}
+.map-wrapper img{width:100%;height:auto;display:block;}
+.map-pin{position:absolute;transform:translate(-50%,-50%);cursor:pointer;z-index:5;touch-action:manipulation;}
+.map-pin:focus-visible .pin-dot{outline:2px solid var(--gold-lt);outline-offset:2px;}
+.pin-dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;transition:transform 0.2s;}
 .pin-dot:hover{transform:scale(1.2);}
-.pin-dot.gold{background:var(--gold); box-shadow:0 0 12px var(--gold);}
-.pin-dot.red{background:var(--red-lt); box-shadow:0 0 12px var(--red-lt);}
-.pin-dot.navy{background:var(--navy-lt); box-shadow:0 0 12px var(--navy-lt);}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(200,169,110,0.5);} 70%{box-shadow:0 0 0 12px rgba(200,169,110,0);} 100%{box-shadow:0 0 0 0 rgba(200,169,110,0);}}
+.pin-dot.gold{background:var(--gold);box-shadow:0 0 12px var(--gold);}
+.pin-dot.red{background:var(--red-lt);box-shadow:0 0 12px var(--red-lt);}
+.pin-dot.navy{background:var(--navy-lt);box-shadow:0 0 12px var(--navy-lt);}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(200,169,110,0.5);}70%{box-shadow:0 0 0 12px rgba(200,169,110,0);}100%{box-shadow:0 0 0 0 rgba(200,169,110,0);}}
 .pin-dot.pulse-gold{animation:pulse 2s infinite;}
-.pin-dot.pulse-red{animation-name:pulse; animation-duration:2.5s; animation-iteration-count:infinite; box-shadow-color:rgba(139,0,0,0.5);}
-.map-label{position:absolute; top:26px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.7); color:var(--gold); font-family:var(--fu); font-size:.6rem; padding:2px 6px; border-radius:3px; white-space:nowrap; pointer-events:none;}
-.map-overlay-svg{position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; overflow:visible;}
-.map-caption{font-family:var(--fu); font-size:.7rem; color:var(--fog3); text-align:center; margin-top:.5rem;}
-.map-popup{position:absolute; background:var(--ash2); border:1px solid var(--ash4); border-radius:6px; padding:1rem 1.2rem; font-family:var(--fu); font-size:.82rem; color:var(--cream); max-width:240px; pointer-events:none; z-index:10; box-shadow:0 8px 24px rgba(0,0,0,.6); opacity:0; transform:translateY(6px); transition:opacity .2s,transform .2s;}
-.map-popup.show{opacity:1; transform:translateY(0);}
-.map-popup strong{display:block; font-size:.9rem; margin-bottom:.3rem; color:var(--gold); font-family:var(--fd);}
-.map-popup .pop-badge{display:inline-block; font-size:.58rem; letter-spacing:.12em; text-transform:uppercase; padding:2px 7px; border-radius:2px; margin-bottom:.4rem;}
+.pin-dot.pulse-red{animation-name:pulse;animation-duration:2.5s;animation-iteration-count:infinite;}
+.map-label{position:absolute;top:26px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);color:var(--gold);font-family:var(--fu);font-size:.6rem;padding:2px 6px;border-radius:3px;white-space:nowrap;pointer-events:none;}
+.map-overlay-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;}
+.map-caption{font-family:var(--fu);font-size:.7rem;color:var(--fog3);text-align:center;margin-top:.5rem;}
+.map-popup{position:absolute;background:var(--ash2);border:1px solid var(--ash4);border-radius:6px;padding:1rem 1.2rem;font-family:var(--fu);font-size:.82rem;color:var(--cream);max-width:240px;pointer-events:none;z-index:10;box-shadow:0 8px 24px rgba(0,0,0,.6);opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s;}
+.map-popup.show{opacity:1;transform:translateY(0);}
+.map-popup strong{display:block;font-size:.9rem;margin-bottom:.3rem;color:var(--gold);font-family:var(--fd);}
+.map-popup .pop-badge{display:inline-block;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:2px;margin-bottom:.4rem;}
 
 /* FORTSCHRITTSLEISTE */
-#chapter-progress {
-  position: fixed; right: 8px; top: 50%; transform: translateY(-50%);
-  display: flex; flex-direction: column; gap: 10px; z-index: 8000;
-}
-.progress-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--ash4); transition: background .3s, transform .3s;
-}
-.progress-dot.active {
-  background: var(--gold); transform: scale(1.4);
-}
+#chapter-progress{position:fixed;right:8px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:8000;}
+.progress-dot{width:8px;height:8px;border-radius:50%;background:var(--ash4);transition:background .3s,transform .3s;}
+.progress-dot.active{background:var(--gold);transform:scale(1.4);}
 
 /* GLOSSAR PANEL */
-#glossary-btn {
-  position: fixed; top: 14px; left: 16px; z-index: 9700;
-  width: 36px; height: 36px; border-radius: 50%;
-  background: rgba(11,37,69,.9); border: 1px solid var(--gold);
-  color: var(--gold); font-size: 1.2rem; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  backdrop-filter: blur(8px); transition: background .3s;
-}
-#glossary-btn:hover { background: var(--navy-mid); }
-#glossary-panel {
-  position: fixed; top: 60px; left: 16px; z-index: 9800;
-  background: rgba(11,11,11,.94); border: 1px solid var(--ash4);
-  border-radius: 8px; padding: 1.2rem; width: 260px; max-height: 70vh;
-  overflow-y: auto; backdrop-filter: blur(12px);
-  box-shadow: 0 8px 24px rgba(0,0,0,.6);
-  font-family: var(--fu); font-size: .72rem; color: var(--fog);
-  display: none; scrollbar-width: thin; scrollbar-color: var(--ash4) transparent;
-}
-#glossary-panel.show { display: block; }
-#glossary-panel h3 {
-  font-family: var(--fd); font-size: 1rem; color: var(--gold);
-  margin-bottom: .8rem; border-bottom: 1px solid var(--ash4); padding-bottom: .4rem;
-}
-#glossary-panel dl { margin: 0; }
-#glossary-panel dt {
-  font-weight: 700; color: var(--gold-lt); margin-top: .6rem;
-}
-#glossary-panel dd {
-  margin-left: 0; margin-bottom: .4rem; line-height: 1.4;
-}
+#glossary-btn{position:fixed;top:14px;left:16px;z-index:9700;width:36px;height:36px;border-radius:50%;background:rgba(11,37,69,.9);border:1px solid var(--gold);color:var(--gold);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:background .3s;}
+#glossary-btn:hover{background:var(--navy-mid);}
+#glossary-panel{position:fixed;top:60px;left:16px;z-index:9800;background:rgba(11,11,11,.94);border:1px solid var(--ash4);border-radius:8px;padding:1.2rem;width:260px;max-height:70vh;overflow-y:auto;backdrop-filter:blur(12px);box-shadow:0 8px 24px rgba(0,0,0,.6);font-family:var(--fu);font-size:.72rem;color:var(--fog);display:none;scrollbar-width:thin;scrollbar-color:var(--ash4) transparent;}
+#glossary-panel.show{display:block;}
+#glossary-panel h3{font-family:var(--fd);font-size:1rem;color:var(--gold);margin-bottom:.8rem;border-bottom:1px solid var(--ash4);padding-bottom:.4rem;}
+#glossary-panel dl{margin:0;}
+#glossary-panel dt{font-weight:700;color:var(--gold-lt);margin-top:.6rem;}
+#glossary-panel dd{margin-left:0;margin-bottom:.4rem;line-height:1.4;}
 
 #zone-quotes{background:var(--ash);min-height:auto;padding:7vh 7vw}
 .quotes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;margin-top:2rem}
@@ -508,8 +406,8 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 .qbtn.show-a{background:rgba(0,80,0,.12);border-color:#3a8a3a;color:#aaffaa}
 .qfb{margin-top:.8rem;padding:.8rem 1rem;border-radius:4px;font-family:var(--fu);font-size:.84rem;line-height:1.52;display:none}
 .qfb.show{display:block}
-.qfb.ok{background:rgba(0,80,0,.16);border-left:4px solid #3a8a3a;color:#aaffaa; letter-spacing:0.02em;}
-.qfb.bad{background:rgba(139,0,0,.16);border-left:4px solid var(--red);color:#ffaaaa; letter-spacing:0.02em;}
+.qfb.ok{background:rgba(0,80,0,.16);border-left:4px solid #3a8a3a;color:#aaffaa;letter-spacing:0.02em;}
+.qfb.bad{background:rgba(139,0,0,.16);border-left:4px solid var(--red);color:#ffaaaa;letter-spacing:0.02em;}
 .qfb.detail{display:none;margin-top:.4rem;padding:.6rem .8rem;background:rgba(255,255,255,.02);border-left:3px solid var(--ash4);font-size:.78rem;color:var(--fog);line-height:1.5;}
 .qfb.detail.show{display:block;}
 .s-track{height:5px;background:rgba(255,255,255,.07);border-radius:3px;margin:2.2rem 0 .4rem;overflow:hidden}
@@ -519,6 +417,9 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 #qres p{font-family:var(--fu);font-size:.88rem;color:var(--fog);margin-top:.4rem}
 #qreset{display:none;margin:1.2rem auto 0;font-family:var(--fu);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:1px solid var(--gold);padding:8px 20px;border-radius:3px;color:var(--gold);background:transparent;transition:background .22s,color .22s}
 #qreset:hover{background:var(--gold);color:var(--navy)}
+
+/* Quiz Ergebnis-Speicherung */
+.quiz-saved-badge{display:inline-block;margin-top:.8rem;font-size:.72rem;font-family:var(--fu);color:var(--fog2);letter-spacing:.06em;}
 
 #zone-ref{background:#fff;color:var(--navy)}
 #zone-ref h2{font-family:var(--fd);font-size:clamp(1.8rem,5vw,3rem);color:var(--navy);margin-bottom:2.4rem;text-align:center}
@@ -530,6 +431,68 @@ blockquote cite{display:block;font-style:normal;font-family:var(--fu);font-size:
 .ref-card p{font-size:.87rem;color:#445;line-height:1.5}
 .ref-q{font-family:var(--fd);font-style:italic;font-size:clamp(1.1rem,2.4vw,1.6rem);color:var(--navy);text-align:center;max-width:720px;margin:2.4rem auto 0;padding-top:1.8rem;border-top:1px solid #ddd}
 
+/* NEU: Sportswashing-Vergleich */
+#zone-sportswashing{background:#f7f3ec;color:var(--navy);min-height:auto;padding:7vh 7vw;}
+.sw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.4rem;margin-top:2rem;}
+.sw-card{background:#fff;border:1px solid #ddd;border-top:4px solid var(--navy);border-radius:4px;padding:1.4rem;transition:box-shadow .3s;}
+.sw-card:hover{box-shadow:0 6px 20px rgba(0,0,0,.1);}
+.sw-card.highlight-red{border-top-color:var(--red);}
+.sw-card.highlight-gold{border-top-color:var(--gold-dk);}
+.sw-year{font-family:var(--fd);font-size:2rem;font-weight:900;color:var(--navy);line-height:1;margin-bottom:.2rem;}
+.sw-card.highlight-red .sw-year{color:var(--red);}
+.sw-card.highlight-gold .sw-year{color:var(--gold-dk);}
+.sw-loc{font-family:var(--fu);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:#777;margin-bottom:.9rem;}
+.sw-card h4{font-family:var(--fd);font-size:1rem;color:var(--navy);margin-bottom:.5rem;}
+.sw-card p{font-size:.8rem;color:#445;line-height:1.5;margin:0;}
+.sw-pattern{margin-top:.8rem;font-size:.75rem;font-family:var(--fu);color:var(--fog2);border-top:1px solid #eee;padding-top:.6rem;}
+.sw-pattern strong{color:var(--navy);}
+
+/* NEU: Epilog-Zeitstrahl */
+#zone-epilog-tl{background:#0a0a0a;min-height:auto;padding:7vh 7vw;}
+#zone-epilog-tl h2{font-family:var(--fd);font-size:clamp(1.5rem,4vw,2.5rem);color:var(--cream);margin-bottom:.5rem;}
+.etl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;margin-top:2rem;}
+.etl-card{background:var(--ash2);border:1px solid var(--ash3);border-left:3px solid var(--fog3);border-radius:4px;padding:1.2rem 1rem;}
+.etl-card.gold-b{border-left-color:var(--gold);}
+.etl-card.red-b{border-left-color:var(--red);}
+.etl-name{font-family:var(--fd);font-size:1rem;color:var(--cream);margin-bottom:.2rem;}
+.etl-after{font-family:var(--fu);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fog2);margin-bottom:.6rem;}
+.etl-card p{font-size:.8rem;color:#aaa;line-height:1.5;margin:0;}
+
+/* NEU: Moralische Dilemma-Buttons */
+.dilemma-wrap{background:var(--ash2);border:1px solid var(--ash3);border-left:4px solid var(--gold);border-radius:4px;padding:1.6rem;max-width:600px;margin:2rem auto;}
+.dilemma-q{font-family:var(--fd);font-size:1.05rem;color:var(--cream);margin-bottom:1.2rem;line-height:1.45;}
+.dilemma-btns{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;margin-bottom:1rem;}
+.dilemma-btn{padding:.6rem 1.4rem;border-radius:4px;font-family:var(--fu);font-size:.78rem;font-weight:700;letter-spacing:.06em;cursor:pointer;border:1px solid var(--ash4);background:var(--ash3);color:var(--fog);transition:background .2s,color .2s,border-color .2s;}
+.dilemma-btn:hover{border-color:var(--gold);color:var(--gold-lt);}
+.dilemma-result{display:none;font-size:.84rem;color:var(--fog);line-height:1.55;border-top:1px solid var(--ash4);padding-top:1rem;margin-top:.5rem;}
+.dilemma-result.show{display:block;}
+
+/* NEU: Druckansicht */
+@media print{
+  #grain,#prog-shell,#pill,#chapter-menu,#back-to-top,#glossary-btn,#glossary-panel,#chapter-progress,.cta,.read-more,.pax,#heroVideo,.hero-overlay,.hero-rings,.hero-yr,nav.foot-nav{display:none!important;}
+  body{background:#fff;color:#000;font-size:11pt;}
+  section{min-height:auto;padding:1.5rem 2rem;page-break-inside:avoid;}
+  h2{color:#000;font-size:18pt;}
+  .z-dark,#zone-chron,#zone-memorial,#wall-names,#quiz-sec,#zone-quotes,#s-kartei,#zone-map,#s-boykott,#s-int-stimmen,#s-plakate,#s-taeter,#zone-epilog-tl{background:#fff!important;color:#000!important;}
+  .z-dark h2,.z-dark p,.z-dark h3,.z-navy h2,.z-navy p,.z-black h2,.z-black p{color:#000!important;}
+  blockquote{border-left:3px solid #888;color:#333;}
+  .kartei,.callout,.geo,.stat-box,.stat-box-dk,.q-card,.ref-card,.sw-card,.etl-card{background:#f5f5f5!important;border-color:#ccc!important;color:#000!important;}
+  .kartei h4,.person-name,.person-name.gold,.chron-yr,.geo-n,.stat-n{color:#000!important;}
+  .kartei p,.kartei .kartei-dates,.tl-text,.tl-date,.xin p,.persp-text,.chron-ev,.chron-ev strong,.stat-d,.stat-l,.geo-l,.geo-s,.callout p,.callout strong,.q-text,.q-author,.q-author span,.ref-card p,.ref-card h3{color:#333!important;}
+  .flip-w,.flip-i,.flip-back{display:none!important;}
+  .flip-front{display:block!important;position:static!important;transform:none!important;backface-visibility:visible!important;background:#f5f5f5!important;border:1px solid #ccc!important;color:#000!important;}
+  .protocol-text.secret{display:none!important;}
+  .protocol-text.active.public{display:block!important;background:#f5f5f5!important;color:#000!important;}
+  #qbox,#qres,#qreset,.ioc-wrap,.dilemma-wrap{display:none!important;}
+  footer{background:#fff;color:#000;}
+  .foot-nav{display:none!important;}
+  .foot-bottom{color:#000;}
+  .memorial-names span,.names-scroll span{color:#333;}
+  a{color:#000;text-decoration:none;}
+  .poster-legend{max-height:none!important;}
+  .xbody{max-height:none!important;}
+}
+
 footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78rem}
 .foot-nav{display:flex;gap:1.6rem;padding:1.5rem 7vw;border-bottom:1px solid #161616;flex-wrap:wrap}
 .foot-nav a{color:var(--fog2);text-decoration:none;letter-spacing:.06em;font-size:.7rem;text-transform:uppercase;transition:color .2s}
@@ -537,38 +500,18 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 .foot-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;padding:1.7rem 7vw}
 .foot-bottom strong{color:var(--cream)}
 
-/* Quellenangabe im Footer */
-.sources-details {
-  margin-top: 1.2rem;
-  border-top: 1px solid var(--ash4);
-  padding-top: 1.2rem;
-  font-size: .72rem;
-  color: var(--fog);
-}
-.sources-details summary {
-  display: inline-block;
-  cursor: pointer;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--gold-lt);
-  margin-bottom: .8rem;
-  padding: .2rem .4rem;
-  border-radius: 3px;
-  transition: background .2s;
-}
-.sources-details summary:hover {
-  background: rgba(200,169,110,.1);
-}
-.sources-details .sources-content {
-  line-height: 1.7;
-  color: var(--fog);
-}
-.sources-details .sources-content strong {
-  color: var(--cream);
-}
+.sources-details{margin-top:1.2rem;border-top:1px solid var(--ash4);padding-top:1.2rem;font-size:.72rem;color:var(--fog);}
+.sources-details summary{display:inline-block;cursor:pointer;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:.8rem;padding:.2rem .4rem;border-radius:3px;transition:background .2s;}
+.sources-details summary:hover{background:rgba(200,169,110,.1);}
+.sources-details .sources-content{line-height:1.7;color:var(--fog);}
+.sources-details .sources-content strong{color:var(--cream);}
+
+/* Print-Button */
+.print-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--fu);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:1px solid var(--ash4);padding:6px 14px;border-radius:20px;color:var(--fog);background:transparent;transition:border-color .2s,color .2s;margin-top:1.2rem;}
+.print-btn:hover{border-color:var(--gold);color:var(--gold);}
 
 @media(max-width:600px){
-  body{font-size: 1rem;}
+  body{font-size:1rem;}
   section{padding:8vh 5vw}
   .flip-w{max-width:100%}
   .person{max-width:100%;border-left:none;border-top:5px solid var(--red);padding-left:0;padding-top:1rem}
@@ -578,18 +521,20 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   .quotes-grid{grid-template-columns:1fr}
   .kartei-wrap{flex-direction:column;align-items:center}
   .kartei{max-width:100%}
-  #glossary-btn { left: 16px; top: 14px; }
-  #glossary-panel { left: 10px; right: 10px; width: auto; }
-  #chapter-progress { display: none; }
+  #glossary-btn{left:16px;top:14px;}
+  #glossary-panel{left:10px;right:10px;width:auto;}
+  #chapter-progress{display:none;}
+  .sw-grid{grid-template-columns:1fr;}
+  .etl-grid{grid-template-columns:1fr;}
 }
 @media(max-width:360px){
-  body{font-size: 0.95rem;}
-  h2{font-size: 1.3rem;}
-  .hero-sub{font-size: 0.8rem;}
-  .stat-n{font-size: 2rem;}
-  .stat-l{font-size: 0.65rem;}
-  .stat-d{font-size: 0.75rem;}
-  .qbtn{font-size: 0.75rem; padding: .5rem;}
+  body{font-size:.95rem;}
+  h2{font-size:1.3rem;}
+  .hero-sub{font-size:.8rem;}
+  .stat-n{font-size:2rem;}
+  .stat-l{font-size:.65rem;}
+  .stat-d{font-size:.75rem;}
+  .qbtn{font-size:.75rem;padding:.5rem;}
 }
 </style>
 </head>
@@ -597,10 +542,10 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 
 <canvas id="grain"></canvas>
 <div id="prog-shell"><div id="prog-bar"></div></div>
-<div id="pill">Die Fassade</div>
+<div id="pill" tabindex="0" role="button" aria-label="Kapitelmenü öffnen">Die Fassade</div>
 
 <!-- Kapitelmenü -->
-<nav id="chapter-menu">
+<nav id="chapter-menu" aria-label="Kapitelnavigation">
   <a href="#hero">Hero</a>
   <a href="#didactic-intro">Einleitung</a>
   <a href="#s-fassade">I.1 Fassade</a>
@@ -619,16 +564,20 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
   <a href="#s-taeter">IV.4 Die Täter</a>
   <a href="#zone-quotes">V.1 Zitate</a>
   <a href="#zone-memorial">V.2 Gedenken</a>
+  <a href="#zone-flatow">V.3 Flatow-Brüder</a>
+  <a href="#zone-dilemmas">V.4 Dilemmas</a>
   <a href="#quiz-sec">VI Quiz</a>
   <a href="#zone-ref">VII Reflexion</a>
-  <a href="#wall-names">Epilog</a>
+  <a href="#zone-sportswashing">VII.2 Sportswashing heute</a>
+  <a href="#zone-epilog-tl">VIII Epilog – Was danach geschah</a>
+  <a href="#wall-names">Epilog – Namen</a>
 </nav>
 
 <!-- Zurück nach oben -->
 <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Zurück nach oben">↑</button>
 
 <!-- Fortschrittsleiste -->
-<div id="chapter-progress">
+<div id="chapter-progress" aria-hidden="true">
   <span class="progress-dot" data-chapter="1"></span>
   <span class="progress-dot" data-chapter="2"></span>
   <span class="progress-dot" data-chapter="3"></span>
@@ -640,18 +589,27 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 </div>
 
 <!-- Glossar Button und Panel -->
-<button id="glossary-btn" onclick="document.getElementById('glossary-panel').classList.toggle('show')" aria-label="Glossar">🕮</button>
-<div id="glossary-panel">
+<button id="glossary-btn" onclick="document.getElementById('glossary-panel').classList.toggle('show')" aria-label="Glossar öffnen/schließen">🕮</button>
+<div id="glossary-panel" role="dialog" aria-label="Glossar">
   <h3>Glossar</h3>
   <dl>
     <dt>Arische Rasse</dt><dd>NS-Ideologie, nach der Menschen nordischer Abstammung als überlegen galten.</dd>
+    <dt>AAU</dt><dd>Amateur Athletic Union – amerikanischer Sportverband, der 1936 mit 58,25:55,75 für die Teilnahme an den Berliner Spielen stimmte.</dd>
     <dt>Boykottbewegung</dt><dd>Internationale Kampagnen, die einen Boykott der Olympischen Spiele 1936 in Berlin forderten, um gegen das NS-Regime zu protestieren.</dd>
     <dt>Exilpresse</dt><dd>Zeitungen, die von Emigranten im Ausland herausgegeben wurden, um unabhängig vom NS-Regime berichten zu können.</dd>
+    <dt>Fackellauf</dt><dd>Keine antike Tradition: 1936 von Carl Diem erfunden und vom NS-Regime als Verbindung zu Griechenland inszeniert. Heute weltweit übernommen.</dd>
     <dt>Kristallnacht</dt><dd>Pogrom vom 9. November 1938, bei dem Synagogen brannten und jüdische Geschäfte zerstört wurden.</dd>
     <dt>Nürnberger Gesetze</dt><dd>Rassegesetze vom September 1935, die Juden die Bürgerrechte entzogen und Ehen mit Nichtjuden verboten.</dd>
+    <dt>Reichssportführer</dt><dd>Titel von Hans von Tschammer und Osten, dem NS-Sportfunktionär, der jüdische Athleten systematisch aus dem deutschen Sport ausschloss.</dd>
     <dt>Sinti und Roma</dt><dd>Ethnische Minderheiten, die im NS-Regime systematisch verfolgt und in Konzentrationslager deportiert wurden.</dd>
     <dt>Sportswashing</dt><dd>Nutzung von Sportereignissen durch Staaten oder Organisationen, um ihr Image zu verbessern, ohne grundlegende Missstände zu ändern.</dd>
-    <dt>Zwangslager</dt><dd>Lager, in dem Menschen ohne rechtsstaatliches Verfahren und unter unmenschlichen Bedingungen festgehalten wurden, z. B. das Zwangslager Marzahn.</dd>
+    <dt>Zwangslager</dt><dd>Lager, in dem Menschen ohne rechtsstaatliches Verfahren festgehalten wurden, z. B. das Zwangslager Marzahn, 8 km vom Olympiastadion entfernt.</dd>
+    <dt>Flatow-Brüder</dt><dd>Alfred (* 1869) und Gustav Felix (* 1875) Flatow – Deutschlands erste Olympiasieger (1896, Turner). Beide wurden als Juden nach Theresienstadt deportiert und ermordet.</dd>
+    <dt>Stolperstein</dt><dd>Kleines Messing-Denkmal (10×10 cm) vor letzten Wohnorten von NS-Opfern. Initiiert von Gunter Demnig. Über 100.000 in 26 Ländern — größtes dezentrales Denkmal der Welt.</dd>
+    <dt>Theresienstadt</dt><dd>KZ und Ghetto im heutigen Tschechien. Vom NS-Regime als Propagandalager inszeniert. Tatsächlich Durchgangsstation auf dem Weg nach Auschwitz.</dd>
+    <dt>Denazifizierung</dt><dd>Alliiertes Programm nach 1945, das NS-Belastete klassifizierte. Viele Täter wurden als „Mitläufer" eingestuft und entgingen strafrechtlichen Konsequenzen.</dd>
+    <dt>Gestapo</dt><dd>Geheime Staatspolizei des NS-Regimes — verhaftete und deportierte ohne richterliche Kontrolle.</dd>
+    <dt>Blockwart</dt><dd>NSDAP-Funktionär für einen Häuserblock, der die ideologische Konformität der Bewohner überwachte und meldete.</dd>
   </dl>
 </div>
 
@@ -718,7 +676,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
             <div class="flip-f flip-back">
               <div class="flip-mast" style="color:var(--red-lt)">Was wirklich geschah</div>
               <div class="flip-hl" style="color:var(--cream)">Der Fackellauf — eine NS-Erfindung</div>
-              <div class="flip-body">Der olympische Fackellauf hat keine antike Tradition. Er wurde 1936 von Carl Diem erfunden<span class="src" data-src="Diem, C.: Der olympische Fackellauf, 1936">ⓘ</span> und vom NS-Regime als historisch verankert inszeniert — eine ideologische Konstruktion, die eine Verbindung zwischen dem „Dritten Reich" und dem klassischen Griechenland herstellen sollte. Bis heute existiert diese Tradition.</div>
+              <div class="flip-body">Der olympische Fackellauf hat keine antike Tradition. Er wurde 1936 von <span class="gloss" data-tip="Carl Diem (1882–1962): Sportorganisator, Erfinder des Fackellaufs. Nach 1945 ohne Konsequenzen weiter im deutschen Sport aktiv.">Carl Diem</span> erfunden<span class="src" data-src="Diem, C.: Der olympische Fackellauf, 1936">ⓘ</span> und vom NS-Regime als historisch verankert inszeniert — eine ideologische Konstruktion, die eine Verbindung zwischen dem „Dritten Reich" und dem klassischen Griechenland herstellen sollte. Bis heute existiert diese Tradition.</div>
               <div class="flip-hint" style="color:var(--red-lt)">↺ Zurück zur Fassade</div>
             </div>
           </div>
@@ -752,7 +710,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
             <div class="flip-f flip-back">
               <div class="flip-mast" style="color:var(--red-lt)">Kritischer Blick</div>
               <div class="flip-hl" style="color:var(--cream)">Schönheit als Waffe</div>
-              <div class="flip-body">Riefenstahls Film erhob den arischen Körper zum Ideal — nicht Athleten, sondern Götter.<span class="src" data-src="Riefenstahl, L.: Olympia, 1938">ⓘ</span> Die Ästhetisierung diente der Ideologie: Sport als Beweis rassischer Überlegenheit. Der Film gewann 1938 die Goldmedaille der Biennale Venedig — ausgezeichnet von Mussolinis Italien.</div>
+              <div class="flip-body">Riefenstahls Film erhob den arischen Körper zum Ideal — nicht Athleten, sondern Götter.<span class="src" data-src="Riefenstahl, L.: Olympia, 1938">ⓘ</span> Die Ästhetisierung diente der Ideologie: Sport als Beweis rassischer Überlegenheit. Der Film gewann 1938 die Goldmedaille der Biennale Venedig — ausgezeichnet von Mussolinis Italien. Riefenstahl lebte bis 2003 — ohne Reue.</div>
               <div class="flip-hint" style="color:var(--red-lt)">↺ Zurück</div>
             </div>
           </div>
@@ -763,14 +721,13 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
         <h2 class="sr d1">Die Kamera als Propagandainstrument</h2>
         <p class="sr d2">Leni Riefenstahls zweiteiliger Film „Olympia" (1938) setzte neue kinematographische Maßstäbe: Unterwasser-Zeitlupenkameras, Aufnahmen aus Kameraballons, Fokus auf helle, muskulöse Körper.</p>
         <p class="sr d3">Das Ergebnis war kein Sportfilm — es war eine visuell gewaltige Propagandamaschine, die noch Jahrzehnte die Bildsprache des Sports prägte und die Bildästhetik faschistischer Regime definierte.</p>
-        <!-- Ersatzvideo: Internet Archive Einbettung -->
         <div class="light-in-dark sr d4">
           <strong>🎥 Sehen, wie die Propaganda wirkte</strong>
           <p style="font-size:.84rem;margin-bottom:.8rem;">Eröffnungszeremonie der Spiele von 1936 – Einblicke in die monumentale Inszenierung.</p>
-          <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin-top: .5rem; border-radius: 4px;">
-            <iframe src="https://archive.org/embed/871241936GermanOlympicsOpeningCeremonyMos" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen loading="lazy" title="Olympia 1936 – Eröffnungsfeier"></iframe>
+          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;margin-top:.5rem;border-radius:4px;">
+            <iframe src="https://archive.org/embed/871241936GermanOlympicsOpeningCeremonyMos" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen loading="lazy" title="Olympia 1936 – Eröffnungsfeier"></iframe>
           </div>
-          <p style="font-size: .72rem; margin-top: .5rem; color: #445;">Quelle: 1936 Berlin Olympics Opening Ceremonies, Internet Archive / Public Domain</p>
+          <p style="font-size:.72rem;margin-top:.5rem;color:#445;">Quelle: 1936 Berlin Olympics Opening Ceremonies, Internet Archive / Public Domain</p>
         </div>
         <p class="sr d3" style="font-size:.82rem;color:var(--navy-mid);margin-top:.8rem;">Zur kritischen Einordnung des Films empfiehlt sich die Analyse der <a href="https://www.bpb.de" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;">Bundeszentrale für politische Bildung</a> (externe Bildungsressource).</p>
         <blockquote class="sr d4" style="border-left-color:var(--navy);color:#445">„Ich wollte die Schönheit des Kampfes zeigen."<cite>— Leni Riefenstahl, Regisseurin „Olympia" (1936)</cite></blockquote>
@@ -876,13 +833,11 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
     </div>
     <div class="map-wrapper sr d3" id="map-container">
       <img src="images/berlin_karte.jpg" alt="Berlin 1936 – historischer Stadtplan" loading="lazy">
-      <!-- Pins mit ARIA-Labels -->
-      <div class="map-pin" data-pin="pin1" style="left:8.10%; top:34.18%;" onclick="showPin(event,'pin1')" role="button" aria-label="Olympiastadion – Details anzeigen"><div class="pin-dot gold pulse-gold">🏟</div><div class="map-label">Olympiastadion</div></div>
-      <div class="map-pin" data-pin="pin2" style="left:56.45%; top:36.16%;" onclick="showPin(event,'pin2')" role="button" aria-label="Propagandaministerium – Details anzeigen"><div class="pin-dot red pulse-red">🏛</div><div class="map-label">Propagandaministerium</div></div>
-      <div class="map-pin" data-pin="pin3" style="left:40.70%; top:40.68%;" onclick="showPin(event,'pin3')" role="button" aria-label="Riefenstahl-Atelier – Details anzeigen"><div class="pin-dot gold pulse-gold">🎬</div><div class="map-label">Riefenstahl-Atelier</div></div>
-      <div class="map-pin" data-pin="pin4" style="left:98.27%; top:2.68%;" onclick="showPin(event,'pin4')" role="button" aria-label="Zwangslager Marzahn – Details anzeigen"><div class="pin-dot red pulse-red">⚠</div><div class="map-label" style="color:var(--red-lt);">Zwangslager Marzahn</div></div>
-      <div class="map-pin" data-pin="pin5" style="left:52.49%; top:29.71%;" onclick="showPin(event,'pin5')" role="button" aria-label="Reichstag – Details anzeigen"><div class="pin-dot navy pulse-gold">🏛</div><div class="map-label" style="color:var(--navy-lt);">Reichstag</div></div>
-      <!-- Linie + Text -->
+      <div class="map-pin" data-pin="pin1" style="left:8.10%;top:34.18%;" onclick="showPin(event,'pin1')" onkeydown="if(event.key==='Enter'||event.key===' ')showPin(event,'pin1')" tabindex="0" role="button" aria-label="Olympiastadion – Details anzeigen"><div class="pin-dot gold pulse-gold">🏟</div><div class="map-label">Olympiastadion</div></div>
+      <div class="map-pin" data-pin="pin2" style="left:56.45%;top:36.16%;" onclick="showPin(event,'pin2')" onkeydown="if(event.key==='Enter'||event.key===' ')showPin(event,'pin2')" tabindex="0" role="button" aria-label="Propagandaministerium – Details anzeigen"><div class="pin-dot red pulse-red">🏛</div><div class="map-label">Propagandaministerium</div></div>
+      <div class="map-pin" data-pin="pin3" style="left:40.70%;top:40.68%;" onclick="showPin(event,'pin3')" onkeydown="if(event.key==='Enter'||event.key===' ')showPin(event,'pin3')" tabindex="0" role="button" aria-label="Riefenstahl-Atelier – Details anzeigen"><div class="pin-dot gold pulse-gold">🎬</div><div class="map-label">Riefenstahl-Atelier</div></div>
+      <div class="map-pin" data-pin="pin4" style="left:98.27%;top:2.68%;" onclick="showPin(event,'pin4')" onkeydown="if(event.key==='Enter'||event.key===' ')showPin(event,'pin4')" tabindex="0" role="button" aria-label="Zwangslager Marzahn – Details anzeigen"><div class="pin-dot red pulse-red">⚠</div><div class="map-label" style="color:var(--red-lt);">Zwangslager Marzahn</div></div>
+      <div class="map-pin" data-pin="pin5" style="left:52.49%;top:29.71%;" onclick="showPin(event,'pin5')" onkeydown="if(event.key==='Enter'||event.key===' ')showPin(event,'pin5')" tabindex="0" role="button" aria-label="Reichstag – Details anzeigen"><div class="pin-dot navy pulse-gold">🏛</div><div class="map-label" style="color:var(--navy-lt);">Reichstag</div></div>
       <svg class="map-overlay-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
         <line x1="8.10" y1="34.18" x2="98.27" y2="2.68" stroke="var(--red)" stroke-width="0.4" stroke-dasharray="2,1" opacity="0.7"/>
         <text x="53" y="16" fill="var(--red)" font-family="'Source Sans 3',sans-serif" font-size="3" text-anchor="middle" font-weight="600" opacity="0.9">≈ 8 km</text>
@@ -916,7 +871,8 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
           <div class="tl-item"><div class="tl-date">1935</div><div class="tl-text">Unter internationalem Druck zur Rückkehr gezwungen. Reine Alibifunktion für das Regime.</div></div>
           <div class="tl-item"><div class="tl-date">Juni 1936</div><div class="tl-text">Springt 1,60 m — Gleichstand mit dem deutschen Rekord. Rekord wird ihr nicht zuerkannt.</div></div>
           <div class="tl-item"><div class="tl-date">16. Juli 1936</div><div class="tl-text">Per Brief aus „sportlichen Gründen" gestrichen. Ihr Platz geht an eine „Arierin".</div></div>
-          <div class="tl-item golden"><div class="tl-date">2009</div><div class="tl-text">Deutschland benennt ein Berliner Stadion nach ihr: Gretel-Bergmann-Stadion.</div></div>
+          <div class="tl-item golden"><div class="tl-date">1937</div><div class="tl-text">Emigration in die USA. Aufbau eines neuen Lebens in New York.</div></div>
+          <div class="tl-item golden"><div class="tl-date">2009</div><div class="tl-text">Deutschland benennt ein Berliner Stadion nach ihr: Gretel-Bergmann-Stadion. Eine späte, aber kraftvolle Antwort auf das Vergessen.</div></div>
         </div>
         <a href="#s-kartei" class="read-more sr">Weiter zu weiteren Schicksalen</a>
       </div>
@@ -934,7 +890,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
       <div class="kartei sr"><h4>Johann „Rukeli" Trollmann</h4><div class="kartei-dates">* 1907 Hannover · † 1944 KZ Neuengamme</div><p>Berufsboxer, Sinto. 1933 Deutscher Meister im Halbschwergewicht. Der Titel wurde ihm aus rassischen Gründen aberkannt. 1944 im KZ erschlagen.</p><p class="kartei-voice">„Sie sagten, ich boxe zu undeutsch. Dabei war es mein größter Sieg."</p></div>
       <div class="kartei sr d1"><h4>Werner Seelenbinder</h4><div class="kartei-dates">* 1904 Stettin · † 1944 Brandenburg-Görden</div><p>Ringer, Kommunist, Olympiateilnehmer 1936. Nutzte Sportreisen für konspirative Treffen. 1942 verhaftet, 1944 hingerichtet.</p><p class="kartei-voice">„Sie fürchteten meine Kraft – und sie fürchteten meine Worte."</p></div>
       <div class="kartei sr d2"><h4>Lilli Henoch</h4><div class="kartei-dates">* 1899 Königsberg · † 1942 Riga</div><p>Leichtathletin, Weltrekordlerin im Kugelstoßen und Diskus. Aus dem Sport ausgeschlossen, 1942 ins Ghetto Riga deportiert und ermordet.</p><p class="kartei-voice">„Meine Rekorde durften bleiben. Ich nicht."</p></div>
-      <div class="kartei gold-top sr d3"><h4>Otto Herschmann</h4><div class="kartei-dates">* 1877 Wien · † 1942 KZ Izbica</div><p>Olympiasieger im Fechten 1896, Silber im Schwimmen. Präsident des Österreichischen Olympischen Comités. 1942 als Jude deportiert und im KZ ermordet.</p><p class="kartei-voice">„Ich gab dem Sport mein Leben – der Sport gab mich preis."</p></div>
+      <div class="kartei gold-top sr d3"><h4>Otto Herschmann</h4><div class="kartei-dates">* 1877 Wien · † 1942 KZ Izbica</div><p>Olympiasieger im Fechten 1896, Silber im Schwimmen — einziger Olympiamedaillengewinner, der im Holocaust ermordet wurde. 1942 als Jude deportiert.</p><p class="kartei-voice">„Ich gab dem Sport mein Leben – der Sport gab mich preis."</p></div>
       <div class="kartei sr d4"><h4>Martha Jacob</h4><div class="kartei-dates">* 1904 Berlin · † 1942 Auschwitz</div><p>Sprinterin und Hochspringerin, Berliner Vereinsmehrkämpferin. Wegen jüdischer Abstammung 1933 von Wettkämpfen ausgeschlossen. 1942 nach Auschwitz deportiert und ermordet.</p><p class="kartei-voice">„Vom Berliner Sportplatz in den Viehwaggon."</p></div>
       <div class="kartei gold-top sr d5"><h4>Helene Mayer</h4><div class="kartei-dates">* 1910 Offenbach · † 1953 München</div><p>Fechterin jüdischer Herkunft, gewann Silber im Florett 1936 für Deutschland. Zeigte den Hitlergruß – eine ambivalente Figur zwischen Anpassung und Überleben.</p><p class="kartei-voice">„Ich wollte nur fechten. Die Politik habe ich nicht bestimmt."</p></div>
     </div>
@@ -1008,7 +964,19 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
           <div class="tl-item"><div class="tl-date">August 1936</div><div class="tl-text">Das Lager existiert — und wird nirgends erwähnt.</div></div>
           <div class="tl-item"><div class="tl-date">Ab 1943</div><div class="tl-text">Die Überlebenden werden nach Auschwitz deportiert.</div></div>
         </div>
-        <p class="sr d4" style="font-style:italic;font-size:.84rem;color:var(--fog);margin-top:1rem;">Und du? Was würdest du 1936 tun?</p>
+
+        <!-- NEU: Moralisches Dilemma – Trainer -->
+        <div class="dilemma-wrap sr d4">
+          <p class="dilemma-q">Du bist Trainer der deutschen Leichtathletik, August 1936. Bergmann hat die Norm erfüllt. Du weißt den wahren Grund ihrer Nicht-Nominierung. Dein Chef wartet auf deine Unterschrift.</p>
+          <div class="dilemma-btns">
+            <button class="dilemma-btn" onclick="dilemmaAnswer('trainer','unterschreibe',this)">Unterschreibe — du hast Familie</button>
+            <button class="dilemma-btn" onclick="dilemmaAnswer('trainer','verweigere',this)">Verweigere — trotz der Konsequenzen</button>
+            <button class="dilemma-btn" onclick="dilemmaAnswer('trainer','flucht',this)">Gib vor zu erkranken — gewinne Zeit</button>
+          </div>
+          <div class="dilemma-result" id="dr-trainer"></div>
+        </div>
+
+        <p class="sr d5" style="font-style:italic;font-size:.84rem;color:var(--fog);margin-top:1rem;">Und du? Was würdest du 1936 tun?</p>
         <a href="#s-boykott" class="read-more sr">Weiter zur Boykottdebatte</a>
       </div>
     </div>
@@ -1024,14 +992,14 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
     <p class="sr d1" style="max-width:720px;margin-bottom:2rem">In vielen Ländern gab es intensive Debatten über einen Boykott. Jüdische Sportverbände und linke Organisationen forderten die Absage — und scheiterten.</p>
     <div class="stat-row">
       <div class="stat-box-dk sr" data-d="0"><div class="stat-n" style="font-size:1.35rem">58,25:55,75</div><div class="stat-l">AAU-Abstimmung USA</div><p class="stat-d">Denkbar knapp für die Teilnahme. Die engste sportpolitische Entscheidung des 20. Jahrhunderts.</p></div>
-      <div class="stat-box-dk sr" data-d="110"><div class="stat-n" style="font-size:1.5rem">IOC</div><div class="stat-l">Keine Intervention</div><p class="stat-d">Das IOC unter <span class="gloss" data-tip="Avery Brundage (1887–1975) – US-amerikanischer Sportfunktionär, IOC-Mitglied, später Präsident. 1935 bereiste er Deutschland und erklärte jüdische Athleten würden fair behandelt.">Avery Brundage</span> bestätigte Deutschlands „Regelkonformität".</p></div>
+      <div class="stat-box-dk sr" data-d="110"><div class="stat-n" style="font-size:1.5rem">IOC</div><div class="stat-l">Keine Intervention</div><p class="stat-d">Das IOC unter <span class="gloss" data-tip="Avery Brundage (1887–1975) – US-amerikanischer Sportfunktionär, IOC-Mitglied. 1935 bereiste er Deutschland und erklärte, jüdische Athleten würden fair behandelt. Blieb IOC-Präsident bis 1972.">Avery Brundage</span> bestätigte Deutschlands „Regelkonformität".</p></div>
       <div class="stat-box-dk sr" data-d="220"><div class="stat-n">0</div><div class="stat-l">Demokratien boykottierten</div><p class="stat-d">Keine einzige westliche Demokratie wählte den Boykott.</p></div>
     </div>
 
     <div class="sr" style="margin-top:2rem;">
       <div class="protocol-toggle">
-        <button class="protocol-btn active" onclick="switchProtocol('public', this)">Öffentliche Version</button>
-        <button class="protocol-btn" onclick="switchProtocol('secret', this)">Vertrauliche Notizen</button>
+        <button class="protocol-btn active" onclick="switchProtocol('public',this)">Öffentliche Version</button>
+        <button class="protocol-btn" onclick="switchProtocol('secret',this)">Vertrauliche Notizen</button>
       </div>
       <div class="protocol-text public active" id="protocol-public"><strong>Bericht an das IOC, September 1935 (Auszug)</strong><br/>„...ich habe alle Einrichtungen besichtigt und mit zahlreichen jüdischen Sportlern gesprochen. Die deutschen Behörden versichern, dass kein Athlet aufgrund seiner Rasse oder Religion von der Teilnahme ausgeschlossen wird. Die Spiele 1936 in Berlin können daher wie geplant stattfinden."</div>
       <div class="protocol-text secret" id="protocol-secret"><strong>Vertrauliche Notiz Brundages (nie veröffentlicht, sinngemäß)</strong><br/>„Die jüdische Frage ist eine interne Angelegenheit Deutschlands. Der olympische Geist verlangt, dass wir uns nicht in die Innenpolitik eines Gastgeberlandes einmischen. Die Spiele sind zu wichtig, um von einer Minderheit gestört zu werden."</div>
@@ -1072,17 +1040,17 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
     <p class="sr d1" style="color:#aaa;max-width:620px;margin-bottom:0;">Klicke auf die Plakate, um die manipulativen Elemente aufzudecken.</p>
     <div class="poster-grid">
       <div class="poster-card sr" onclick="this.classList.toggle('open')">
-        <div class="poster-img"><img src="images/plakat_brandenburger_tor.jpg" alt="Offizielles Olympia-Plakat 1936 mit Brandenburger Tor und Athlet" style="width:100%; height:100%; object-fit:contain;" loading="lazy"></div>
+        <div class="poster-img"><img src="images/plakat_brandenburger_tor.jpg" alt="Offizielles Olympia-Plakat 1936 mit Brandenburger Tor und Athlet" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
         <div class="poster-title">„Berlin grüßt die Jugend der Welt"</div><div class="poster-year">1936 · Reichspropagandaministerium</div>
         <div class="poster-legend"><strong>Manipulative Elemente:</strong><br/>• Die fünf olympischen Ringe über dem Brandenburger Tor — Gleichsetzung Olympia = Deutschland.<br/>• Der athletische Körper als „arischer" Idealtypus.<br/>• Keine Hakenkreuze — bewusste Tarnung für das Ausland.</div>
       </div>
       <div class="poster-card sr d1" onclick="this.classList.toggle('open')">
-        <div class="poster-img"><img src="images/plakat_parole_der_woche.jpg" alt="NS-Propagandaplakat 'Parole der Woche' zu den Olympischen Spielen 1936" style="width:100%; height:100%; object-fit:contain;" loading="lazy"></div>
+        <div class="poster-img"><img src="images/plakat_parole_der_woche.jpg" alt="NS-Propagandaplakat 'Parole der Woche' zu den Olympischen Spielen 1936" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
         <div class="poster-title">„Parole der Woche" — NS-Wandzeitung</div><div class="poster-year">1936 · NSDAP-Reichspropagandaleitung</div>
         <div class="poster-legend"><strong>Manipulative Elemente:</strong><br/>• Dreigeteiltes Layout: Sport, Politik, Rassenideologie als Einheit.<br/>• Direkte Ansprache der Bevölkerung, Olympia als nationaler Erfolg.</div>
       </div>
       <div class="poster-card sr d2" onclick="this.classList.toggle('open')">
-        <div class="poster-img"><img src="images/plakat_olympia_film.jpg" alt="Filmplakat zu Leni Riefenstahls Propagandafilm Olympia von 1938" style="width:100%; height:100%; object-fit:contain;" loading="lazy"></div>
+        <div class="poster-img"><img src="images/plakat_olympia_film.jpg" alt="Filmplakat zu Leni Riefenstahls Propagandafilm Olympia von 1938" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
         <div class="poster-title">„Olympia" — Filmplakat 1938</div><div class="poster-year">1938 · Tobis-Filmverleih</div>
         <div class="poster-legend"><strong>Manipulative Elemente:</strong><br/>• Überhöhung des nackten Körpers — modernisierte NS-Rassenideologie.<br/>• Verzicht auf politische Symbole — Propaganda tarnt sich als Kunst.<br/>• Lichtsetzung erinnert an griechische Götterstatuen.</div>
       </div>
@@ -1099,7 +1067,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
     <div class="kartei-wrap">
       <div class="kartei sr"><h4>Carl Diem</h4><div class="kartei-dates">1882–1962</div><p>Erfinder des Fackellaufs, Organisator der Spiele 1936. Nach 1945: Sportdirektor in Köln, NOK-Mitglied, Gründer des Deutschen Sportbundes. Keine strafrechtliche Verfolgung.</p></div>
       <div class="kartei sr d1"><h4>Avery Brundage</h4><div class="kartei-dates">1887–1975</div><p>IOC-Mitglied, das 1936 den Ausschluss jüdischer Athleten leugnete. Blieb IOC-Präsident bis 1972. Verhinderte eine Absage der Spiele 1972 nach dem Münchner Attentat („The Games must go on").</p></div>
-      <div class="kartei sr d2"><h4>Leni Riefenstahl</h4><div class="kartei-dates">1902–2003</div><p>Regisseurin von „Olympia". Wurde als „Mitläuferin" eingestuft, erhielt keine Regieaufträge mehr in Deutschland, blieb aber international anerkannt. Veröffentlichte Bildbände ohne Reue.</p></div>
+      <div class="kartei sr d2"><h4>Leni Riefenstahl</h4><div class="kartei-dates">1902–2003</div><p>Regisseurin von „Olympia". Wurde als „Mitläuferin" eingestuft, erhielt keine Regieaufträge mehr in Deutschland, blieb aber international anerkannt. Veröffentlichte Bildbände ohne öffentliche Reue. Starb 2003.</p></div>
       <div class="kartei sr d3"><h4>Hans von Tschammer und Osten</h4><div class="kartei-dates">1887–1943</div><p>Reichssportführer, unterzeichnete den Ausschlussbrief an Bergmann. Verfolgte jüdische Sportler systematisch. Starb 1943 an Typhus — entging somit der juristischen Aufarbeitung.</p></div>
     </div>
     <blockquote class="sr d4" style="margin-top:2rem;">„Die Geschichte wird von den Siegern geschrieben — aber die Sportgeschichte hat die Verlierer lange vergessen."<cite>— Ein Kommentar</cite></blockquote>
@@ -1129,8 +1097,129 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
     <div class="ch sr" style="color:var(--fog3);justify-content:center">V.2 — Gedenken</div>
     <h2 class="sr d1">Wir nennen ihre Namen</h2>
     <p class="memorial-sub sr d2">Für alle, die 1936 aus dem Bild verschwinden sollten — und aus der Geschichte gestrichen wurden.</p>
-    <div class="memorial-names sr d3"><span>Gretel Bergmann</span><span>Johann „Rukeli" Trollmann</span><span>Werner Seelenbinder</span><span>Sinti und Roma aus Marzahn</span><span>Jüdische Athleten &amp; Athletinnen</span></div>
-    <p class="memorial-note sr d4">Johann „Rukeli" Trollmann war ein Sinto und Berufsboxer — 1933 wurde ihm der Deutsche Meistertitel aberkannt. Er wurde 1944 im KZ Neuengamme ermordet. Werner Seelenbinder, Ringer und antifaschistischer Widerstandskämpfer, wurde 1944 hingerichtet.</p>
+    <div class="memorial-names sr d3">
+      <span>Gretel Bergmann</span><span>Johann „Rukeli" Trollmann</span><span>Werner Seelenbinder</span>
+      <span>Sinti und Roma aus Marzahn</span><span>Jüdische Athleten &amp; Athletinnen</span>
+      <span>Otto Herschmann</span><span>Alfred Flatow</span><span>Gustav Felix Flatow</span>
+      <span>Lilli Henoch</span><span>Martha Jacob</span><span>Julius Hirsch</span>
+    </div>
+    <p class="memorial-note sr d4">Johann „Rukeli" Trollmann war ein Sinto und Berufsboxer — 1933 wurde ihm der Deutsche Meistertitel aberkannt. Er wurde 1944 im KZ Neuengamme ermordet. Werner Seelenbinder, Ringer und antifaschistischer Widerstandskämpfer, wurde 1944 hingerichtet. Otto Herschmann, Olympiasieger 1896, ist der einzige Olympiamedaillengewinner, der im Holocaust ermordet wurde.</p>
+  </div>
+</section>
+
+<!-- ══════ V.3 — FLATOW-BRÜDER ══════ -->
+<section class="z-black" id="zone-flatow" style="min-height:auto;padding:7vh 7vw;">
+  <div class="wrap">
+    <div class="ch sr" style="color:var(--gold)">V.3 — Vergessene Helden</div>
+    <h2 class="sr">Die Flatow-Brüder — Olympiasieger, die Deutschland vergaß</h2>
+    <p class="sr d1" style="color:#aaa;max-width:720px;">Alfred und Gustav Felix Flatow gewannen bei den ersten modernen Olympischen Spielen 1896 in Athen Goldmedaillen für Deutschland. 46 Jahre später wurden sie als Juden deportiert und ermordet. Ihr Fall zeigt, wie tief Undankbarkeit und Menschenverachtung des NS-Regimes reichten.</p>
+    <div class="two-col" style="margin-top:2.4rem;align-items:start;">
+      <div class="sl">
+        <div class="tl">
+          <div class="tl-item golden">
+            <div class="tl-date">1896 · Athen</div>
+            <div class="tl-text">Alfred Flatow gewinnt Gold am Reck und Barren. Gustav Felix Flatow gewinnt Gold im Mannschafts-Turnen. Sie sind Deutschlands erste Olympiasieger überhaupt.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">1933</div>
+            <div class="tl-text">Mit der Machtübernahme der Nationalsozialisten werden beide aus dem deutschen Sportleben ausgeschlossen. Ihre Goldmedaillen zählen nicht mehr.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">1942</div>
+            <div class="tl-text">Alfred Flatow wird ins Ghetto Theresienstadt deportiert. Er stirbt dort am 28. Januar 1942 — offiziell an „Erschöpfung", faktisch an Hunger und Kälte.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">1945</div>
+            <div class="tl-text">Gustav Felix Flatow stirbt ebenfalls in Theresienstadt. Er erlebt die Befreiung nicht mehr. Beide sterben in dem Land, für das sie einst olympisches Gold gewannen.</div>
+          </div>
+          <div class="tl-item golden">
+            <div class="tl-date">Heute</div>
+            <div class="tl-text">In Berlin erinnern Stolpersteine vor ihren letzten bekannten Wohnorten an sie. Das Deutsche Turnfest ehrt ihr Andenken — Jahrzehnte zu spät.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="callout sr d2"><strong>Was macht diesen Fall so eindringlich?</strong><p>Die Flatow-Brüder standen nicht am Rand der deutschen Sportgeschichte — sie standen ganz oben. Ihre Goldmedaillen von 1896 waren Deutschlands erstes olympisches Kapitel. Das NS-Regime löschte sie aus dieser Geschichte aus, während es die Olympische Idee 1936 für sich vereinnahmte.</p></div>
+        <div class="light-in-dark sr d3" style="background:var(--ash2);color:var(--cream);box-shadow:none;border:1px solid var(--ash4);margin-top:1.4rem;">
+          <strong style="color:var(--gold);">🪨 Stolpersteine als Erinnerung</strong>
+          <p style="color:#aaa;margin-top:.5rem;font-size:.86rem;">Stolpersteine sind kleine Messingplatten, die vor letzten freiwilligen Wohnorten von NS-Opfern in den Boden eingelassen werden. Initiiert vom Künstler Gunter Demnig. Heute gibt es über 100.000 Stolpersteine in 26 Ländern — das größte dezentrale Denkmal der Welt.</p>
+        </div>
+
+        <!-- Dilemma: Sportjournalist -->
+        <div class="dilemma-wrap sr d4" style="margin-top:1.8rem;">
+          <p class="dilemma-q">Du bist Sportjournalist für eine Berliner Zeitung, August 1936. Dein Chefredakteur befiehlt dir, die Sieger der Olympiade zu feiern — ohne die Ausschlüsse jüdischer Athleten zu erwähnen. Was schreibst du?</p>
+          <div class="dilemma-btns">
+            <button class="dilemma-btn" onclick="dilemmaAnswer('journalist','gehorche',this)">Schreib wie befohlen</button>
+            <button class="dilemma-btn" onclick="dilemmaAnswer('journalist','codiert',this)">Verstecke Hinweise im Text</button>
+            <button class="dilemma-btn" onclick="dilemmaAnswer('journalist','krank',this)">Melde dich krank — schreib gar nichts</button>
+          </div>
+          <div class="dilemma-result" id="dr-journalist"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zweiter Slider: Plakat vs. Zeitungsartikel -->
+    <div class="ch sr" style="color:var(--fog);margin-top:4rem;">V.3.b — Was gezeigt wurde vs. was berichtet wurde</div>
+    <h3 class="sr" style="color:var(--cream);margin-bottom:.6rem;">Die zwei Pressewelten</h3>
+    <p class="sr d1" style="color:#aaa;max-width:620px;margin-bottom:1rem;">Das offizielle Olympia-Plakat (links) zeigt, was die Welt sehen sollte. Die Exilpresse (rechts) berichtete, was tatsächlich geschah. Bewege den Regler.</p>
+    <div class="slider-compare sr d2" id="slider2">
+      <div class="slider-before" id="slider2-before">
+        <img src="images/plakat_brandenburger_tor.jpg" alt="Offizielles Olympia-Plakat 1936 — offizielle Darstellung" class="slider-placeholder" style="object-fit:contain;background:#111;" loading="lazy">
+        <div class="slider-label before">Offizielle Darstellung</div>
+      </div>
+      <img src="images/plakat_parole_der_woche.jpg" alt="Exilpresse-Bericht über die Verfolgung jüdischer Sportler 1936" class="slider-placeholder" style="object-fit:contain;background:#111;" loading="lazy">
+      <div class="slider-handle" id="slider2-handle"></div>
+      <div class="slider-label after">Exilpresse-Wahrheit</div>
+    </div>
+    <p class="spur sr d3">Die Exilpresse berichtete, was die Weltpresse verschwieg. Doch sie erreichte nur jene, die schon wussten — oder wissen wollten.</p>
+  </div>
+</section>
+
+<!-- ══════ V.4 — DREI WEITERE DILEMMAS ══════ -->
+<section class="z-dark" id="zone-dilemmas" style="min-height:auto;padding:7vh 7vw;">
+  <div class="wrap">
+    <div class="ch sr" style="color:var(--fog)">V.4 — Moralische Entscheidungen</div>
+    <h2 class="sr">Du bist 1936 — was tust du?</h2>
+    <p class="sr d1" style="color:#aaa;max-width:680px;">Historische Entscheidungen wurden von echten Menschen getroffen. Hinter jedem politischen Ereignis stehen individuelle Weichen. Drei weitere Situationen:</p>
+
+    <div class="sr d2" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.4rem;margin-top:2rem;">
+
+      <!-- Dilemma: Berliner Nachbar -->
+      <div class="dilemma-wrap" style="margin:0;">
+        <p class="dilemma-q">Du bist Berliner Nachbar einer jüdischen Familie, die du gut kennst. Die Gestapo hat sie auf eine Liste gesetzt. Du könntest sie warnen — aber es besteht großes Risiko für dich. Was tust du?</p>
+        <div class="dilemma-btns">
+          <button class="dilemma-btn" onclick="dilemmaAnswer('nachbar','warnst',this)">Warnst sie heimlich</button>
+          <button class="dilemma-btn" onclick="dilemmaAnswer('nachbar','schweigst',this)">Schweigst — du hast Familie</button>
+          <button class="dilemma-btn" onclick="dilemmaAnswer('nachbar','meldest',this)">Meldest es dem Blockwart</button>
+        </div>
+        <div class="dilemma-result" id="dr-nachbar"></div>
+      </div>
+
+      <!-- Dilemma: Ausländische Delegation -->
+      <div class="dilemma-wrap" style="margin:0;">
+        <p class="dilemma-q">Du bist Mitglied einer ausländischen Olympia-Delegation. Dein Teamkollege hat Beweise für das Zwangslager Marzahn. Die Heimat schaut auf eure Medaillen. Was empfiehlst du?</p>
+        <div class="dilemma-btns">
+          <button class="dilemma-btn" onclick="dilemmaAnswer('delegation','aufdeckt',this)">Gebt die Beweise der Presse</button>
+          <button class="dilemma-btn" onclick="dilemmaAnswer('delegation','heimlich',this)">Nehmt sie mit — veröffentlicht nach Hause</button>
+          <button class="dilemma-btn" onclick="dilemmaAnswer('delegation','ignoriert',this)">Ignoriert es — Politik ist nicht eure Aufgabe</button>
+        </div>
+        <div class="dilemma-result" id="dr-delegation"></div>
+      </div>
+
+      <!-- Dilemma: Olympia-Athlet -->
+      <div class="dilemma-wrap" style="margin:0;">
+        <p class="dilemma-q">Du bist Athlet und weißt, dass dein jüdischer Teamkollege grundlos nicht nominiert wurde. Kurz vor der Eröffnung hast du die Chance, öffentlich Protest zu äußern. Was tust du?</p>
+        <div class="dilemma-btns">
+          <button class="dilemma-btn" onclick="dilemmaAnswer('athlet','protest',this)">Protest — öffentlich vor Kameras</button>
+          <button class="dilemma-btn" onclick="dilemmaAnswer('athlet','verband',this)">Beschwerde beim Verband — intern</button>
+          <button class="dilemma-btn" onclick="dilemmaAnswer('athlet','startest',this)">Startest — dein Sieg ehrt ihn</button>
+        </div>
+        <div class="dilemma-result" id="dr-athlet"></div>
+      </div>
+
+    </div>
+
+    <blockquote class="sr d3" style="margin-top:2.4rem;">„Die Täter waren viele. Aber die Zuschauer waren noch mehr."<cite>— Primo Levi (sinngemäß)</cite></blockquote>
   </div>
 </section>
 
@@ -1143,7 +1232,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
     <div id="qbox" class="sr d3"></div>
     <div class="s-track"><div class="s-fill" id="sfill"></div></div>
     <div class="s-lbl" id="slbl">0 von 10 beantwortet</div>
-    <div id="qres"><span id="qres-t"></span><p id="qres-s"></p></div>
+    <div id="qres"><span id="qres-t"></span><p id="qres-s"></p><div class="quiz-saved-badge" id="quiz-saved-badge"></div></div>
     <button id="qreset" onclick="buildQuiz()">↺ Quiz wiederholen</button>
   </div>
 </section>
@@ -1158,9 +1247,95 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
       <div class="ref-card sr d1"><span class="ref-icon">🤫</span><h3>Wessen Geschichten fehlen?</h3><p>Gretel Bergmann, Rukeli Trollmann, die Familien aus Marzahn. Ihre Stimmen wurden systematisch zum Verstummen gebracht.</p></div>
       <div class="ref-card sr d2"><span class="ref-icon">⚖️</span><h3>Sport ist nicht unpolitisch</h3><p>Die Neutralitätsbehauptung diente 1936 dem Regime als Schutzschild. Auch heute wird sie missbraucht.</p></div>
       <div class="ref-card sr d3"><span class="ref-icon">🕯️</span><h3>Die Kraft der Erinnerung</h3><p>Das Gretel-Bergmann-Stadion ist eine späte, aber kraftvolle Antwort auf das Vergessen. Erinnerung braucht Orte.</p></div>
-      <div class="ref-card sr d4" style="border-top-color: var(--gold);"><span class="ref-icon">🌟</span><h3>Widerstand ist möglich</h3><p>Owens' Siege, heimliches Brot am Zaun, die Boykottbewegung – Menschlichkeit kann in dunkelsten Zeiten bestehen.</p></div>
+      <div class="ref-card sr d4" style="border-top-color:var(--gold);"><span class="ref-icon">🌟</span><h3>Widerstand ist möglich</h3><p>Owens' Siege, heimliches Brot am Zaun, die Boykottbewegung – Menschlichkeit kann in dunkelsten Zeiten bestehen.</p></div>
     </div>
     <p class="ref-q sr">„Wenn Sport nie unpolitisch ist — wie politisch ist unser eigenes Schweigen?"</p>
+    <div style="text-align:center;margin-top:2rem;">
+      <button class="print-btn" onclick="window.print()">🖨 Seite drucken / als PDF speichern</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ NEU: VII.2 — SPORTSWASHING HEUTE ══════ -->
+<section id="zone-sportswashing" style="min-height:auto;padding:8vh 7vw;">
+  <div class="wrap">
+    <div class="ch sr" style="color:var(--navy-mid)">VII.2 — Sportswashing heute</div>
+    <h2 class="sr" style="color:var(--navy);">1936 ist kein Einzelfall</h2>
+    <p class="sr d1" style="color:#3a4a5a;max-width:680px;">Die Logik von 1936 lebt fort. Autoritäre Staaten nutzen Sportgroßereignisse, um ihr internationales Image zu polieren — während grundlegende Missstände fortbestehen. Eine Gegenüberstellung.</p>
+    <div class="sw-grid sr d2">
+      <div class="sw-card highlight-red">
+        <div class="sw-year">1936</div>
+        <div class="sw-loc">Berlin, Deutschland</div>
+        <h4>Olympische Spiele</h4>
+        <p>NS-Regime inszeniert sich als friedliebend. Antisemitische Schilder werden temporär entfernt. Sinti und Roma ins Lager Marzahn deportiert. Welt applaudiert.</p>
+        <p class="sw-pattern"><strong>Muster:</strong> Schilder weg, Lager raus, Kamera drauf.</p>
+      </div>
+      <div class="sw-card highlight-gold">
+        <div class="sw-year">2008</div>
+        <div class="sw-loc">Peking, China</div>
+        <h4>Olympische Spiele</h4>
+        <p>Kurz vor den Spielen: Aufstandsniederschschlagung in Tibet. Menschenrechtler unter Hausarrest gestellt. Internationale Kritik weitgehend ignoriert. Mediale Inszenierung gefeiert.</p>
+        <p class="sw-pattern"><strong>Muster:</strong> Spektakel überstrahlt Kritik.</p>
+      </div>
+      <div class="sw-card highlight-red">
+        <div class="sw-year">2022</div>
+        <div class="sw-loc">Katar</div>
+        <h4>Fußball-WM</h4>
+        <p>Tausende Gastarbeiter sterben auf Baustellen. LGBTQ+-Rechte kriminalisiert. FIFA vergibt Vergabe trotz Korruptionsvorwürfen. Großes Turnier, globales Publikum, Business as usual.</p>
+        <p class="sw-pattern"><strong>Muster:</strong> Sportliche Bühne verschleiert strukturelle Gewalt.</p>
+      </div>
+      <div class="sw-card highlight-gold">
+        <div class="sw-year">2022</div>
+        <div class="sw-loc">Peking, China</div>
+        <h4>Winterolympiade</h4>
+        <p>Olympia mitten in der Unterdrückung der Uiguren in Xinjiang. Diplomatische Boykotts einiger Länder — ohne Wirkung. Athleten zur Selbstzensur angehalten.</p>
+        <p class="sw-pattern"><strong>Muster:</strong> Olympischer Frieden als Schutzschild.</p>
+      </div>
+    </div>
+    <blockquote class="sr d3" style="border-left-color:var(--navy);color:#3a4a5a;margin-top:2rem;">"Sport reinigt keine Regime. Sport lenkt von ihnen ab — solange wir zuschauen."<cite>— Zeitgenössische Einschätzung</cite></blockquote>
+    <a href="#zone-epilog-tl" class="read-more sr" style="color:var(--navy);border-color:var(--navy-mid);">Weiter: Was danach geschah</a>
+  </div>
+</section>
+
+<!-- ══════ NEU: VIII — EPILOG: WAS DANACH GESCHAH ══════ -->
+<section id="zone-epilog-tl" style="min-height:auto;">
+  <div class="wrap">
+    <div class="ch sr" style="color:var(--fog)">VIII — Epilog</div>
+    <h2 class="sr">Was wurde aus ihnen?</h2>
+    <p class="sr d1" style="color:#aaa;max-width:680px;">Die Olympischen Spiele endeten am 16. August 1936. Was danach geschah, zeigt: Die Fassade war nicht nur Propaganda — sie hatte reale Konsequenzen für alle Beteiligten.</p>
+    <div class="etl-grid sr d2">
+      <div class="etl-card gold-b">
+        <div class="etl-name">Gretel Bergmann</div>
+        <div class="etl-after">Nach 1936</div>
+        <p>Emigrierte 1937 in die USA. Heiratete, wurde Ärztin. Kehrte erst Jahrzehnte später nach Deutschland zurück. Erlebte 2009 die Benennung des Berliner Stadions nach ihr. Starb 2017 in New York — 103 Jahre alt.</p>
+      </div>
+      <div class="etl-card red-b">
+        <div class="etl-name">Jesse Owens</div>
+        <div class="etl-after">Nach 1936</div>
+        <p>Kehrte in die USA zurück, wurde durch den Hintereingang geführt. Arbeitete als Füllstationsbesitzer, Moderator, später als Botschafter für Jugend und Sport. Erhielt 1976 die Presidential Medal of Freedom. Starb 1980.</p>
+      </div>
+      <div class="etl-card red-b">
+        <div class="etl-name">Leni Riefenstahl</div>
+        <div class="etl-after">Nach 1945</div>
+        <p>Denazifizierungsverfahren: Einstufung als „Mitläuferin". Keine Gefängnisstrafe. Jahrzehntelange internationale Karriere als Fotografin (Nuba-Fotos). Bestritt bis zu ihrem Tod 2003 politische Mitverantwortung.</p>
+      </div>
+      <div class="etl-card">
+        <div class="etl-name">Carl Diem</div>
+        <div class="etl-after">Nach 1945</div>
+        <p>Ohne Konsequenzen. Gründete 1947 die Deutsche Sporthochschule Köln, deren erster Rektor er wurde. Blieb prägend für den deutschen Nachkriegssport. Starb 1962 in Köln.</p>
+      </div>
+      <div class="etl-card">
+        <div class="etl-name">Avery Brundage</div>
+        <div class="etl-after">Nach 1945</div>
+        <p>Wurde 1952 IOC-Präsident. Führte das Amt bis 1972 aus — und verweigerte auch nach dem Attentat von München die Unterbrechung der Spiele. Starb 1975 ohne öffentliche Reue.</p>
+      </div>
+      <div class="etl-card gold-b">
+        <div class="etl-name">Die Familien aus Marzahn</div>
+        <div class="etl-after">Nach 1936</div>
+        <p>Die meisten Inhaftierten wurden ab 1943 nach Auschwitz-Birkenau deportiert. Nur ein Bruchteil überlebte. Viele Schicksale blieben undokumentiert. Eine Gedenkstätte in Berlin-Marzahn erinnert heute an sie.</p>
+      </div>
+    </div>
+    <a href="#zone-memorial" class="read-more sr" style="display:block;text-align:center;">Weiter zum Gedenkbereich</a>
   </div>
 </section>
 
@@ -1198,9 +1373,10 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
     <a href="#s-slider">II Vergleich</a><a href="#zone-chron">II Chronologie</a><a href="#zone-map">II Berlin-Karte</a>
     <a href="#s-bergmann">III Bergmann</a><a href="#s-kartei">III Kartei</a><a href="#zone-owens">III Owens</a><a href="#s-marzahn">III Marzahn</a>
     <a href="#s-boykott">IV Boykott</a><a href="#s-int-stimmen">IV Internat. Stimmen</a><a href="#s-plakate">IV Plakate</a><a href="#s-taeter">IV Täter</a>
-    <a href="#zone-quotes">V Zitate</a><a href="#zone-memorial">V Gedenken</a>
+    <a href="#zone-quotes">V Zitate</a><a href="#zone-memorial">V Gedenken</a><a href="#zone-flatow">V Flatow</a><a href="#zone-dilemmas">V Dilemmas</a>
     <a href="#quiz-sec">VI Quiz</a><a href="#zone-ref">VII Reflexion</a>
-    <a href="#wall-names">Epilog</a>
+    <a href="#zone-sportswashing">VII Sportswashing</a><a href="#zone-epilog-tl">VIII Epilog</a>
+    <a href="#wall-names">Namen</a>
   </nav>
   <div class="foot-bottom">
     <div><strong>„Die zwei Gesichter von 1936"</strong><br/>Seminararbeit — Sport &amp; Demokratie | Tage der Lehrkräftebildung 2026</div>
@@ -1223,6 +1399,9 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
       • Yad Vashem – Zentrale Datenbank der Holocaustopfer<br>
       • Jesse Owens Foundation<br>
       • Bundeszentrale für politische Bildung: Dossier Olympia 1936<br><br>
+      <strong>Sportswashing</strong><br>
+      • Human Rights Watch: Berichte zu Katar 2022 und Peking 2008/2022<br>
+      • Boykott.de / Amnesty International: Dokumentationen zu Gastgebernationen<br><br>
       <strong>Bildquellen</strong><br>
       • Jesse Owens: Bundesarchiv, Bild 183-R96374 / CC-BY-SA 3.0<br>
       • Gretel Bergmann: Wikimedia Commons / Gemeinfrei<br>
@@ -1239,7 +1418,7 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
 </footer>
 
 <script>
-/* GRAIN – optimiert mit requestAnimationFrame und Pausierung bei Inaktivität */
+/* GRAIN */
 (()=>{
   const c=document.getElementById('grain'),ctx=c.getContext('2d');
   let w,h,lastTime=0;
@@ -1253,14 +1432,12 @@ footer{background:#050505;color:var(--fog);font-family:var(--fu);font-size:.78re
     requestAnimationFrame(draw);
   };
   resize();addEventListener('resize',()=>{resize()});requestAnimationFrame(draw);
-  document.addEventListener('visibilitychange',()=>{
-    if(document.hidden){lastTime=0;}else{requestAnimationFrame(draw);}
-  });
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){lastTime=0;}else{requestAnimationFrame(draw);}});
 })();
 
-history.scrollRestoration = 'manual';
-window.addEventListener('load', () => { window.scrollTo(0, 0); });
-window.scrollTo(0, 0);
+history.scrollRestoration='manual';
+window.addEventListener('load',()=>{window.scrollTo(0,0);});
+window.scrollTo(0,0);
 
 /* RAF LOOP */
 const bar=document.getElementById('prog-bar'),pill=document.getElementById('pill');
@@ -1290,47 +1467,31 @@ function tick(){
   });
 
   /* Kapitel-Fortschritt */
-  const sections = [
-    { id: 's-fassade', chapter: 1 },
-    { id: 's-riefen', chapter: 1 },
-    { id: 's-brief', chapter: 1 },
-    { id: 's-slider', chapter: 2 },
-    { id: 'zone-chron', chapter: 2 },
-    { id: 'zone-map', chapter: 2 },
-    { id: 's-bergmann', chapter: 3 },
-    { id: 's-kartei', chapter: 3 },
-    { id: 'zone-owens', chapter: 3 },
-    { id: 's-marzahn', chapter: 3 },
-    { id: 's-boykott', chapter: 4 },
-    { id: 's-int-stimmen', chapter: 4 },
-    { id: 's-plakate', chapter: 4 },
-    { id: 's-taeter', chapter: 4 },
-    { id: 'zone-quotes', chapter: 5 },
-    { id: 'zone-memorial', chapter: 5 },
-    { id: 'quiz-sec', chapter: 6 },
-    { id: 'zone-ref', chapter: 7 },
-    { id: 'wall-names', chapter: 8 }
+  const sections=[
+    {id:'s-fassade',chapter:1},{id:'s-riefen',chapter:1},{id:'s-brief',chapter:1},
+    {id:'s-slider',chapter:2},{id:'zone-chron',chapter:2},{id:'zone-map',chapter:2},
+    {id:'s-bergmann',chapter:3},{id:'s-kartei',chapter:3},{id:'zone-owens',chapter:3},{id:'s-marzahn',chapter:3},
+    {id:'s-boykott',chapter:4},{id:'s-int-stimmen',chapter:4},{id:'s-plakate',chapter:4},{id:'s-taeter',chapter:4},
+    {id:'zone-quotes',chapter:5},{id:'zone-memorial',chapter:5},{id:'zone-flatow',chapter:5},{id:'zone-dilemmas',chapter:5},
+    {id:'quiz-sec',chapter:6},
+    {id:'zone-ref',chapter:7},{id:'zone-sportswashing',chapter:7},{id:'zone-epilog-tl',chapter:7},
+    {id:'wall-names',chapter:8}
   ];
-  let currentChapter = 8;
-  for (const sec of sections) {
-    const el = document.getElementById(sec.id);
-    if (el) {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight / 2) {
-        currentChapter = sec.chapter;
-      } else {
-        break;
-      }
+  let currentChapter=8;
+  for(const sec of sections){
+    const el=document.getElementById(sec.id);
+    if(el){
+      const rect=el.getBoundingClientRect();
+      if(rect.top<window.innerHeight/2){currentChapter=sec.chapter;}else{break;}
     }
   }
-  if (currentChapter !== window._lastChapter) {
-    document.querySelectorAll('#chapter-progress .progress-dot').forEach(dot => {
-      const c = parseInt(dot.getAttribute('data-chapter'));
-      dot.classList.toggle('active', c === currentChapter);
+  if(currentChapter!==window._lastChapter){
+    document.querySelectorAll('#chapter-progress .progress-dot').forEach(dot=>{
+      const c=parseInt(dot.getAttribute('data-chapter'));
+      dot.classList.toggle('active',c===currentChapter);
     });
-    window._lastChapter = currentChapter;
+    window._lastChapter=currentChapter;
   }
-
   requestAnimationFrame(tick);
 }
 requestAnimationFrame(tick);
@@ -1341,7 +1502,7 @@ function countUp(el){
   const tgt=parseInt(el.dataset.cnt),sfx=el.dataset.sfx||'',dur=1500,t0=performance.now();
   (function step(now){const p=Math.min((now-t0)/dur,1),e=1-Math.pow(1-p,3);el.textContent=Math.floor(e*tgt).toLocaleString('de-DE')+sfx;if(p<1)requestAnimationFrame(step);})(t0);
 }
-const obs=new IntersectionObserver(entries=>{entries.forEach(en=>{if(!en.isIntersecting)return;const el=en.target,d=parseInt(el.dataset.d||0);setTimeout(()=>{el.classList.add('in');el.querySelectorAll('[data-cnt]').forEach(countUp)},d);obs.unobserve(el);})},{threshold:.09,rootMargin:'0px 0px -40px 0px'});
+const obs=new IntersectionObserver(entries=>{entries.forEach(en=>{if(!en.isIntersecting)return;const el=en.target,d=parseInt(el.dataset.d||0);setTimeout(()=>{el.classList.add('in');el.querySelectorAll('[data-cnt]').forEach(countUp)},d);obs.unobserve(el);});},{threshold:.09,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.sr,.sl,.sk,.sf,.spur').forEach(e=>obs.observe(e));
 
 function toggleX(id,btn){const el=document.getElementById(id),open=el.classList.toggle('open');btn.textContent=open?'− Weniger anzeigen':'+ Mehr zur Rückkehr nach Amerika';}
@@ -1362,6 +1523,7 @@ function showPin(e,id){
   popup.innerHTML=`<div class="pop-badge" style="color:${d.badgeColor};background:${d.badgeBg};border:1px solid ${d.badgeColor}">${d.badge}</div><strong>${d.label}</strong>${d.text}`;
   const mapRect=popup.parentElement.getBoundingClientRect();
   let x=e.clientX-mapRect.left+12,y=e.clientY-mapRect.top-10;
+  if(e.clientX===0&&e.clientY===0){x=80;y=80;}
   popup.style.left=Math.min(x,mapRect.width-260)+'px';popup.style.top=Math.max(y-40,10)+'px';
   popup.classList.add('show');
 }
@@ -1403,7 +1565,7 @@ function iocVote(choice,container){
 }
 
 /* IOC PROTOCOL SWITCH */
-function switchProtocol(version, btn){
+function switchProtocol(version,btn){
   const container=btn.closest('.protocol-toggle').parentElement;
   container.querySelectorAll('.protocol-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
@@ -1411,29 +1573,77 @@ function switchProtocol(version, btn){
   container.querySelector('#protocol-'+version).classList.add('active');
 }
 
+/* NEU: MORALISCHES DILEMMA */
+const DILEMMA_ANSWERS={
+  trainer:{
+    unterschreibe:'Du unterschreibst. Historisch das, was die meisten taten. Die Schuld verteilt sich auf das System — doch das entlastet nicht. Deine Unterschrift macht dich zum Teil des Mechanismus.',
+    verweigere:'Du verweigerst. Eine riskante Entscheidung: du verlierst wahrscheinlich die Stelle, riskierst Verfolgung. Aber du handelst gegen das Unrecht. Wie Werner Seelenbinder — der 1944 hingerichtet wurde.',
+    flucht:'Du gewinnst Zeit — aber wie lange? Das Regime erwartet Loyalität. In einem totalitären System ist das Hinauszögern kein Ausweg, nur ein aufgeschobenes Ja.'
+  },
+  journalist:{
+    gehorche:'Du schreibst wie befohlen. Das taten die meisten deutschen Journalisten. Die Gleichschaltung der Presse war 1933 abgeschlossen — wer nicht mitmachte, verlor die Arbeit oder wurde verhaftet.',
+    codiert:'Ein mutiger Versuch. Einige Journalisten versuchten das. Aber das Regime hatte Lesekontrolleure. Doppeldeutigkeiten wurden gemeldet. Das Risiko war real — und die Wirkung minimal.',
+    krank:'Eine Flucht ohne Lösung. Ein anderer schreibt den Artikel. Das System läuft weiter. Du hast dir eine Nacht Ruhe erkauft — mehr nicht.'
+  },
+  nachbar:{
+    warnst:'Du warnst. Historisch das, was Menschen wie Oskar Schindler oder Otto Weidt taten — unter enormem persönlichem Risiko. Diese Entscheidung kostete manche das Leben. Andere retteten damit Menschen.',
+    schweigst:'Das Schweigen der Nachbarn war eine der effektivsten Waffen des Regimes. Nicht alle waren Täter — viele waren schlicht stumme Zeugen. Auch das hatte Konsequenzen.',
+    meldest:'Das wäre Kollaboration. Historisch geschah das — und es war die direkte Ursache für Verhaftungen, Deportationen, Tod. Manche taten es aus Überzeugung, manche aus Angst, manche aus Neid.'
+  },
+  delegation:{
+    aufdeckt:'Das wäre außergewöhnlich mutig. In der Realität: kein ausländisches Olympia-Team tat das öffentlich 1936. Diplomatie, Medaillen und nationale Reputation überwogen — überall.',
+    heimlich:'Was einige Journalisten versuchten. Die Exilpresse in Paris und London hatte Berichte — aber die Welt wollte die olympische Geschichte hören, nicht die Wahrheit aus Marzahn.',
+    ignoriert:'Das taten alle offiziellen Delegationen. „Sport ist unpolitisch" war die bequeme Haltung. Sie machte aus Millionen von Zuschauern unwillige Mitauthentifizierer des NS-Regimes.'
+  },
+  athlet:{
+    protest:'Historisch außergewöhnlich selten. Tommie Smith und John Carlos taten es 1968 — und wurden aus dem olympischen Dorf ausgeschlossen. 1936 hätte ein Protest wohl dasselbe oder Schlimmeres bedeutet.',
+    verband:'Ein interner Weg ohne Wirkung. Die Verbände waren gleichgeschaltet. Eine Beschwerde bei einem NS-geführten Verband wäre schlicht ignoriert — oder gegen dich verwendet worden.',
+    startest:'Was viele taten. Jesse Owens startete und gewann. War das eine Ehre für seine ausgeschlossenen Kollegen — oder eine Legitimierung des Systems, das sie ausschloss? Diese Frage ist bis heute offen.'
+  }
+};
+function dilemmaAnswer(id,choice,btn){
+  const resultEl=document.getElementById('dr-'+id);
+  const btns=btn.closest('.dilemma-btns').querySelectorAll('.dilemma-btn');
+  btns.forEach(b=>b.disabled=true);
+  btn.style.borderColor='var(--gold)';btn.style.color='var(--gold-lt)';
+  resultEl.textContent=DILEMMA_ANSWERS[id][choice];
+  resultEl.classList.add('show');
+}
+
 /* QUIZ */
 const QS=[
   {q:'Der olympische Fackellauf ist eine Tradition aus der griechischen Antike.',o:['Falsch — er wurde 1936 erfunden.','Wahr','Wahr — aber 1936 modernisiert.','Falsch — erfunden 1928.'],a:0,fb:'Der Fackellauf wurde 1936 von Carl Diem erfunden und vom NS-Regime als historisch verankert inszeniert.',detail:'Viele glauben, der Fackellauf sei antik, weil die Inszenierung so überzeugend war. Ein typischer Fall von erfundener Tradition.'},
-  {q:'Hitler weigerte sich öffentlich, Jesse Owens die Hand zu schütteln.',o:['Falsch — Hitler gratulierte jedem.','Falsch — Hitler hatte auf IOC-Empfehlung das Gratulieren eingestellt.','Wahr','Wahr — er rief Owens zum Rapport.'],a:1,fb:'Das IOC bat Hitler, nicht mehr selektiv zu gratulieren. Owens: „Hitler hat mir zugewinkt."',detail:'Der Mythos vom verweigerten Handschlag hält sich hartnäckig, weil er moralisch eindeutig scheint. Die Wahrheit ist komplexer: Die Brüskierung fand woanders statt.'},
+  {q:'Hitler weigerte sich öffentlich, Jesse Owens die Hand zu schütteln.',o:['Falsch — Hitler gratulierte jedem.','Falsch — Hitler hatte auf IOC-Empfehlung das Gratulieren eingestellt.','Wahr','Wahr — er rief Owens zum Rapport.'],a:1,fb:'Das IOC bat Hitler, nicht mehr selektiv zu gratulieren. Owens: „Hitler hat mir zugewinkt."',detail:'Der Mythos vom verweigerten Handschlag hält sich hartnäckig, weil er moralisch eindeutig scheint. Die Wahrheit ist komplexer.'},
   {q:'Gretel Bergmann wurde aus sportlichen Gründen nicht für Olympia nominiert.',o:['Wahr','Falsch — sie wurde aus rassischen Gründen ausgeschlossen.','Wahr — ihre Leistungen reichten nicht.','Falsch — sie verletzte sich.'],a:1,fb:'Bergmann sprang 1,60 m — deutschen Rekord. Der Ausschlussgrund war ihre jüdische Herkunft.',detail:'Das NS-Regime tarnte den rassistischen Ausschluss als sportliche Entscheidung – eine bewusste Lüge für das Ausland.'},
   {q:'Das Zwangslager Marzahn befand sich weit außerhalb Berlins.',o:['Wahr — über 30 km.','Falsch — nur ca. 8 km vom Olympiastadion.','Wahr — in Brandenburg.','Falsch — am Bahnhof Zoo.'],a:1,fb:'Marzahn lag nur 8 km vom Olympiastadion. Errichtet für ein „sauberes" Berlin.',detail:'Die räumliche Nähe macht die Gleichzeitigkeit von Jubel und Leid besonders unerträglich.'},
   {q:'Die USA stimmten klar für die Teilnahme an den Berliner Spielen.',o:['Wahr — mit großer Mehrheit.','Falsch — für Boykott.','Wahr — einstimmig.','Falsch — denkbar knapp (58,25:55,75).'],a:3,fb:'Die AAU-Abstimmung war extrem knapp. Der Boykott scheiterte hauchdünn.',detail:'Die Knappheit zeigt, wie umstritten die Teilnahme war – doch das knappe Ergebnis wird selten erinnert.'},
   {q:'Jesse Owens wurde nach seiner Rückkehr von Roosevelt empfangen.',o:['Wahr — im Weißen Haus.','Falsch — Roosevelt ignorierte ihn.','Wahr — privat.','Falsch — er durfte nicht nach Washington.'],a:1,fb:'Roosevelt schickte weder Brief noch Telegramm. Owens musste den Hintereingang benutzen.',detail:'Diese Tatsache relativiert die gängige Erzählung von der moralischen Überlegenheit der Demokratien gegenüber dem NS-Regime.'},
   {q:'Antisemitische Schilder wurden während der Spiele entfernt.',o:['Falsch — bewusst sichtbar gelassen.','Wahr — das Regime wollte als normal gelten.','Falsch — es gab keine.','Wahr — nur rund ums Stadion.'],a:1,fb:'Für die Dauer der Spiele wurden Schilder entfernt. Eine perfekte Fassade.',detail:'Die Entfernung war temporär. Nach den Spielen kehrten die Schilder zurück – mitsamt der Verfolgung.'},
   {q:'Leni Riefenstahls „Olympia" wurde international abgelehnt.',o:['Wahr — kaum gezeigt.','Wahr — verboten.','Falsch — gewann Goldmedaille der Biennale 1938.','Falsch — erst 1945 veröffentlicht.'],a:2,fb:'„Olympia" gewann 1938 die Goldmedaille der Biennale Venedig.',detail:'Die internationale Anerkennung des Propagandafilms zeigt, wie erfolgreich die Ästhetisierung der NS-Ideologie war.'},
-  {q:'Jesse Owens‘ Siege waren eine direkte Widerlegung der NS-Rassenideologie.',o:['Falsch — sie wurden ignoriert.','Wahr — sie widerlegten die These von der Überlegenheit der „arischen Rasse".','Falsch — er durfte nicht starten.','Wahr — aber nur eine Randnotiz.'],a:1,fb:'Owens gewann vier Goldmedaillen und demonstrierte vor der Welt, dass sportliche Leistung nichts mit Rasse zu tun hat.',detail:'Die NS-Propaganda musste seine Siege verschweigen – ein stiller Triumph gegen die Ideologie.'},
+  {q:'Otto Herschmann ist der einzige Olympiamedaillengewinner, der im Holocaust ermordet wurde.',o:['Falsch — es gab mehrere.','Wahr.','Wahr — aber nur Bronzemedaille.','Falsch — er überlebte.'],a:1,fb:'Otto Herschmann gewann 1896 Gold im Fechten und Silber im Schwimmen. 1942 wurde er im KZ Izbica ermordet.',detail:'Diese Tatsache verbindet Olympia-Geschichte und Holocaust-Geschichte unmittelbar. Sie wird selten erwähnt.'},
   {q:'Helene Mayer, eine deutsche Fechterin jüdischer Herkunft, gewann bei den Olympischen Spielen 1936 Silber und zeigte den Hitlergruß.',o:['Falsch – sie verweigerte den Gruß.','Wahr – sie gewann Silber und zeigte den Hitlergruß.','Falsch – sie nahm nicht teil.','Wahr – sie gewann Gold.'],a:1,fb:'Helene Mayer gewann Silber und zeigte den Hitlergruß – ein ambivalentes Kapitel.',detail:'Mayer ist ein Beispiel für die schwierige Entscheidung, unter dem Hakenkreuz anzutreten, und wurde später oft als Mitläuferin kritisiert.'},
 ];
 let correct=0;
+
+/* Quiz mit localStorage-Speicherung */
 function buildQuiz(){
-  correct=0;document.getElementById('sfill').style.width='0%';document.getElementById('slbl').textContent=`0 von ${QS.length} beantwortet`;document.getElementById('qres').style.display='none';document.getElementById('qreset').style.display='none';
+  correct=0;
+  document.getElementById('sfill').style.width='0%';
+  document.getElementById('slbl').textContent=`0 von ${QS.length} beantwortet`;
+  document.getElementById('qres').style.display='none';
+  document.getElementById('qreset').style.display='none';
+  const badge=document.getElementById('quiz-saved-badge');
+  if(badge)badge.textContent='';
   const box=document.getElementById('qbox');box.innerHTML='';
   QS.forEach((item,qi)=>{
     const card=document.createElement('div');card.className='qcard';
     const qt=document.createElement('p');qt.className='qt';qt.textContent=`${qi+1}. ${item.q}`;card.appendChild(qt);
     const opts=document.createElement('div');opts.className='qopts';
     item.o.forEach((opt,oi)=>{const b=document.createElement('button');b.className='qbtn';b.textContent=opt;b.addEventListener('click',()=>answer(qi,oi,card,item));opts.appendChild(b);});
-    card.appendChild(opts);const fb=document.createElement('div');fb.className='qfb';fb.id=`fb${qi}`;card.appendChild(fb);const detail=document.createElement('div');detail.className='qfb detail';detail.id=`det${qi}`;card.appendChild(detail);box.appendChild(card);
+    card.appendChild(opts);
+    const fb=document.createElement('div');fb.className='qfb';fb.id=`fb${qi}`;card.appendChild(fb);
+    const detail=document.createElement('div');detail.className='qfb detail';detail.id=`det${qi}`;card.appendChild(detail);
+    box.appendChild(card);
   });
 }
 function answer(qi,chosen,card,item){
@@ -1444,80 +1654,107 @@ function answer(qi,chosen,card,item){
   const det=document.getElementById(`det${qi}`);det.textContent='💡 '+item.detail;det.className='qfb detail show';
   if(ok)correct++;
   const done=document.querySelectorAll('.qcard.done').length;
-  document.getElementById('slbl').textContent=`${done} von ${QS.length} beantwortet`;document.getElementById('sfill').style.width=((correct/QS.length)*100)+'%';
+  document.getElementById('slbl').textContent=`${done} von ${QS.length} beantwortet`;
+  document.getElementById('sfill').style.width=((correct/QS.length)*100)+'%';
   if(done===QS.length)showResult();
 }
 function showResult(){
   const pct=Math.round((correct/QS.length)*100);
   const MSGS=[[100,'Perfekt!','Du hast die Fassade vollständig durchschaut.'],[75,`${correct} von ${QS.length} richtig — sehr gut!`,'Einzelne Details lohnen Vertiefung.'],[50,`${correct} von ${QS.length} richtig.`,'Die Geschichte hat viele Schichten.'],[0,`${correct} von ${QS.length} richtig.`,'Die Propaganda war effektiv — auch heute noch.']];
   const [,t,s]=MSGS.find(([th])=>pct>=th);
-  document.getElementById('qres-t').textContent=t;document.getElementById('qres-s').textContent=s;document.getElementById('qres').style.display='block';document.getElementById('qreset').style.display='block';
+  document.getElementById('qres-t').textContent=t;
+  document.getElementById('qres-s').textContent=s;
+  document.getElementById('qres').style.display='block';
+  document.getElementById('qreset').style.display='block';
+
+  /* Ergebnis speichern */
+  try{
+    const saved={score:correct,total:QS.length,pct,date:new Date().toLocaleDateString('de-DE')};
+    localStorage.setItem('quiz1936_result',JSON.stringify(saved));
+    const badge=document.getElementById('quiz-saved-badge');
+    if(badge)badge.textContent=`✓ Ergebnis gespeichert (${saved.date})`;
+  }catch(e){}
 }
+
+/* SLIDER 2 */
+(function initSlider2(){
+  const slider=document.getElementById('slider2'),before=document.getElementById('slider2-before'),handle=document.getElementById('slider2-handle');
+  if(!slider||!before||!handle)return;
+  let dragging=false;
+  function setPos(clientX){
+    const rect=slider.getBoundingClientRect();let pct=(clientX-rect.left)/rect.width;pct=Math.max(0,Math.min(1,pct));
+    before.style.width=(pct*100)+'%';handle.style.left=(pct*100)+'%';
+  }
+  handle.addEventListener('mousedown',(e)=>{e.preventDefault();dragging=true;});
+  handle.addEventListener('touchstart',(e)=>{e.preventDefault();dragging=true;});
+  window.addEventListener('mousemove',(e)=>{if(dragging)setPos(e.clientX);});
+  window.addEventListener('touchmove',(e)=>{if(dragging)setPos(e.touches[0].clientX);});
+  window.addEventListener('mouseup',()=>{dragging=false;});
+  window.addEventListener('touchend',()=>{dragging=false;});
+})();
+
+/* Quiz-Ergebnis beim Laden anzeigen */
+(function showSavedQuizResult(){
+  try{
+    const saved=localStorage.getItem('quiz1936_result');
+    if(saved){
+      const r=JSON.parse(saved);
+      const lede=document.querySelector('.quiz-lede');
+      if(lede){
+        const badge=document.createElement('div');
+        badge.style.cssText='margin-bottom:1.2rem;text-align:center;font-family:var(--fu);font-size:.8rem;color:var(--fog2);letter-spacing:.06em;';
+        badge.innerHTML=`Dein letztes Ergebnis (${r.date}): <strong style="color:var(--gold-lt)">${r.score} von ${r.total} richtig (${r.pct}%)</strong>`;
+        lede.parentElement.insertBefore(badge,lede);
+      }
+    }
+  }catch(e){}
+})();
+
 buildQuiz();
 
 /* NAMEN-WAND */
-const namesObs=new IntersectionObserver(entries=>{entries.forEach(en=>{if(en.isIntersecting)en.target.classList.add('in');})},{threshold:.3});
+const namesObs=new IntersectionObserver(entries=>{entries.forEach(en=>{if(en.isIntersecting)en.target.classList.add('in');});},{threshold:.3});
 document.querySelectorAll('.names-scroll').forEach(e=>namesObs.observe(e));
 
-/* Kapitelmenü: Pill klicken togglet Menü */
-const chapterMenu = document.getElementById('chapter-menu');
-pill.addEventListener('click', function(e) {
+/* KAPITELMENÜ */
+const chapterMenu=document.getElementById('chapter-menu');
+pill.addEventListener('click',function(e){
   e.stopPropagation();
   chapterMenu.classList.toggle('show');
 });
-
-/* Menü schließen beim Klick auf Links */
-document.querySelectorAll('#chapter-menu a').forEach(link => {
-  link.addEventListener('click', () => {
-    chapterMenu.classList.remove('show');
-  });
+pill.addEventListener('keydown',function(e){
+  if(e.key==='Enter'||e.key===' '){e.preventDefault();chapterMenu.classList.toggle('show');}
+});
+document.querySelectorAll('#chapter-menu a').forEach(link=>{
+  link.addEventListener('click',()=>{chapterMenu.classList.remove('show');});
+});
+document.addEventListener('click',function(e){
+  if(!chapterMenu.contains(e.target)&&e.target!==pill){chapterMenu.classList.remove('show');}
 });
 
-/* Außenklick schließt Menü */
-document.addEventListener('click', function(e) {
-  if (!chapterMenu.contains(e.target) && e.target !== pill) {
-    chapterMenu.classList.remove('show');
-  }
-});
-
-/* Hero-Hintergrundvideo mit Autoplay-Fix */
-const heroVideo = document.getElementById('heroVideo');
-if (heroVideo) {
-  const heroObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        heroVideo.play();
-      } else {
-        heroVideo.pause();
-      }
-    });
-  }, { threshold: 0.1 });
+/* HERO VIDEO */
+const heroVideo=document.getElementById('heroVideo');
+if(heroVideo){
+  const heroObserver=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{if(entry.isIntersecting){heroVideo.play();}else{heroVideo.pause();}});
+  },{threshold:0.1});
   heroObserver.observe(document.getElementById('hero'));
-
-  function attemptAutoplay() {
-    heroVideo.muted = true;
-    const playPromise = heroVideo.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        const resume = () => {
-          heroVideo.play();
-          document.removeEventListener('click', resume);
-          document.removeEventListener('touchstart', resume);
-          window.removeEventListener('scroll', resume);
-        };
-        document.addEventListener('click', resume);
-        document.addEventListener('touchstart', resume);
-        window.addEventListener('scroll', resume);
+  function attemptAutoplay(){
+    heroVideo.muted=true;
+    const playPromise=heroVideo.play();
+    if(playPromise!==undefined){
+      playPromise.catch(()=>{
+        const resume=()=>{heroVideo.play();document.removeEventListener('click',resume);document.removeEventListener('touchstart',resume);window.removeEventListener('scroll',resume);};
+        document.addEventListener('click',resume);document.addEventListener('touchstart',resume);window.addEventListener('scroll',resume);
       });
     }
   }
-
   attemptAutoplay();
-  heroVideo.addEventListener('canplay', attemptAutoplay);
-  heroVideo.addEventListener('loadeddata', attemptAutoplay);
+  heroVideo.addEventListener('canplay',attemptAutoplay);
+  heroVideo.addEventListener('loadeddata',attemptAutoplay);
 }
 
-/* Zurück-nach-oben */
+/* ZURÜCK NACH OBEN */
 const backToTopBtn=document.getElementById('back-to-top');
 window.addEventListener('scroll',()=>{backToTopBtn.classList.toggle('visible',window.scrollY>600);});
 </script>
