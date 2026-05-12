@@ -934,13 +934,14 @@ a{color:#000;text-decoration:none}
         <h2 class="sr d1">Die Kamera als Propagandainstrument</h2>
         <p class="sr d2">Leni Riefenstahls zweiteiliger Film „Olympia" (1938) setzte neue kinematographische Maßstäbe: Unterwasser-Zeitlupenkameras, Aufnahmen aus Kameraballons, Fokus auf helle, muskulöse Körper.</p>
         <p class="sr d3">Das Ergebnis war kein Sportfilm — es war eine visuell gewaltige Propagandamaschine, die noch Jahrzehnte die Bildsprache des Sports prägte und die Bildästhetik faschistischer Regime definierte.</p>
+        <!-- Ersatzvideo: Internet Archive Einbettung -->
         <div class="light-in-dark sr d4">
           <strong>🎥 Sehen, wie die Propaganda wirkte</strong>
           <p style="font-size:.84rem;margin-bottom:.8rem;">Eröffnungszeremonie der Spiele von 1936 – Einblicke in die monumentale Inszenierung.</p>
-          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;margin-top:.5rem;border-radius:4px;">
-            <iframe src="https://archive.org/embed/871241936GermanOlympicsOpeningCeremonyMos" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen loading="lazy" title="Olympia 1936 – Eröffnungsfeier"></iframe>
+          <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin-top: .5rem; border-radius: 4px;">
+            <iframe src="https://archive.org/embed/871241936GermanOlympicsOpeningCeremonyMos" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen loading="lazy" title="Olympia 1936 – Eröffnungsfeier"></iframe>
           </div>
-          <p style="font-size:.72rem;margin-top:.5rem;color:#445;">Quelle: 1936 Berlin Olympics Opening Ceremonies, Internet Archive / Public Domain</p>
+          <p style="font-size: .72rem; margin-top: .5rem; color: #445;">Quelle: 1936 Berlin Olympics Opening Ceremonies, Internet Archive / Public Domain</p>
         </div>
         <p class="sr d3" style="font-size:.82rem;color:var(--navy-mid);margin-top:.8rem;">Zur kritischen Einordnung des Films empfiehlt sich die Analyse der <a href="https://www.bpb.de" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;">Bundeszentrale für politische Bildung</a> (externe Bildungsressource).</p>
         <blockquote class="sr d4" style="border-left-color:var(--navy);color:#445">„Ich wollte die Schönheit des Kampfes zeigen."<cite>— Leni Riefenstahl, Regisseurin „Olympia" (1936)</cite></blockquote>
@@ -1209,16 +1210,20 @@ a{color:#000;text-decoration:none}
       <div class="stat-box-dk sr" data-d="110"><div class="stat-n" style="font-size:1.5rem">IOC</div><div class="stat-l">Keine Intervention</div><p class="stat-d">Das IOC unter <span class="gloss" data-tip="Avery Brundage (1887–1975) – US-amerikanischer Sportfunktionär, IOC-Mitglied. 1935 bereiste er Deutschland und erklärte, jüdische Athleten würden fair behandelt. Blieb IOC-Präsident bis 1972.">Avery Brundage</span> bestätigte Deutschlands „Regelkonformität".</p></div>
       <div class="stat-box-dk sr" data-d="220"><div class="stat-n">0</div><div class="stat-l">Demokratien boykottierten</div><p class="stat-d">Keine einzige westliche Demokratie wählte den Boykott.</p></div>
     </div>
+
     <div class="sr" style="margin-top:2rem;">
       <div class="protocol-toggle">
-        <button class="protocol-btn active" onclick="switchProtocol('public',this)">Öffentliche Version</button>
-        <button class="protocol-btn" onclick="switchProtocol('secret',this)">Vertrauliche Notizen</button>
+        <button class="protocol-btn active" onclick="switchProtocol('public', this)">Öffentliche Version</button>
+        <button class="protocol-btn" onclick="switchProtocol('secret', this)">Vertrauliche Notizen</button>
       </div>
       <div class="protocol-text public active" id="protocol-public"><strong>Bericht an das IOC, September 1935 (Auszug)</strong><br/>„...ich habe alle Einrichtungen besichtigt und mit zahlreichen jüdischen Sportlern gesprochen. Die deutschen Behörden versichern, dass kein Athlet aufgrund seiner Rasse oder Religion von der Teilnahme ausgeschlossen wird. Die Spiele 1936 in Berlin können daher wie geplant stattfinden."</div>
       <div class="protocol-text secret" id="protocol-secret"><strong>Vertrauliche Notiz Brundages (nie veröffentlicht, sinngemäß)</strong><br/>„Die jüdische Frage ist eine interne Angelegenheit Deutschlands. Der olympische Geist verlangt, dass wir uns nicht in die Innenpolitik eines Gastgeberlandes einmischen. Die Spiele sind zu wichtig, um von einer Minderheit gestört zu werden."</div>
     </div>
+
     <div class="ioc-wrap sr"><p class="ioc-q">Sie sind IOC-Mitglied, Juli 1936. Sie kennen die Berichte über Verfolgung. Sie müssen abstimmen.</p><div class="ioc-btns"><button class="ioc-btn yes" onclick="iocVote('yes',this.parentElement)">Für die Teilnahme</button><button class="ioc-btn no" onclick="iocVote('no',this.parentElement)">Für den Boykott</button></div><div class="ioc-result" id="ioc-result"></div></div>
+
     <div class="callout sr" style="margin-top:2rem;"><strong>Was wäre, wenn die USA boykottiert hätten?</strong><p>Historiker diskutieren: Ein US-Boykott hätte wahrscheinlich das IOC-Gesicht gewahrt und andere Demokratien zum Nachzug bewegt. Das NS-Regime wäre international isoliert worden. Der Propagandacoup von 1936 wäre misslungen — möglicherweise mit Auswirkungen auf das internationale Ansehen Deutschlands. Aber die systematische Verfolgung der jüdischen Bevölkerung lief bereits auf Hochtouren.</p></div>
+
     <blockquote class="sr d3" style="margin-top:2.4rem">„Sport und Politik sollen getrennt sein" — dieser Satz wurde 1936 zur Waffe. Er schützte nicht die Athleten. Er schützte das Regime.<cite>— Historische Analyse</cite></blockquote>
     <a href="#s-int-stimmen" class="read-more sr">Weiter zu internationalen Stimmen</a>
   </div>
@@ -1250,17 +1255,17 @@ a{color:#000;text-decoration:none}
     <p class="sr d1" style="color:#aaa;max-width:620px;margin-bottom:0;">Klicke auf die Plakate, um die manipulativen Elemente aufzudecken.</p>
     <div class="poster-grid">
       <div class="poster-card sr" onclick="this.classList.toggle('open')">
-        <div class="poster-img"><img src="images/plakat_brandenburger_tor.jpg" alt="Offizielles Olympia-Plakat 1936 mit Brandenburger Tor und Athlet" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
+        <div class="poster-img"><img src="images/plakat_brandenburger_tor.jpg" alt="Offizielles Olympia-Plakat 1936 mit Brandenburger Tor und Athlet" style="width:100%; height:100%; object-fit:contain;" loading="lazy"></div>
         <div class="poster-title">„Berlin grüßt die Jugend der Welt"</div><div class="poster-year">1936 · Reichspropagandaministerium</div>
         <div class="poster-legend"><strong>Manipulative Elemente:</strong><br/>• Die fünf olympischen Ringe über dem Brandenburger Tor — Gleichsetzung Olympia = Deutschland.<br/>• Der athletische Körper als „arischer" Idealtypus.<br/>• Keine Hakenkreuze — bewusste Tarnung für das Ausland.</div>
       </div>
       <div class="poster-card sr d1" onclick="this.classList.toggle('open')">
-        <div class="poster-img"><img src="images/plakat_parole_der_woche.jpg" alt="NS-Propagandaplakat 'Parole der Woche' zu den Olympischen Spielen 1936" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
+        <div class="poster-img"><img src="images/plakat_parole_der_woche.jpg" alt="NS-Propagandaplakat 'Parole der Woche' zu den Olympischen Spielen 1936" style="width:100%; height:100%; object-fit:contain;" loading="lazy"></div>
         <div class="poster-title">„Parole der Woche" — NS-Wandzeitung</div><div class="poster-year">1936 · NSDAP-Reichspropagandaleitung</div>
         <div class="poster-legend"><strong>Manipulative Elemente:</strong><br/>• Dreigeteiltes Layout: Sport, Politik, Rassenideologie als Einheit.<br/>• Direkte Ansprache der Bevölkerung, Olympia als nationaler Erfolg.</div>
       </div>
       <div class="poster-card sr d2" onclick="this.classList.toggle('open')">
-        <div class="poster-img"><img src="images/plakat_olympia_film.jpg" alt="Filmplakat zu Leni Riefenstahls Propagandafilm Olympia von 1938" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
+        <div class="poster-img"><img src="images/plakat_olympia_film.jpg" alt="Filmplakat zu Leni Riefenstahls Propagandafilm Olympia von 1938" style="width:100%; height:100%; object-fit:contain;" loading="lazy"></div>
         <div class="poster-title">„Olympia" — Filmplakat 1938</div><div class="poster-year">1938 · Tobis-Filmverleih</div>
         <div class="poster-legend"><strong>Manipulative Elemente:</strong><br/>• Überhöhung des nackten Körpers — modernisierte NS-Rassenideologie.<br/>• Verzicht auf politische Symbole — Propaganda tarnt sich als Kunst.<br/>• Lichtsetzung erinnert an griechische Götterstatuen.</div>
       </div>
@@ -1423,20 +1428,6 @@ a{color:#000;text-decoration:none}
         </div>
       </div>
     </div>
-    <!-- Zweiter Slider: Plakat vs. Zeitungsartikel -->
-    <div class="ch sr" style="color:var(--fog);margin-top:4rem;">V.3.b — Was gezeigt wurde vs. was berichtet wurde</div>
-    <h3 class="sr" style="color:var(--cream);margin-bottom:.6rem;">Die zwei Pressewelten</h3>
-    <p class="sr d1" style="color:#aaa;max-width:620px;margin-bottom:1rem;">Das offizielle Olympia-Plakat (links) zeigt, was die Welt sehen sollte. Die Exilpresse (rechts) berichtete, was tatsächlich geschah. Bewege den Regler.</p>
-    <div class="slider-compare sr d2" id="slider2">
-      <div class="slider-before" id="slider2-before">
-        <img src="images/plakat_brandenburger_tor.jpg" alt="Offizielles Olympia-Plakat 1936 — offizielle Darstellung" class="slider-placeholder" style="object-fit:contain;background:#111;" loading="lazy">
-        <div class="slider-label before">Offizielle Darstellung</div>
-      </div>
-      <img src="images/plakat_parole_der_woche.jpg" alt="Exilpresse-Bericht über die Verfolgung jüdischer Sportler 1936" class="slider-placeholder" style="object-fit:contain;background:#111;" loading="lazy">
-      <div class="slider-handle" id="slider2-handle"></div>
-      <div class="slider-label after">Exilpresse-Wahrheit</div>
-    </div>
-    <p class="spur sr d3">Die Exilpresse berichtete, was die Weltpresse verschwieg. Doch sie erreichte nur jene, die schon wussten — oder wissen wollten.</p>
   </div>
 </section>
 
@@ -1850,23 +1841,6 @@ document.addEventListener('click',()=>{popup.classList.remove('show');activePin=
 /* SLIDER */
 (function initSlider(){
   const slider=document.getElementById('slider1'),before=document.getElementById('slider-before'),handle=document.getElementById('slider-handle');
-  if(!slider||!before||!handle)return;
-  let dragging=false;
-  function setPos(clientX){
-    const rect=slider.getBoundingClientRect();let pct=(clientX-rect.left)/rect.width;pct=Math.max(0,Math.min(1,pct));
-    before.style.width=(pct*100)+'%';handle.style.left=(pct*100)+'%';
-  }
-  handle.addEventListener('mousedown',(e)=>{e.preventDefault();dragging=true;});
-  handle.addEventListener('touchstart',(e)=>{e.preventDefault();dragging=true;});
-  window.addEventListener('mousemove',(e)=>{if(dragging)setPos(e.clientX);});
-  window.addEventListener('touchmove',(e)=>{if(dragging)setPos(e.touches[0].clientX);});
-  window.addEventListener('mouseup',()=>{dragging=false;});
-  window.addEventListener('touchend',()=>{dragging=false;});
-})();
-
-/* SLIDER 2 */
-(function initSlider2(){
-  const slider=document.getElementById('slider2'),before=document.getElementById('slider2-before'),handle=document.getElementById('slider2-handle');
   if(!slider||!before||!handle)return;
   let dragging=false;
   function setPos(clientX){
