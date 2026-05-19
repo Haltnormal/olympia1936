@@ -1,35 +1,44 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
  *  sounds.js  —  „Die zwei Gesichter von 1936"
- *  Version 2.0
+ *  Version 3.0
  * ═══════════════════════════════════════════════════════════════════
  *
- *  ARCHITEKTUR
- *  ───────────
- *  Alle Sounds sind 100 % synthetisch via Web Audio API.
- *  Keine externen Dateien, kein CORS, kein Ladezeit-Overhead.
+ *  KONZEPT
+ *  ───────
+ *  Drei Ebenen:
  *
- *  EINBINDUNG (GitHub)
- *  ───────────────────
- *  sounds.js ins Root-Verzeichnis legen (neben index.html), dann
- *  am Ende von <body>, NACH dem bestehenden <script>-Block:
+ *  1. INTERAKTIONS-SOUNDS (on click/hover)
+ *     Zeitungsblättern, Schreibmaschine, Stempel, Nadelklick …
  *
+ *  2. ATMOSPHÄRISCHER AMBIENT
+ *     Leise Hintergrundklänge, die sich mit dem Scroll-Fortschritt
+ *     verändern:
+ *     • Kapitel I   (Fassade)  → leichtes Gemurmel, ferne Fanfare
+ *     • Kapitel II  (Realität) → tiefes Grollen, Stille
+ *     • Kapitel III (Opfer)    → langsame Drone, leise Dissonanz
+ *     • Kapitel VI  (Quiz)     → neutrales Ticken (Uhr)
+ *     • Kapitel VIII (Namen)   → sehr stille Drone, fast Stille
+ *
+ *  3. EIGENE IDEEN
+ *     • Beim Erscheinen der Chronologie: leises Telegraphen-Morsen
+ *     • IOC-Vote „Ja": kurzes triumphales Motiv (dann sofort leiser)
+ *     • IOC-Vote „Nein": melancholisches Motiv
+ *     • Quiz richtig: gedämpfte Glocke
+ *     • Quiz falsch: tiefer Thud
+ *     • Namen-Wand: wenn sichtbar → sehr leise Streicherdrone beginnt
+ *     • Scroll über Marzahn-Abschnitt: kurzer Windhauch
+ *
+ *  EINBINDUNG
+ *  ──────────
+ *  Am Ende von <body>, nach dem bestehenden <script>-Block:
  *      <script src="sounds.js"></script>
  *
  *  BARRIEREFREIHEIT
  *  ────────────────
- *  • prefers-reduced-motion → Sounds komplett deaktiviert
- *  • 🔔-Button oben rechts: Klick 1 = Panel öffnen (Lautstärke-Regler)
- *    Klick 2 (Panel offen) = Mute-Toggle
- *  • Tastatur-Bindings: Enter / Space auf Flip-Karten, Poster, Pins
- *  • Alle Interaktionen bleiben ohne Sounds vollständig nutzbar
- *
- *  SOUND-PHILOSOPHIE
- *  ─────────────────
- *  Kein Blockbuster-Design. Stattdessen:
- *  Archiv-Stille, Zeitungsrascheln, Stempel, Schreibmaschine,
- *  gedämpfte Glocke, Nadelklick, Federkratzen.
- *  Die Sounds erinnern an ein Archiv von 1936, nicht an eine App.
+ *  • prefers-reduced-motion → alles deaktiviert
+ *  • 🔔 / 🔕 Button oben rechts — nur Mute-Toggle, kein Panel
+ *  • Lautstärke ist fest auf einem sehr leisen, angenehmen Niveau
  *
  * ═══════════════════════════════════════════════════════════════════
  */
@@ -38,68 +47,53 @@
   "use strict";
 
   /* ═══════════════════════════════════════════════════════════════
-     KERN-INFRASTRUKTUR
+     KONFIGURATION — hier alle Lautstärken zentral
   ═══════════════════════════════════════════════════════════════ */
 
-  let ctx        = null;
-  let masterGain = null;
-  let muted      = false;
-  let volume     = 0.42; // 0.0 – 1.0
+  var CFG = {
+    master:      0.30,   // Gesamt-Lautstärke (niedrig gehalten)
+    interaction: 0.80,   // Interaktions-Sounds relativ zu master
+    ambient:     0.18,   // Ambient-Schicht (sehr leise)
+    hover:       0.30,   // Hover-Ticks (fast unhörbar)
+    atmosphere:  0.12,   // Atmosphärische Drone
+    fadeTime:    2.8,    // Sekunden zum Überblenden zwischen Ambient-Zuständen
+  };
 
-  const prefersReducedMotion = window.matchMedia(
+  /* ═══════════════════════════════════════════════════════════════
+     KERN
+  ═══════════════════════════════════════════════════════════════ */
+
+  var ctx        = null;
+  var masterGain = null;
+  var muted      = false;
+
+  var prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
-  /** Lazy-init AudioContext (Autoplay-Policy-konform) */
   function getCtx() {
     if (!ctx) {
       ctx = new (window.AudioContext || window.webkitAudioContext)();
       masterGain = ctx.createGain();
-      masterGain.gain.value = volume;
+      masterGain.gain.value = CFG.master;
       masterGain.connect(ctx.destination);
     }
     if (ctx.state === "suspended") ctx.resume();
     return ctx;
   }
 
-  /** Sound-Generator abspielen */
-  function play(fn) {
+  function play(fn, gainMult) {
     if (muted || prefersReducedMotion) return;
-    try { fn(getCtx(), masterGain); }
-    catch (_) { /* Kein Sound = kein Problem */ }
+    gainMult = gainMult !== undefined ? gainMult : 1.0;
+    try {
+      var c  = getCtx();
+      var g  = c.createGain();
+      g.gain.value = gainMult;
+      g.connect(masterGain);
+      fn(c, g);
+    } catch (_) {}
   }
 
-  /** Lautstärke live anpassen */
-  function setVolume(v) {
-    volume = Math.max(0, Math.min(1, v));
-    if (masterGain) masterGain.gain.value = volume;
-  }
-
-  /* ═══════════════════════════════════════════════════════════════
-     HILFSFUNKTIONEN
-  ═══════════════════════════════════════════════════════════════ */
-
-  /** Weißes Rauschen als AudioBuffer */
-  function makeNoise(c, duration, amplitude) {
-    amplitude = amplitude !== undefined ? amplitude : 1.0;
-    var len = Math.ceil(c.sampleRate * duration);
-    var buf = c.createBuffer(1, len, c.sampleRate);
-    var d   = buf.getChannelData(0);
-    for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * amplitude;
-    return buf;
-  }
-
-  /** Biquad-Filter anlegen */
-  function makeFilter(c, type, freq, Q) {
-    Q = Q !== undefined ? Q : 1.0;
-    var f = c.createBiquadFilter();
-    f.type = type;
-    f.frequency.value = freq;
-    f.Q.value = Q;
-    return f;
-  }
-
-  /** Throttle-Helper */
   function throttle(fn, ms) {
     var last = 0;
     return function () {
@@ -109,50 +103,97 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════
-     SOUND-BIBLIOTHEK
-     Alle Funktionen: (c, out) => void
+     HILFSFUNKTIONEN
   ═══════════════════════════════════════════════════════════════ */
 
-  /**
-   * paperRustle — Zeitungsblättern / Seite umdrehen
-   * Zweischichtig: scharfer Kracher + weiches Nachrascheln.
-   * Einsatz: Flip-Karten, Protokoll-Toggle, Quiz-Reset.
-   */
+  function makeNoise(c, duration, amplitude) {
+    amplitude = amplitude !== undefined ? amplitude : 1.0;
+    var len = Math.ceil(c.sampleRate * duration);
+    var buf = c.createBuffer(1, len, c.sampleRate);
+    var d   = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) {
+      d[i] = (Math.random() * 2 - 1) * amplitude;
+    }
+    return buf;
+  }
+
+  function makePinkNoise(c, duration) {
+    // Pink Noise (rauscharm, wärmer als White Noise)
+    var len = Math.ceil(c.sampleRate * duration);
+    var buf = c.createBuffer(1, len, c.sampleRate);
+    var d   = buf.getChannelData(0);
+    var b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+    for (var i = 0; i < len; i++) {
+      var w = Math.random() * 2 - 1;
+      b0 = 0.99886 * b0 + w * 0.0555179;
+      b1 = 0.99332 * b1 + w * 0.0750759;
+      b2 = 0.96900 * b2 + w * 0.1538520;
+      b3 = 0.86650 * b3 + w * 0.3104856;
+      b4 = 0.55000 * b4 + w * 0.5329522;
+      b5 = -0.7616 * b5 - w * 0.0168980;
+      d[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362) * 0.11;
+      b6 = w * 0.115926;
+    }
+    return buf;
+  }
+
+  function makeFilter(c, type, freq, Q) {
+    Q = Q !== undefined ? Q : 1.0;
+    var f = c.createBiquadFilter();
+    f.type = type;
+    f.frequency.value = freq;
+    f.Q.value = Q;
+    return f;
+  }
+
+  /* Einfacher Reverb-Convolver (synthetischer IR) */
+  function makeReverb(c, duration, decay) {
+    duration = duration || 1.2;
+    decay    = decay    || 2.0;
+    var rate = c.sampleRate;
+    var len  = Math.ceil(rate * duration);
+    var buf  = c.createBuffer(2, len, rate);
+    for (var ch = 0; ch < 2; ch++) {
+      var d = buf.getChannelData(ch);
+      for (var i = 0; i < len; i++) {
+        d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
+      }
+    }
+    var conv = c.createConvolver();
+    conv.buffer = buf;
+    return conv;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     ① INTERAKTIONS-SOUNDS
+  ═══════════════════════════════════════════════════════════════ */
+
   function paperRustle(c, out) {
     var now = c.currentTime;
-
-    // Schicht 1: harter erster Kontakt
     var n1  = makeNoise(c, 0.08);
     var s1  = c.createBufferSource(); s1.buffer = n1;
     var bp1 = makeFilter(c, "bandpass", 3200, 0.7);
     var e1  = c.createGain();
     e1.gain.setValueAtTime(0, now);
-    e1.gain.linearRampToValueAtTime(1.1, now + 0.006);
+    e1.gain.linearRampToValueAtTime(1.0, now + 0.006);
     e1.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
     s1.connect(bp1); bp1.connect(e1); e1.connect(out);
     s1.start(now); s1.stop(now + 0.09);
 
-    // Schicht 2: weiches Nachrascheln
     var n2  = makeNoise(c, 0.22, 0.5);
     var s2  = c.createBufferSource(); s2.buffer = n2;
     var bp2 = makeFilter(c, "bandpass", 1800, 0.5);
     var lp2 = makeFilter(c, "lowpass", 4000);
     var e2  = c.createGain();
     e2.gain.setValueAtTime(0, now + 0.04);
-    e2.gain.linearRampToValueAtTime(0.55, now + 0.07);
+    e2.gain.linearRampToValueAtTime(0.5, now + 0.07);
     e2.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
     s2.connect(bp2); bp2.connect(lp2); lp2.connect(e2); e2.connect(out);
     s2.start(now + 0.04); s2.stop(now + 0.29);
   }
 
-  /**
-   * typewriterKey — Schreibmaschinen-Taste
-   * Harter Rausch-Impuls + kurzes Metall-Ping.
-   * Einsatz: Perspektiv-Buttons, Weiterlesen-Links, Nav-Links.
-   */
   function typewriterKey(c, out) {
-    var now = c.currentTime;
-
+    var now   = c.currentTime;
     var noise = makeNoise(c, 0.03);
     var src   = c.createBufferSource(); src.buffer = noise;
     var hp    = makeFilter(c, "highpass", 800, 0.5);
@@ -163,9 +204,8 @@
     src.connect(hp); hp.connect(lp); lp.connect(eN); eN.connect(out);
     src.start(now); src.stop(now + 0.035);
 
-    // Metall-Ping (Typenhebel trifft Walze)
-    var osc  = c.createOscillator();
-    var eO   = c.createGain();
+    var osc = c.createOscillator();
+    var eO  = c.createGain();
     osc.type = "triangle";
     osc.frequency.setValueAtTime(2200, now);
     osc.frequency.exponentialRampToValueAtTime(900, now + 0.04);
@@ -176,14 +216,8 @@
     osc.start(now); osc.stop(now + 0.08);
   }
 
-  /**
-   * stamp — Amtlicher Stempel
-   * Tiefer Dumpfer + harter Aufschlag-Klick.
-   * Einsatz: Dilemma-Buttons, IOC-Vote.
-   */
   function stamp(c, out) {
     var now = c.currentTime;
-
     var osc = c.createOscillator();
     var e1  = c.createGain();
     osc.type = "sawtooth";
@@ -196,7 +230,6 @@
     osc.connect(lp); lp.connect(e1); e1.connect(out);
     osc.start(now); osc.stop(now + 0.12);
 
-    // Aufschlag-Klick
     var noise = makeNoise(c, 0.015, 0.7);
     var src   = c.createBufferSource(); src.buffer = noise;
     var bp    = makeFilter(c, "bandpass", 4500, 1.5);
@@ -207,29 +240,20 @@
     src.start(now); src.stop(now + 0.02);
   }
 
-  /**
-   * pinClick — Reißnadel auf Karte
-   * Drei harmonische Sine-Töne + kurzer Impuls.
-   * Einsatz: Map-Pins auf der Berlin-Karte.
-   */
   function pinClick(c, out) {
     var now = c.currentTime;
-
     [[1400, 0, 0.45], [2100, 0.004, 0.18], [700, 0.008, 0.18]].forEach(function (p) {
-      var freq = p[0], delay = p[1], peak = p[2];
       var osc = c.createOscillator();
       var env = c.createGain();
       osc.type = "sine";
-      osc.frequency.setValueAtTime(freq, now + delay);
-      osc.frequency.exponentialRampToValueAtTime(freq * 0.55, now + delay + 0.18);
-      env.gain.setValueAtTime(0, now + delay);
-      env.gain.linearRampToValueAtTime(peak, now + delay + 0.006);
-      env.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.22);
+      osc.frequency.setValueAtTime(p[0], now + p[1]);
+      osc.frequency.exponentialRampToValueAtTime(p[0] * 0.55, now + p[1] + 0.18);
+      env.gain.setValueAtTime(0, now + p[1]);
+      env.gain.linearRampToValueAtTime(p[2], now + p[1] + 0.006);
+      env.gain.exponentialRampToValueAtTime(0.001, now + p[1] + 0.22);
       osc.connect(env); env.connect(out);
-      osc.start(now + delay); osc.stop(now + delay + 0.23);
+      osc.start(now + p[1]); osc.stop(now + p[1] + 0.23);
     });
-
-    // Einstich-Impuls
     var noise = makeNoise(c, 0.01, 0.4);
     var src   = c.createBufferSource(); src.buffer = noise;
     var hp    = makeFilter(c, "highpass", 3000);
@@ -240,122 +264,77 @@
     src.start(now); src.stop(now + 0.012);
   }
 
-  /**
-   * penScratch — Feder auf rauem Papier
-   * Zwei parallele Bandpässe + LFO-Rauigkeit.
-   * Einsatz: Quiz-Antwort-Buttons (Auswahl-Moment).
-   */
   function penScratch(c, out) {
-    var now = c.currentTime;
-    var dur = 0.11;
-
+    var now  = c.currentTime;
+    var dur  = 0.11;
     var noise = makeNoise(c, dur, 0.6);
     var src   = c.createBufferSource(); src.buffer = noise;
-
-    var bp1 = makeFilter(c, "bandpass", 3800, 1.8);
-    var bp2 = makeFilter(c, "bandpass", 5200, 2.2);
-    var mix = c.createGain(); mix.gain.value = 0.5;
-
-    var env = c.createGain();
+    var bp1   = makeFilter(c, "bandpass", 3800, 1.8);
+    var bp2   = makeFilter(c, "bandpass", 5200, 2.2);
+    var mix   = c.createGain(); mix.gain.value = 0.5;
+    var env   = c.createGain();
     env.gain.setValueAtTime(0, now);
     env.gain.linearRampToValueAtTime(0.7, now + 0.015);
-    env.gain.setValueAtTime(0.7, now + 0.04);
     env.gain.linearRampToValueAtTime(0.5, now + 0.08);
     env.gain.exponentialRampToValueAtTime(0.001, now + dur);
-
-    // LFO für Pitch-Variation (Schreib-Rauigkeit)
     var lfo     = c.createOscillator();
     var lfoGain = c.createGain();
     lfo.frequency.value = 28;
     lfoGain.gain.value  = 400;
     lfo.connect(lfoGain); lfoGain.connect(bp1.frequency);
     lfo.start(now); lfo.stop(now + dur + 0.01);
-
     src.connect(bp1); src.connect(bp2);
     bp1.connect(mix); bp2.connect(mix);
     mix.connect(env); env.connect(out);
     src.start(now); src.stop(now + dur + 0.01);
   }
 
-  /**
-   * reveal — Akte aufschlagen / Enthüllen
-   * Rauschen mit Frequenz-Sweep von tief nach hell.
-   * Einsatz: Poster-Karten, Expander (.xbtn), Protokoll-Reveal.
-   */
   function reveal(c, out) {
-    var now = c.currentTime;
-    var dur = 0.18;
-
+    var now  = c.currentTime;
+    var dur  = 0.18;
     var noise = makeNoise(c, dur, 0.55);
     var src   = c.createBufferSource(); src.buffer = noise;
     var bp    = c.createBiquadFilter();
-    bp.type = "bandpass";
-    bp.Q.value = 0.7;
+    bp.type = "bandpass"; bp.Q.value = 0.7;
     bp.frequency.setValueAtTime(300, now);
     bp.frequency.exponentialRampToValueAtTime(3500, now + dur * 0.6);
     bp.frequency.exponentialRampToValueAtTime(1800, now + dur);
-
     var env = c.createGain();
     env.gain.setValueAtTime(0, now);
     env.gain.linearRampToValueAtTime(0.65, now + 0.025);
     env.gain.exponentialRampToValueAtTime(0.001, now + dur + 0.02);
-
-    // Hochton-Layer
-    var n2  = makeNoise(c, dur * 0.5, 0.25);
-    var s2  = c.createBufferSource(); s2.buffer = n2;
-    var hp2 = makeFilter(c, "highpass", 5000);
-    var e2  = c.createGain();
-    e2.gain.setValueAtTime(0, now + 0.03);
-    e2.gain.linearRampToValueAtTime(0.4, now + 0.07);
-    e2.gain.exponentialRampToValueAtTime(0.001, now + dur * 0.8);
-    s2.connect(hp2); hp2.connect(e2); e2.connect(out);
-    s2.start(now + 0.03); s2.stop(now + dur * 0.8);
-
     src.connect(bp); bp.connect(env); env.connect(out);
     src.start(now); src.stop(now + dur + 0.03);
   }
 
-  /**
-   * correctBell — Richtig! Gedämpfte Messingglocke
-   * C-E-G Dreiklang mit Obertönen, leicht vintage-verstimmt.
-   * Einsatz: Richtige Quiz-Antwort.
-   */
   function correctBell(c, out) {
+    var reverb = makeReverb(c, 0.8, 3.0);
+    reverb.connect(out);
     [[262, 0, 0.22], [330, 0.06, 0.19], [392, 0.12, 0.16]].forEach(function (p) {
-      var freq = p[0], delay = p[1], peak = p[2];
-      var t   = c.currentTime + delay;
-
+      var t   = c.currentTime + p[1];
       var osc = c.createOscillator();
       var env = c.createGain();
       osc.type = "sine";
-      osc.frequency.setValueAtTime(freq * 1.003, t);
+      osc.frequency.setValueAtTime(p[0] * 1.003, t);
       env.gain.setValueAtTime(0, t);
-      env.gain.linearRampToValueAtTime(peak, t + 0.007);
+      env.gain.linearRampToValueAtTime(p[2], t + 0.007);
       env.gain.exponentialRampToValueAtTime(0.001, t + 0.55);
-      osc.connect(env); env.connect(out);
-      osc.start(t); osc.stop(t + 0.56);
-
-      // Glocken-Partial (inharmonischer Oberton)
       var osc2 = c.createOscillator();
       var e2   = c.createGain();
       osc2.type = "sine";
-      osc2.frequency.value = freq * 2.756;
+      osc2.frequency.value = p[0] * 2.756;
       e2.gain.setValueAtTime(0, t);
-      e2.gain.linearRampToValueAtTime(peak * 0.12, t + 0.005);
+      e2.gain.linearRampToValueAtTime(p[2] * 0.12, t + 0.005);
       e2.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
-      osc2.connect(e2); e2.connect(out);
+      osc2.connect(e2); e2.connect(reverb);
       osc2.start(t); osc2.stop(t + 0.19);
+      osc.connect(env); env.connect(reverb);
+      osc.start(t); osc.stop(t + 0.56);
     });
   }
 
-  /**
-   * wrongBass — Falsch! Dumpfer Schluss
-   * Tiefer Ton mit schnellem Decay + Aufschlag-Rauschen.
-   * Einsatz: Falsche Quiz-Antwort.
-   */
   function wrongBass(c, out) {
     var now = c.currentTime;
-
     var osc = c.createOscillator();
     var e1  = c.createGain();
     osc.type = "sine";
@@ -367,7 +346,6 @@
     e1.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
     osc.connect(lp); lp.connect(e1); e1.connect(out);
     osc.start(now); osc.stop(now + 0.29);
-
     var osc2 = c.createOscillator();
     var e2   = c.createGain();
     osc2.type = "triangle";
@@ -378,25 +356,10 @@
     e2.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
     osc2.connect(e2); e2.connect(out);
     osc2.start(now); osc2.stop(now + 0.17);
-
-    var noise = makeNoise(c, 0.02, 0.4);
-    var src   = c.createBufferSource(); src.buffer = noise;
-    var bp    = makeFilter(c, "bandpass", 800, 1.2);
-    var eN    = c.createGain();
-    eN.gain.setValueAtTime(0.5, now);
-    eN.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
-    src.connect(bp); bp.connect(eN); eN.connect(out);
-    src.start(now); src.stop(now + 0.022);
   }
 
-  /**
-   * drawerOpen — Schublade / Menü öffnet sich
-   * Leises Holzkratzen + Einrast-Ton.
-   * Einsatz: Kapitelmenü öffnen, Glossar öffnen.
-   */
   function drawerOpen(c, out) {
-    var now = c.currentTime;
-
+    var now   = c.currentTime;
     var noise = makeNoise(c, 0.07, 0.35);
     var src   = c.createBufferSource(); src.buffer = noise;
     var lp    = makeFilter(c, "lowpass", 1200, 0.6);
@@ -406,7 +369,6 @@
     e1.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
     src.connect(lp); lp.connect(e1); e1.connect(out);
     src.start(now); src.stop(now + 0.075);
-
     var osc = c.createOscillator();
     var e2  = c.createGain();
     osc.type = "sine";
@@ -419,14 +381,8 @@
     osc.start(now + 0.04); osc.stop(now + 0.13);
   }
 
-  /**
-   * drawerClose — Schublade / Menü schließt sich
-   * Umgekehrte Reihenfolge: Klick zuerst, dann Gleiten.
-   * Einsatz: Kapitelmenü schließen, Glossar schließen.
-   */
   function drawerClose(c, out) {
     var now = c.currentTime;
-
     var osc = c.createOscillator();
     var e1  = c.createGain();
     osc.type = "sine";
@@ -437,7 +393,6 @@
     e1.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
     osc.connect(e1); e1.connect(out);
     osc.start(now); osc.stop(now + 0.09);
-
     var noise = makeNoise(c, 0.05, 0.28);
     var src   = c.createBufferSource(); src.buffer = noise;
     var lp    = makeFilter(c, "lowpass", 900);
@@ -449,11 +404,6 @@
     src.start(now + 0.02); src.stop(now + 0.075);
   }
 
-  /**
-   * hoverTick — Miniaturklick für Hover
-   * Kaum hörbar, aber spürbar wahrnehmbar.
-   * Einsatz: Hover auf Dilemma-/IOC-/Quiz-Buttons, Memorial-Tiles.
-   */
   function hoverTick(c, out) {
     var now   = c.currentTime;
     var noise = makeNoise(c, 0.012, 0.3);
@@ -466,71 +416,12 @@
     src.start(now); src.stop(now + 0.014);
   }
 
-  /**
-   * sliderScrape — Slider gleitet
-   * Kurzes Kratzen wie auf rauem Papier.
-   * Einsatz: Vergleichs-Slider (throttled).
-   */
-  function sliderScrape(c, out) {
-    var now = c.currentTime;
-    var dur = 0.08;
-    var noise = makeNoise(c, dur, 0.3);
-    var src   = c.createBufferSource(); src.buffer = noise;
-    var bp    = makeFilter(c, "bandpass", 2200, 0.9);
-    var env   = c.createGain();
-    env.gain.setValueAtTime(0, now);
-    env.gain.linearRampToValueAtTime(0.5, now + 0.01);
-    env.gain.linearRampToValueAtTime(0.4, now + dur - 0.01);
-    env.gain.exponentialRampToValueAtTime(0.001, now + dur);
-    src.connect(bp); bp.connect(env); env.connect(out);
-    src.start(now); src.stop(now + dur + 0.01);
-  }
-
-  /**
-   * quizComplete — Quiz abgeschlossen
-   * Papier ablegen + zwei abschließende Töne.
-   * Einsatz: Wenn alle 10 Fragen beantwortet sind.
-   */
-  function quizComplete(c, out) {
-    var now = c.currentTime;
-
-    var noise = makeNoise(c, 0.2, 0.45);
-    var src   = c.createBufferSource(); src.buffer = noise;
-    var bp    = makeFilter(c, "bandpass", 2400, 0.6);
-    var env   = c.createGain();
-    env.gain.setValueAtTime(0, now);
-    env.gain.linearRampToValueAtTime(0.6, now + 0.012);
-    env.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
-    src.connect(bp); bp.connect(env); env.connect(out);
-    src.start(now); src.stop(now + 0.23);
-
-    [[392, 0.15, 0.18], [523, 0.26, 0.14]].forEach(function (p) {
-      var freq = p[0], delay = p[1], peak = p[2];
-      var t   = now + delay;
-      var osc = c.createOscillator();
-      var g   = c.createGain();
-      osc.type = "sine";
-      osc.frequency.value = freq;
-      g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(peak, t + 0.009);
-      g.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
-      osc.connect(g); g.connect(out);
-      osc.start(t); osc.stop(t + 0.41);
-    });
-  }
-
-  /**
-   * backToTop — Nach oben scrollen
-   * Kurzes luftiges Whoosh mit aufsteigendem Filter.
-   * Einsatz: Zurück-nach-oben-Button.
-   */
   function backToTop(c, out) {
     var now   = c.currentTime;
     var noise = makeNoise(c, 0.1, 0.4);
     var src   = c.createBufferSource(); src.buffer = noise;
     var bp    = c.createBiquadFilter();
-    bp.type = "bandpass";
-    bp.Q.value = 0.5;
+    bp.type = "bandpass"; bp.Q.value = 0.5;
     bp.frequency.setValueAtTime(800, now);
     bp.frequency.exponentialRampToValueAtTime(4000, now + 0.1);
     var env = c.createGain();
@@ -541,57 +432,531 @@
     src.start(now); src.stop(now + 0.13);
   }
 
-  /**
-   * nameWhisper — Namen-Wand Hover
-   * Allerfeinstes Flüstern — fast unhörbar.
-   * Einsatz: Hover auf einzelnen Namen in der Namen-Wand.
-   */
-  function nameWhisper(c, out) {
+  function quizComplete(c, out) {
     var now   = c.currentTime;
-    var noise = makeNoise(c, 0.06, 0.15);
+    var rev   = makeReverb(c, 1.5, 2.5);
+    rev.connect(out);
+    var noise = makeNoise(c, 0.2, 0.45);
     var src   = c.createBufferSource(); src.buffer = noise;
-    var bp    = makeFilter(c, "bandpass", 2000, 1.5);
+    var bp    = makeFilter(c, "bandpass", 2400, 0.6);
     var env   = c.createGain();
     env.gain.setValueAtTime(0, now);
-    env.gain.linearRampToValueAtTime(0.22, now + 0.015);
-    env.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
-    src.connect(bp); bp.connect(env); env.connect(out);
-    src.start(now); src.stop(now + 0.065);
+    env.gain.linearRampToValueAtTime(0.5, now + 0.012);
+    env.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    src.connect(bp); bp.connect(env); env.connect(rev);
+    src.start(now); src.stop(now + 0.23);
+    [[392, 0.18, 0.16], [523, 0.30, 0.13], [659, 0.42, 0.10]].forEach(function (p) {
+      var t   = now + p[1];
+      var osc = c.createOscillator();
+      var g   = c.createGain();
+      osc.type = "sine";
+      osc.frequency.value = p[0];
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(p[2], t + 0.009);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+      osc.connect(g); g.connect(rev);
+      osc.start(t); osc.stop(t + 0.51);
+    });
   }
 
   /* ═══════════════════════════════════════════════════════════════
-     SOUND-PANEL (Mute-Button + Lautstärke-Regler)
+     ② EIGENE IDEEN — spezielle Momente
   ═══════════════════════════════════════════════════════════════ */
 
-  function createSoundPanel() {
-    var wrap = document.createElement("div");
-    wrap.id = "sound-panel";
-    wrap.setAttribute("aria-label", "Sound-Einstellungen");
-    wrap.style.cssText = [
+  /**
+   * IOC-Vote „Ja" — kurzes triumphales Motiv
+   * Drei aufsteigende Töne, wie ein kleines Fanfaren-Fragment.
+   * Klingt fast zynisch angesichts des historischen Kontexts.
+   */
+  function iocYesFanfare(c, out) {
+    var rev = makeReverb(c, 1.2, 2.0);
+    rev.connect(out);
+    [[392, 0,    0.22],
+     [494, 0.12, 0.20],
+     [587, 0.24, 0.24]].forEach(function (p) {
+      var t   = c.currentTime + p[1];
+      var osc = c.createOscillator();
+      var env = c.createGain();
+      osc.type = "square";
+      // Leicht gedämpft — keine echte Fanfare, eher die Erinnerung daran
+      var lp = makeFilter(c, "lowpass", 800, 0.7);
+      osc.frequency.value = p[0];
+      env.gain.setValueAtTime(0, t);
+      env.gain.linearRampToValueAtTime(p[2] * 0.5, t + 0.02);
+      env.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+      osc.connect(lp); lp.connect(env); env.connect(rev);
+      osc.start(t); osc.stop(t + 0.29);
+    });
+  }
+
+  /**
+   * IOC-Vote „Nein" — melancholisches Motiv
+   * Zwei absteigende Töne, wie ein Seufzen.
+   */
+  function iocNoElegy(c, out) {
+    var rev = makeReverb(c, 1.5, 3.0);
+    rev.connect(out);
+    [[330, 0,    0.18],
+     [277, 0.18, 0.16]].forEach(function (p) {
+      var t   = c.currentTime + p[1];
+      var osc = c.createOscillator();
+      var env = c.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(p[0], t);
+      osc.frequency.linearRampToValueAtTime(p[0] * 0.96, t + 0.25);
+      env.gain.setValueAtTime(0, t);
+      env.gain.linearRampToValueAtTime(p[2], t + 0.04);
+      env.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+      osc.connect(env); env.connect(rev);
+      osc.start(t); osc.stop(t + 0.41);
+    });
+  }
+
+  /**
+   * Telegraphen-Morsecode
+   * Spielt „SOS" in leisen Klick-Tönen.
+   * Einmalig beim ersten Sichtbarwerden der Chronologie.
+   */
+  function morseSOSTelegraph(c, out) {
+    // SOS: ... --- ...
+    var pattern = [
+      80, 0, 80, 0, 80, 0,        // S (drie kurze)
+      240, 0, 240, 0, 240, 0,     // O (drei lange)
+      80, 0, 80, 0, 80            // S (drie kurze)
+    ];
+    var now     = c.currentTime + 0.3;
+    var cursor  = 0;
+    var unitMs  = 0.09; // Sekunden pro Einheit
+
+    pattern.forEach(function (dur, idx) {
+      if (idx % 2 === 0) {
+        // Ton
+        var t      = now + cursor;
+        var durSec = dur / 1000 * (unitMs / 0.08);
+        var osc    = c.createOscillator();
+        var env    = c.createGain();
+        osc.type = "sine";
+        osc.frequency.value = 680; // Typischer Telegraphen-Ton
+        env.gain.setValueAtTime(0, t);
+        env.gain.linearRampToValueAtTime(0.35, t + 0.006);
+        env.gain.linearRampToValueAtTime(0.35, t + durSec - 0.01);
+        env.gain.exponentialRampToValueAtTime(0.001, t + durSec);
+        osc.connect(env); env.connect(out);
+        osc.start(t); osc.stop(t + durSec + 0.01);
+        cursor += durSec + 0.055; // Pause nach Ton
+      }
+    });
+  }
+
+  /**
+   * Windhauch
+   * Kurzes, fast unhörbares Rauschen — wie Wind über ein Feld.
+   * Beim Scroll über den Marzahn-Abschnitt.
+   */
+  function windGust(c, out) {
+    var now  = c.currentTime;
+    var dur  = 2.8;
+    var buf  = makePinkNoise(c, dur);
+    var src  = c.createBufferSource(); src.buffer = buf;
+    var lp   = makeFilter(c, "lowpass", 400, 0.4);
+    var env  = c.createGain();
+    env.gain.setValueAtTime(0, now);
+    env.gain.linearRampToValueAtTime(0.55, now + 0.6);
+    env.gain.linearRampToValueAtTime(0.7, now + 1.2);
+    env.gain.linearRampToValueAtTime(0.3, now + 2.2);
+    env.gain.exponentialRampToValueAtTime(0.001, now + dur);
+    src.connect(lp); lp.connect(env); env.connect(out);
+    src.start(now); src.stop(now + dur + 0.05);
+  }
+
+  /**
+   * Namenswand-Drone
+   * Eine sehr leise, warme Drone — wie Stille, die klingt.
+   * Startet wenn die Namen-Wand sichtbar wird, läuft 12 Sekunden.
+   */
+  function namesWallDrone(c, out) {
+    var now = c.currentTime;
+    var dur = 12.0;
+
+    // Grundton D2 (sehr tief, kaum hörbar)
+    [73.4, 110.0, 146.8].forEach(function (freq, idx) {
+      var osc = c.createOscillator();
+      var env = c.createGain();
+      osc.type = "sine";
+      osc.frequency.value = freq;
+      // Leichte Verstimmung für Lebendigkeit
+      osc.detune.value = (idx - 1) * 4;
+      env.gain.setValueAtTime(0, now);
+      env.gain.linearRampToValueAtTime(0.12 - idx * 0.03, now + 2.5);
+      env.gain.linearRampToValueAtTime(0.10 - idx * 0.02, now + dur - 2.5);
+      env.gain.linearRampToValueAtTime(0, now + dur);
+      var lp = makeFilter(c, "lowpass", 300, 0.5);
+      osc.connect(lp); lp.connect(env); env.connect(out);
+      osc.start(now); osc.stop(now + dur + 0.1);
+    });
+
+    // Oberton: sehr leise hohe Streicher-Imitation
+    var osc2 = c.createOscillator();
+    var e2   = c.createGain();
+    osc2.type = "sawtooth";
+    osc2.frequency.value = 220;
+    var lp2 = makeFilter(c, "lowpass", 600, 2.0);
+    e2.gain.setValueAtTime(0, now);
+    e2.gain.linearRampToValueAtTime(0.025, now + 3.5);
+    e2.gain.linearRampToValueAtTime(0.018, now + dur - 3.0);
+    e2.gain.linearRampToValueAtTime(0, now + dur);
+    osc2.connect(lp2); lp2.connect(e2); e2.connect(out);
+    osc2.start(now); osc2.stop(now + dur + 0.1);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     ③ ATMOSPHÄRISCHER AMBIENT
+     Kontinuierlicher Hintergrund, der mit dem Kapitel wechselt.
+  ═══════════════════════════════════════════════════════════════ */
+
+  var ambientNodes = []; // Aktuell laufende Ambient-Nodes
+  var ambientGain  = null;
+  var currentZone  = null;
+
+  /**
+   * Alle aktuellen Ambient-Nodes sanft ausblenden und stoppen.
+   */
+  function stopAmbient() {
+    if (!ambientGain) return;
+    var now = getCtx().currentTime;
+    ambientGain.gain.setValueAtTime(ambientGain.gain.value, now);
+    ambientGain.gain.linearRampToValueAtTime(0, now + CFG.fadeTime);
+    var nodesToStop = ambientNodes.slice();
+    setTimeout(function () {
+      nodesToStop.forEach(function (n) {
+        try { n.stop(); n.disconnect(); } catch (_) {}
+      });
+    }, (CFG.fadeTime + 0.3) * 1000);
+    ambientNodes = [];
+    ambientGain  = null;
+  }
+
+  /**
+   * Neuen Ambient-Zustand starten.
+   * fn(c, ambientOut) baut die Nodes und gibt sie in ambientNodes.
+   */
+  function startAmbient(fn) {
+    if (muted || prefersReducedMotion) return;
+    stopAmbient();
+    var c   = getCtx();
+    var now = c.currentTime;
+
+    ambientGain = c.createGain();
+    ambientGain.gain.setValueAtTime(0, now);
+    ambientGain.gain.linearRampToValueAtTime(CFG.atmosphere, now + CFG.fadeTime);
+    ambientGain.connect(masterGain);
+
+    fn(c, ambientGain);
+  }
+
+  /**
+   * ZONE A: „Die Fassade" (Kapitel I)
+   * Sehr leises, warmes Surren + gelegentliches fernes Gemurmel.
+   * Klingt wie eine Menschenmenge hinter dicken Wänden.
+   */
+  function ambientFassade(c, out) {
+    // Warmes Grundrauschen
+    var dur  = 20.0;
+    var buf  = makePinkNoise(c, dur);
+    var src  = c.createBufferSource();
+    src.buffer = buf;
+    src.loop   = true;
+    var lp = makeFilter(c, "lowpass", 320, 0.4);
+    src.connect(lp); lp.connect(out);
+    src.start();
+    ambientNodes.push(src);
+
+    // Leise Sinusdrone auf A2 — warm, neutral
+    [110, 165, 220].forEach(function (freq, i) {
+      var osc = c.createOscillator();
+      osc.type = "sine";
+      osc.frequency.value = freq;
+      osc.detune.value = i * 3;
+      var g = c.createGain(); g.gain.value = 0.06 - i * 0.015;
+      osc.connect(g); g.connect(out);
+      osc.start();
+      ambientNodes.push(osc);
+    });
+  }
+
+  /**
+   * ZONE B: „Die Realität" (Kapitel II–III, Marzahn, Bergmann)
+   * Tiefes Grollen + leise Dissonanz.
+   * Die Fröhlichkeit ist weg. Nur noch Stille und Unbehagen.
+   */
+  function ambientRealitaet(c, out) {
+    // Tiefes Pink-Rauschen, sehr abgedämpft
+    var dur = 30.0;
+    var buf = makePinkNoise(c, dur);
+    var src = c.createBufferSource();
+    src.buffer = buf; src.loop = true;
+    var lp = makeFilter(c, "lowpass", 180, 0.3);
+    var g  = c.createGain(); g.gain.value = 0.5;
+    src.connect(lp); lp.connect(g); g.connect(out);
+    src.start();
+    ambientNodes.push(src);
+
+    // Dissonante Drone: E und F gleichzeitig (kleiner Halbton-Abstand)
+    // Das ist musikalisch unbequem — beabsichtigt.
+    [[82.4, 0.07], [87.3, 0.05], [65.4, 0.04]].forEach(function (p) {
+      var osc = c.createOscillator();
+      osc.type = "triangle";
+      osc.frequency.value = p[0];
+      // Langsames Vibrato
+      var lfo     = c.createOscillator();
+      var lfoGain = c.createGain();
+      lfo.frequency.value = 0.18;
+      lfoGain.gain.value  = 0.8;
+      lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+      lfo.start(); ambientNodes.push(lfo);
+      var g2 = c.createGain(); g2.gain.value = p[1];
+      osc.connect(g2); g2.connect(out);
+      osc.start(); ambientNodes.push(osc);
+    });
+  }
+
+  /**
+   * ZONE C: „Gedenken / Namen" (Kapitel V, VIII)
+   * Äußerste Stille. Nur ein ganz leiser tiefer Ton.
+   * Respektvolle Stille.
+   */
+  function ambientGedenken(c, out) {
+    // Fast nur Stille. Ein einziger, sehr leiser tiefer Ton.
+    var osc = c.createOscillator();
+    osc.type = "sine";
+    osc.frequency.value = 55; // A1 — sehr tief, kaum hörbar
+    var g = c.createGain(); g.gain.value = 0.04;
+    osc.connect(g); g.connect(out);
+    osc.start();
+    ambientNodes.push(osc);
+
+    // Ganz leises Rauschen — wie Stille in einem Archivraum
+    var dur = 30.0;
+    var buf = makePinkNoise(c, dur);
+    var src = c.createBufferSource();
+    src.buffer = buf; src.loop = true;
+    var lp = makeFilter(c, "lowpass", 120, 0.2);
+    var gN = c.createGain(); gN.gain.value = 0.3;
+    src.connect(lp); lp.connect(gN); gN.connect(out);
+    src.start();
+    ambientNodes.push(src);
+  }
+
+  /**
+   * ZONE D: „Quiz" (Kapitel VI)
+   * Neutrales leises Ticken — eine Uhr.
+   * Zählt die Zeit, während man antwortet.
+   */
+  function ambientQuiz(c, out) {
+    // Uhr-Ticken: alle 0.8 Sekunden ein kurzer Klick
+    var tickInterval = 0.8;
+    var totalTicks   = 40; // Läuft ~32 Sekunden
+    var now          = c.currentTime;
+
+    for (var i = 0; i < totalTicks; i++) {
+      (function (idx) {
+        var t     = now + idx * tickInterval;
+        var noise = makeNoise(c, 0.008, 0.2);
+        var src   = c.createBufferSource(); src.buffer = noise;
+        var hp    = makeFilter(c, "highpass", 3500);
+        var env   = c.createGain();
+        env.gain.setValueAtTime(0.5, t);
+        env.gain.exponentialRampToValueAtTime(0.001, t + 0.008);
+        src.connect(hp); hp.connect(env); env.connect(out);
+        src.start(t); src.stop(t + 0.01);
+        ambientNodes.push(src);
+      })(i);
+    }
+  }
+
+  /**
+   * ZONE E: „Sportswashing / Reflexion" (Kapitel VII)
+   * Leise moderne Drone — kein Vintage mehr.
+   * Die Geschichte ist heute. Nüchterner, klarer Ton.
+   */
+  function ambientHeute(c, out) {
+    var osc1 = c.createOscillator();
+    osc1.type = "sine";
+    osc1.frequency.value = 120;
+    var g1 = c.createGain(); g1.gain.value = 0.06;
+    osc1.connect(g1); g1.connect(out);
+    osc1.start(); ambientNodes.push(osc1);
+
+    var osc2 = c.createOscillator();
+    osc2.type = "sine";
+    osc2.frequency.value = 180;
+    osc2.detune.value = 7; // Leichte Verstimmung
+    var g2 = c.createGain(); g2.gain.value = 0.04;
+    osc2.connect(g2); g2.connect(out);
+    osc2.start(); ambientNodes.push(osc2);
+
+    // Sehr leises Hochton-Flirren
+    var osc3 = c.createOscillator();
+    osc3.type = "sine";
+    osc3.frequency.value = 3400;
+    var lfo3 = c.createOscillator();
+    var lg3  = c.createGain(); lg3.gain.value = 3;
+    lfo3.frequency.value = 0.4;
+    lfo3.connect(lg3); lg3.connect(osc3.frequency);
+    lfo3.start(); ambientNodes.push(lfo3);
+    var g3 = c.createGain(); g3.gain.value = 0.008;
+    osc3.connect(g3); g3.connect(out);
+    osc3.start(); ambientNodes.push(osc3);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SCROLL-BASIERTE AMBIENT-STEUERUNG
+  ═══════════════════════════════════════════════════════════════ */
+
+  // Welche Zone ist aktiv basierend auf Scroll-Position?
+  var ZONE_MAP = [
+    { id: "s-fassade",       zone: "fassade"   },
+    { id: "s-riefen",        zone: "fassade"   },
+    { id: "s-brief",         zone: "realitaet" },
+    { id: "s-slider",        zone: "realitaet" },
+    { id: "zone-chron",      zone: "realitaet" },
+    { id: "zone-map",        zone: "realitaet" },
+    { id: "s-bergmann",      zone: "realitaet" },
+    { id: "s-kartei",        zone: "realitaet" },
+    { id: "zone-owens",      zone: "realitaet" },
+    { id: "s-marzahn",       zone: "realitaet" },
+    { id: "s-boykott",       zone: "realitaet" },
+    { id: "s-int-stimmen",   zone: "realitaet" },
+    { id: "s-plakate",       zone: "fassade"   },
+    { id: "s-taeter",        zone: "realitaet" },
+    { id: "zone-quotes",     zone: "gedenken"  },
+    { id: "zone-memorial",   zone: "gedenken"  },
+    { id: "zone-flatow",     zone: "gedenken"  },
+    { id: "zone-dilemmas",   zone: "realitaet" },
+    { id: "quiz-sec",        zone: "quiz"      },
+    { id: "zone-ref",        zone: "heute"     },
+    { id: "zone-sportswashing", zone: "heute"  },
+    { id: "zone-epilog-tl",  zone: "gedenken"  },
+    { id: "wall-names",      zone: "gedenken"  },
+    { id: "zone-links",      zone: "heute"     },
+  ];
+
+  var AMBIENT_FNS = {
+    fassade:   ambientFassade,
+    realitaet: ambientRealitaet,
+    gedenken:  ambientGedenken,
+    quiz:      ambientQuiz,
+    heute:     ambientHeute,
+  };
+
+  function updateAmbientZone() {
+    var scrollMid = window.scrollY + window.innerHeight * 0.55;
+    var best = null;
+    var bestTop = -Infinity;
+
+    ZONE_MAP.forEach(function (entry) {
+      var el = document.getElementById(entry.id);
+      if (!el) return;
+      var top = el.getBoundingClientRect().top + window.scrollY;
+      if (top <= scrollMid && top > bestTop) {
+        bestTop = top;
+        best = entry.zone;
+      }
+    });
+
+    // Hero / Anfang der Seite
+    if (window.scrollY < 200) best = null;
+
+    if (best !== currentZone) {
+      currentZone = best;
+      if (best && AMBIENT_FNS[best]) {
+        startAmbient(AMBIENT_FNS[best]);
+      } else {
+        stopAmbient();
+      }
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     EINMALIGE SPEZIAL-TRIGGER (IntersectionObserver)
+  ═══════════════════════════════════════════════════════════════ */
+
+  var specialFired = {}; // Verhindert Mehrfach-Auslösung
+
+  function setupSpecialTriggers() {
+    var triggers = [
+      // Telegraphen-Morse beim ersten Erscheinen der Chronologie
+      {
+        id: "zone-chron",
+        key: "morse",
+        fn: function () {
+          setTimeout(function () {
+            play(morseSOSTelegraph, CFG.ambient * 1.5);
+          }, 800);
+        }
+      },
+      // Windhauch beim Marzahn-Abschnitt
+      {
+        id: "s-marzahn",
+        key: "wind",
+        fn: function () {
+          setTimeout(function () {
+            play(windGust, CFG.ambient * 2.0);
+          }, 400);
+        }
+      },
+      // Namen-Wand: leise Drone + einmaliges Gedenk-Klang
+      {
+        id: "wall-names",
+        key: "names",
+        fn: function () {
+          setTimeout(function () {
+            play(namesWallDrone, CFG.ambient * 1.8);
+          }, 200);
+        }
+      },
+    ];
+
+    triggers.forEach(function (trigger) {
+      var el = document.getElementById(trigger.id);
+      if (!el) return;
+
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && !specialFired[trigger.key]) {
+            specialFired[trigger.key] = true;
+            trigger.fn();
+            obs.disconnect();
+          }
+        });
+      }, { threshold: 0.25 });
+
+      obs.observe(el);
+    });
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     MUTE-BUTTON (einfach, kein Panel)
+  ═══════════════════════════════════════════════════════════════ */
+
+  function createMuteButton() {
+    var btn = document.createElement("button");
+    btn.id = "sound-mute-btn";
+    btn.setAttribute("aria-label", "Sounds ausschalten");
+    btn.setAttribute("title",      "Sounds ein / aus");
+    btn.textContent = "🔔";
+    btn.style.cssText = [
       "position:fixed",
       "top:14px",
       "right:118px",
       "z-index:9502",
-      "display:flex",
-      "align-items:center",
-      "gap:6px",
-    ].join(";");
-
-    /* ── Mute-Button ── */
-    var btn = document.createElement("button");
-    btn.id = "sound-mute-btn";
-    btn.setAttribute("aria-label", "Sound-Einstellungen öffnen");
-    btn.setAttribute("title",      "Sounds ein/aus & Lautstärke");
-    btn.setAttribute("aria-expanded", "false");
-    btn.textContent = "🔔";
-    btn.style.cssText = [
       "width:36px",
       "height:36px",
       "border-radius:50%",
-      "background:rgba(11,37,69,.9)",
+      "background:rgba(11,37,69,.88)",
       "border:1px solid var(--gold,#C8A96E)",
       "color:var(--gold,#C8A96E)",
-      "font-size:.95rem",
+      "font-size:.9rem",
       "cursor:pointer",
       "display:flex",
       "align-items:center",
@@ -600,165 +965,37 @@
       "-webkit-backdrop-filter:blur(8px)",
       "transition:background .3s,opacity .3s",
       "line-height:1",
-      "flex-shrink:0",
     ].join(";");
-
-    /* ── Lautstärke-Panel ── */
-    var volWrap = document.createElement("div");
-    volWrap.id = "sound-vol-wrap";
-    volWrap.style.cssText = [
-      "display:flex",
-      "align-items:center",
-      "background:rgba(11,37,69,.9)",
-      "border:1px solid var(--gold,#C8A96E)",
-      "border-radius:20px",
-      "padding:0 10px",
-      "height:36px",
-      "gap:7px",
-      "backdrop-filter:blur(8px)",
-      "-webkit-backdrop-filter:blur(8px)",
-      "overflow:hidden",
-      "max-width:0",
-      "opacity:0",
-      "pointer-events:none",
-      "transition:max-width .35s cubic-bezier(.4,0,.2,1),opacity .28s ease",
-    ].join(";");
-
-    var volIcon = document.createElement("span");
-    volIcon.textContent = "🎚";
-    volIcon.setAttribute("aria-hidden", "true");
-    volIcon.style.cssText = "font-size:.8rem;flex-shrink:0;";
-
-    var slider = document.createElement("input");
-    slider.type = "range";
-    slider.min  = "0";
-    slider.max  = "100";
-    slider.value = String(Math.round(volume * 100));
-    slider.setAttribute("aria-label", "Lautstärke");
-    slider.style.cssText = [
-      "width:72px",
-      "accent-color:var(--gold,#C8A96E)",
-      "cursor:pointer",
-      "height:3px",
-      "flex-shrink:0",
-    ].join(";");
-
-    var volLabel = document.createElement("span");
-    volLabel.textContent = slider.value + "%";
-    volLabel.style.cssText = [
-      "font-family:'Source Sans 3',sans-serif",
-      "font-size:.6rem",
-      "color:var(--gold,#C8A96E)",
-      "min-width:28px",
-      "text-align:right",
-      "letter-spacing:.04em",
-    ].join(";");
-
-    /* ── Trennlinie im Panel ── */
-    var sep = document.createElement("div");
-    sep.setAttribute("aria-hidden", "true");
-    sep.style.cssText = [
-      "width:1px",
-      "height:16px",
-      "background:rgba(200,169,110,.3)",
-      "flex-shrink:0",
-    ].join(";");
-
-    /* ── Mute-Toggle im Panel ── */
-    var muteInner = document.createElement("button");
-    muteInner.textContent = "🔊";
-    muteInner.setAttribute("aria-label", "Ton ein/aus");
-    muteInner.setAttribute("title", "Ton stumm schalten");
-    muteInner.style.cssText = [
-      "background:transparent",
-      "border:none",
-      "color:var(--gold,#C8A96E)",
-      "font-size:.85rem",
-      "cursor:pointer",
-      "padding:0",
-      "line-height:1",
-      "flex-shrink:0",
-    ].join(";");
-
-    volWrap.appendChild(volIcon);
-    volWrap.appendChild(slider);
-    volWrap.appendChild(volLabel);
-    volWrap.appendChild(sep);
-    volWrap.appendChild(muteInner);
-
-    /* ── Events ── */
-    slider.addEventListener("input", function () {
-      var v = parseInt(this.value) / 100;
-      setVolume(v);
-      volLabel.textContent = this.value + "%";
-      if (v === 0) {
-        muted = true;
-        btn.textContent = "🔕";
-        muteInner.textContent = "🔇";
-        btn.style.opacity = "0.5";
-      } else if (muted) {
-        muted = false;
-        btn.textContent = "🔔";
-        muteInner.textContent = "🔊";
-        btn.style.opacity = "1";
-      }
-    });
-
-    muteInner.addEventListener("click", function (e) {
-      e.stopPropagation();
-      muted = !muted;
-      btn.textContent      = muted ? "🔕" : "🔔";
-      muteInner.textContent = muted ? "🔇" : "🔊";
-      btn.style.opacity    = muted ? "0.5" : "1";
-      btn.setAttribute("aria-label", muted ? "Sounds einschalten" : "Sounds ausschalten");
-      if (!muted) {
-        setVolume(parseInt(slider.value) / 100);
-        play(hoverTick);
-      }
-    });
-
-    var panelOpen = false;
-
-    function openPanel() {
-      panelOpen = true;
-      volWrap.style.maxWidth    = "180px";
-      volWrap.style.opacity     = "1";
-      volWrap.style.pointerEvents = "auto";
-      btn.setAttribute("aria-expanded", "true");
-      btn.setAttribute("aria-label", "Sound-Einstellungen schließen");
-    }
-
-    function closePanel() {
-      panelOpen = false;
-      volWrap.style.maxWidth    = "0";
-      volWrap.style.opacity     = "0";
-      volWrap.style.pointerEvents = "none";
-      btn.setAttribute("aria-expanded", "false");
-      btn.setAttribute("aria-label", "Sound-Einstellungen öffnen");
-    }
 
     btn.addEventListener("click", function (e) {
       e.stopPropagation();
-      if (!panelOpen) { openPanel(); }
-      else            { closePanel(); }
+      muted = !muted;
+
+      if (muted) {
+        btn.textContent = "🔕";
+        btn.setAttribute("aria-label", "Sounds einschalten");
+        btn.style.opacity = "0.52";
+        // Ambient sanft ausblenden
+        if (ambientGain && ctx) {
+          var now = ctx.currentTime;
+          ambientGain.gain.setValueAtTime(ambientGain.gain.value, now);
+          ambientGain.gain.linearRampToValueAtTime(0, now + 1.2);
+        }
+      } else {
+        btn.textContent = "🔔";
+        btn.setAttribute("aria-label", "Sounds ausschalten");
+        btn.style.opacity = "1";
+        // Ambient wieder einblenden
+        if (ambientGain && ctx) {
+          var now2 = ctx.currentTime;
+          ambientGain.gain.setValueAtTime(0, now2);
+          ambientGain.gain.linearRampToValueAtTime(CFG.atmosphere, now2 + 1.5);
+        }
+        play(hoverTick, CFG.hover);
+      }
     });
 
-    btn.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") closePanel();
-    });
-
-    document.addEventListener("click", function () {
-      if (panelOpen) closePanel();
-    });
-
-    volWrap.addEventListener("click", function (e) {
-      e.stopPropagation(); // Verhindert das Schließen beim Klick im Panel
-    });
-
-    /* DOM zusammenbauen: Regler links vom Button */
-    wrap.appendChild(volWrap);
-    wrap.appendChild(btn);
-    document.body.appendChild(wrap);
+    document.body.appendChild(btn);
   }
 
   /* ═══════════════════════════════════════════════════════════════
@@ -767,214 +1004,145 @@
 
   function bind() {
 
-    /* ── CLICK-DELEGATION (zentral) ── */
+    /* ── CLICK-DELEGATION ── */
     document.addEventListener("click", function (e) {
       var t = e.target;
 
-      // Flip-Karten: Zeitungsblättern
       if (t.closest && t.closest(".flip-w")) {
-        play(paperRustle); return;
+        play(paperRustle, CFG.interaction); return;
       }
-
-      // Protokoll-Toggle: Akte aufschlagen
       if (t.classList.contains("protocol-btn")) {
-        play(paperRustle); return;
+        play(paperRustle, CFG.interaction); return;
       }
-
-      // Perspektiv-Buttons: Schreibmaschinen-Klick
       if (t.classList.contains("persp-btn")) {
-        play(typewriterKey); return;
+        play(typewriterKey, CFG.interaction); return;
       }
-
-      // Quiz-Antworten: Federkratzen
       if (t.classList.contains("qbtn") && !t.disabled) {
-        play(penScratch); return;
+        play(penScratch, CFG.interaction); return;
       }
-
-      // Dilemma-Buttons: Stempel
       if (t.classList.contains("dilemma-btn")) {
-        play(stamp); return;
+        play(stamp, CFG.interaction); return;
       }
-
-      // IOC-Vote: Stempel
       if (t.classList.contains("ioc-btn")) {
-        play(stamp); return;
+        // Spezieller Sound je nach Wahl
+        if (t.classList.contains("yes")) {
+          play(stamp, CFG.interaction);
+          setTimeout(function () {
+            play(iocYesFanfare, CFG.ambient * 2.2);
+          }, 120);
+        } else {
+          play(stamp, CFG.interaction);
+          setTimeout(function () {
+            play(iocNoElegy, CFG.ambient * 2.5);
+          }, 120);
+        }
+        return;
       }
-
-      // Poster-Karten: Enthüllen
       if (t.closest && t.closest(".poster-card")) {
-        play(reveal); return;
+        play(reveal, CFG.interaction); return;
       }
-
-      // Map-Pins: Nadelklick
       if (t.closest && t.closest(".map-pin")) {
-        play(pinClick); return;
+        play(pinClick, CFG.interaction); return;
       }
-
-      // Zitat-Filter: Schreibmaschine
       if (t.classList.contains("q-filter-btn")) {
-        play(typewriterKey); return;
+        play(typewriterKey, CFG.interaction); return;
       }
-
-      // Kapitelmenü öffnen/schließen
       if (t.id === "pill" || (t.closest && t.closest("#pill"))) {
-        var chapterMenu = document.getElementById("chapter-menu");
-        var isOpen = chapterMenu && chapterMenu.classList.contains("show");
-        play(isOpen ? drawerClose : drawerOpen);
+        var cm = document.getElementById("chapter-menu");
+        play(cm && cm.classList.contains("show") ? drawerClose : drawerOpen, CFG.interaction);
         return;
       }
-
-      // Glossar öffnen/schließen
       if (t.id === "glossary-btn" || (t.closest && t.closest("#glossary-btn"))) {
-        var glossaryPanel = document.getElementById("glossary-panel");
-        var gpOpen = glossaryPanel && glossaryPanel.classList.contains("show");
-        play(gpOpen ? drawerClose : drawerOpen);
+        var gp = document.getElementById("glossary-panel");
+        play(gp && gp.classList.contains("show") ? drawerClose : drawerOpen, CFG.interaction);
         return;
       }
-
-      // Zurück-nach-oben
       if (t.id === "back-to-top" || (t.closest && t.closest("#back-to-top"))) {
-        play(backToTop); return;
+        play(backToTop, CFG.interaction); return;
       }
-
-      // Expander (Mehr anzeigen)
       if (t.classList.contains("xbtn") || (t.closest && t.closest(".xbtn"))) {
-        play(reveal); return;
+        play(reveal, CFG.interaction); return;
       }
-
-      // Weiterlesen-Links
       if (t.classList.contains("read-more") || (t.closest && t.closest(".read-more"))) {
-        play(typewriterKey); return;
+        play(typewriterKey, CFG.interaction); return;
       }
-
-      // Footer- und Menü-Links
-      if (
-        (t.closest && t.closest(".foot-nav a")) ||
-        (t.closest && t.closest("#chapter-menu a"))
-      ) {
-        play(typewriterKey); return;
+      if ((t.closest && t.closest(".foot-nav a")) ||
+          (t.closest && t.closest("#chapter-menu a"))) {
+        play(typewriterKey, CFG.interaction); return;
       }
-
-      // Quiz-Reset: Papier
       if (t.id === "qreset") {
-        play(paperRustle); return;
+        play(paperRustle, CFG.interaction); return;
       }
-
-      // Chronologie-Items (Tooltip-Klick)
-      if (t.closest && t.closest(".chron-item")) {
-        play(hoverTick); return;
-      }
-
-      // Drucken-Button
       if (t.classList.contains("print-btn") || (t.closest && t.closest(".print-btn"))) {
-        play(paperRustle); return;
-      }
-
-      // Kartei-Karten (Desktop-Klick)
-      if (t.closest && t.closest(".kartei")) {
-        play(hoverTick); return;
+        play(paperRustle, CFG.interaction); return;
       }
     });
 
-    /* ── QUIZ: Richtig / Falsch — Feedback-Sound nach Delay ── */
+    /* ── QUIZ: Richtig / Falsch ── */
     document.addEventListener("click", function (e) {
       var t = e.target;
       if (!t.classList.contains("qbtn")) return;
       setTimeout(function () {
-        if (t.classList.contains("correct"))     play(correctBell);
-        else if (t.classList.contains("wrong"))  play(wrongBass);
+        if (t.classList.contains("correct"))    play(correctBell, CFG.interaction);
+        else if (t.classList.contains("wrong")) play(wrongBass, CFG.interaction);
       }, 35);
     });
 
-    /* ── QUIZ: Abschluss-Sound ── */
+    /* ── QUIZ: Abschluss ── */
     var qres = document.getElementById("qres");
     if (qres) {
       var qObs = new MutationObserver(function (muts) {
         for (var i = 0; i < muts.length; i++) {
-          var m = muts[i];
-          if (m.type === "attributes" && m.attributeName === "style") {
-            if (qres.style.display !== "none" && qres.style.display !== "") {
-              setTimeout(function () { play(quizComplete); }, 180);
-              qObs.disconnect();
-              break;
-            }
+          if (muts[i].attributeName === "style" &&
+              qres.style.display !== "none" &&
+              qres.style.display !== "") {
+            setTimeout(function () { play(quizComplete, CFG.interaction); }, 200);
+            qObs.disconnect();
+            break;
           }
         }
       });
       qObs.observe(qres, { attributes: true });
     }
 
-    /* ── SLIDER: Schleif-Sound beim Ziehen ── */
-    var sliderEl = document.getElementById("slider1");
-    var sliderHandle = document.getElementById("slider-handle");
-    var throttledScrape = throttle(function () { play(sliderScrape); }, 210);
-
-    if (sliderHandle) {
-      sliderHandle.addEventListener("mousedown",  function () { play(sliderScrape); });
-      sliderHandle.addEventListener("touchstart", function () { play(sliderScrape); }, { passive: true });
-    }
-    if (sliderEl) {
-      sliderEl.addEventListener("mousemove", function (e) {
-        if (e.buttons === 1) throttledScrape();
-      });
-      sliderEl.addEventListener("touchmove", throttledScrape, { passive: true });
-    }
-
-    /* ── HOVER-SOUNDS (nur Desktop mit echtem Hover) ── */
+    /* ── HOVER (nur Desktop) ── */
     if (window.matchMedia("(hover: hover)").matches) {
-
-      var hoverThrottle  = throttle(function () { play(hoverTick);   }, 400);
-      var namesThrottle  = throttle(function () { play(nameWhisper); }, 600);
-      var memThrottle    = throttle(function () { play(hoverTick);   }, 500);
+      var hTh = throttle(function () { play(hoverTick, CFG.hover); }, 420);
+      var nTh = throttle(function () { play(hoverTick, CFG.hover * 0.6); }, 650);
+      var mTh = throttle(function () { play(hoverTick, CFG.hover); }, 520);
 
       document.addEventListener("mouseover", function (e) {
         var t = e.target;
-
-        // Hover auf Dilemma-, IOC-, Quiz-Buttons
-        if (
-          t.classList.contains("dilemma-btn") ||
-          t.classList.contains("ioc-btn") ||
-          (t.classList.contains("qbtn") && !t.disabled)
-        ) {
-          hoverThrottle();
+        if (t.classList.contains("dilemma-btn") ||
+            t.classList.contains("ioc-btn") ||
+            (t.classList.contains("qbtn") && !t.disabled)) {
+          hTh();
         }
-
-        // Namen-Wand
-        if (t.closest && t.closest(".names-scroll span")) {
-          namesThrottle();
-        }
-
-        // Memorial-Tiles
-        if (t.closest && t.closest(".mem-tile")) {
-          memThrottle();
-        }
+        if (t.closest && t.closest(".names-scroll span")) nTh();
+        if (t.closest && t.closest(".mem-tile"))          mTh();
       });
     }
 
-    /* ── KARTEI-SCROLL ── */
-    document.querySelectorAll(".kartei-wrap").forEach(function (wrap) {
-      wrap.addEventListener("scroll", throttle(function () {
-        play(sliderScrape);
-      }, 300), { passive: true });
-    });
-
     /* ── GLOSSAR-SUCHE: Tippen ── */
-    var glossarySearch = document.getElementById("glossary-search");
-    if (glossarySearch) {
-      glossarySearch.addEventListener("input", throttle(function () {
-        play(typewriterKey);
-      }, 120));
+    var gs = document.getElementById("glossary-search");
+    if (gs) {
+      gs.addEventListener("input", throttle(function () {
+        play(typewriterKey, CFG.interaction * 0.5);
+      }, 130));
     }
 
-    /* ── TASTATUR: Enter/Space auf interaktiven Elementen ── */
+    /* ── TASTATUR ── */
     document.addEventListener("keydown", function (e) {
       if (e.key !== "Enter" && e.key !== " ") return;
       var t = e.target;
-      if (t.closest && t.closest(".flip-w"))      { play(paperRustle);  return; }
-      if (t.closest && t.closest(".poster-card")) { play(reveal);       return; }
-      if (t.closest && t.closest(".map-pin"))     { play(pinClick);     return; }
-      if (t.classList.contains("persp-btn"))      { play(typewriterKey); return; }
+      if (t.closest && t.closest(".flip-w"))      { play(paperRustle, CFG.interaction);  return; }
+      if (t.closest && t.closest(".poster-card")) { play(reveal, CFG.interaction);        return; }
+      if (t.closest && t.closest(".map-pin"))     { play(pinClick, CFG.interaction);      return; }
+      if (t.classList.contains("persp-btn"))      { play(typewriterKey, CFG.interaction); return; }
     });
+
+    /* ── SCROLL: Ambient-Zone updaten (throttled) ── */
+    window.addEventListener("scroll", throttle(updateAmbientZone, 400), { passive: true });
   }
 
   /* ═══════════════════════════════════════════════════════════════
@@ -983,21 +1151,21 @@
 
   function init() {
     if (prefersReducedMotion) {
-      console.info("[sounds.js] prefers-reduced-motion erkannt — Sounds deaktiviert.");
+      console.info("[sounds.js] prefers-reduced-motion — alles deaktiviert.");
       return;
     }
 
-    createSoundPanel();
+    createMuteButton();
     bind();
+    setupSpecialTriggers();
 
     console.info(
-      "[sounds.js] v2.0 bereit.\n" +
-      "  Sounds: paperRustle · typewriterKey · stamp · pinClick ·\n" +
-      "          penScratch · reveal · correctBell · wrongBass ·\n" +
-      "          drawerOpen · drawerClose · hoverTick · sliderScrape ·\n" +
-      "          quizComplete · backToTop · nameWhisper\n" +
-      "  Panel:  #sound-panel (Mute + Lautstärke-Regler)\n" +
-      "  Einbindung: <script src=\"sounds.js\"><\/script> vor </body>"
+      "[sounds.js] v3.0 bereit.\n" +
+      "  Interaktions-Sounds: 13\n" +
+      "  Ambient-Zonen: Fassade · Realität · Gedenken · Quiz · Heute\n" +
+      "  Spezial-Trigger: Telegraphen-Morse · Windhauch · Namenswand-Drone\n" +
+      "  IOC-Vote: Fanfare (Ja) · Elegie (Nein)\n" +
+      "  Mute-Button: #sound-mute-btn"
     );
   }
 
